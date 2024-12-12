@@ -9,6 +9,7 @@
 # Imports and Global Variables ------------------------------------------------
 import os
 import time
+import map as _map
 save_file1 = 'SaveSlot1.txt'
 playing_game = True
 game_title = '''
@@ -16,52 +17,7 @@ game_title = '''
 | __  |   __|   __| __  |   __|   __|   __|
 |    -|   __|  |  |    -|   __|__   |__   |
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
-game_map = {"house": [[None, "backyard", None, None],
-       ["dining room", "back door", "lounge", None],
-       ["kitchen", "hallway", "stairwell", None],
-       ["living room", "foyer", "bedroom", None],
-       ["bathroom", "entrance hall", "laundry room", "garage"]],
 
-"dungeon": [['witchery room','warden office','orb vault','meeting room','dungeon guard room'],
-        ['experimentation room','equipment room','hallway','dark room','solitary confinement'],
-        ['library','hallway','stairwell','hallway','the gargoyle'],
-        ['portal room','workshop','hallway','prison cell','torture room'],
-        ['chapel','summoning room','entrance','prison cell','prison cell']]
-
-}
-rooms = {
-    "kitchen": {"description": "The kitchen is very tidy."},
-    "dining room": {"description": "There is a table and many chairs."},
-    "stairwell": {"description": "There is a large staircase."},
-    "living room": {"description": "The TV is playing something."},
-    "foyer": {"description": "Paintings hang on the walls around you."},
-    "bedroom": {"description": "The room is very messy."},
-    "bathroom": {"description": "The sink is running."},
-    "entrance hall": {"description": "The front door is locked."},
-    "garage": {"description": "There are no cars in the garage."},
-    "laundry room": {"description": "There are no cars in the garage."},
-    "back door": {"description": "This door leads to the dungeon.", "connections": [2, 4, "dungeon"]},
-    "hallway": {"description": "A long carpet is rolled out on the floor."},
-    "backyard": {"description": "The sun is shining and a peaceful breeze is blowing."},
-    "witchery room": {"description": "there's a cauldron and many odd looking plants."},
-    "warden office": {"description": "there's a singular desk with a light above, and some paperwork in a scripture you don't recognize."},
-    "orb vault": {"description": "you do not what's in the orb vault, but you can sense an orb in there..."},
-    "meeting room": {"description": "there's a singular desk with many chairs around."},
-    "dungeon guard room": {"description": "there's a few bunk beds around and a game of monopoly on a nightstand."},
-    "experimentation room": {"description": "there's a surgical desk with blood all around and some strange tools."},
-    "equipment room": {"description": "it seems this is where the guards keep their equipment..."},
-    "dark room": {"description": "it is pitch black inside this room, your eyes make out some odd shapes in the corners of the room. You feel a presence looming over you..."},
-    "solitary confinement":{"description": "a singular skeleton rests hanged by chains on the wall of this dimly lit room."},
-    "library": {"description": "it seems this is where they kept records of experiments. You cannot make sense of any of it."},
-    "stairwell": {"description": "it leads upwards, into the darkness. Perhaps you shouldn't venture more..."},
-    "the gargoyle": {"description": "a stone statue of a gargoyle pierces your soul with its stare inside this room"},
-    "portal room": {"there's a portal on the wall. You do not know where it leads."},
-    "workshop": {"description": "there are many unfamiliar tools here, it seems to be a workshop."},
-    "prison cell": {"description": "it looks like your average jail cell. "},
-    "entrance": {"description": "this leads to your house.", "connections": [1, 4, "house"]},
-    "chapel": {"description": "this room seems it's where they worshipped someone... or something...?"},
-    "summoning room": {"description": "there's an ominous summoning circle in the middle of the room with candles surrounding it."}
-    }
 player_pos = [1, 4, "house"]  # [x, y, map]
 
 def up():
@@ -87,7 +43,7 @@ def right():
 def change_map():
     global player_pos
     print("Changing map...")
-    player_pos = list(rooms[current_room()]['connections'])
+    player_pos = list(_map.rooms[current_room()]['connections'])
 
 
 def update_position(axis, value):
@@ -95,7 +51,7 @@ def update_position(axis, value):
         location is off the map or a negative number.'''
     if axis == "x":
         try:
-            try_position = game_map[player_pos[2]][player_pos[1]][player_pos[0] + value]
+            try_position = _map.game_map[player_pos[2]][player_pos[1]][player_pos[0] + value]
             if player_pos[0] + value < 0 or try_position == None:
                 raise IndexError
 
@@ -104,7 +60,7 @@ def update_position(axis, value):
             print("You cannot go that way.")
     else:
         try:
-            try_position = game_map[player_pos[2]][player_pos[1] - value][player_pos[0]]
+            try_position = _map.game_map[player_pos[2]][player_pos[1] - value][player_pos[0]]
             if player_pos[1] - value < 0 or try_position == None:
                 raise IndexError
 
@@ -112,14 +68,12 @@ def update_position(axis, value):
         except IndexError:
             print("You cannot go that way.")
 
-
 def moving():
     moving = True
     print("You begin moving.")
     while moving:
         try:
             # The room we are in has a connection to another map
-            print(rooms[current_room()]['connections'])
             menu['movement_menu']['enter'] = change_map
         except KeyError:
             # The room we are in has no connections to other maps
@@ -138,11 +92,11 @@ def print_location(print_description):
         a bool to make it describe the room or not.'''
     print(f"You are in the {current_room().capitalize()}")
     if print_description:
-        print(rooms[current_room()]['description'])
+        print(_map.rooms[current_room()]['description'])
 
 
 def current_room():
-    return game_map[player_pos[2]][player_pos[1]][player_pos[0]]
+    return _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]
 
 
 # Functions -------------------------------------------------------------------
