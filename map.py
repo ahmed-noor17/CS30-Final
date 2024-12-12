@@ -1,3 +1,6 @@
+map_file = 'map.txt'
+from tabulate import tabulate
+
 game_map = {"house": [[None, "backyard", None, None],
        ["dining room", "back door", "lounge", None],
        ["kitchen", "hallway", "stairwell", None],
@@ -44,3 +47,28 @@ rooms = {
     "chapel": {"description": "this room seems it's where they worshipped someone... or something...?"},
     "summoning room": {"description": "there's an ominous summoning circle in the middle of the room with candles surrounding it."}
     }
+
+
+def write_map():
+    ''' Function will write map to a file.'''
+    try:
+        with open(map_file, 'w') as file:
+            file.write(tabulate(game_map, tablefmt="grid"))
+    except Exception:
+        print("Failure to write map.")
+    else:
+        print("You look at your map.")
+    finally:
+        read_map()
+
+
+def read_map():
+    try:
+        with open(map_file, 'r') as f:
+            map = f.read()
+    except Exception:
+        print("You could not read your map.")
+    else:
+        print(map)
+    finally:
+        print("This is the map.")
