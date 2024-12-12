@@ -1,5 +1,5 @@
 ###############################################################################
-# Title: REGRESS89
+# Title: REGRESS
 # Name: Ahmed Noor, Damian Knourek, Aiden Dielschneider
 # Class: CS30
 # Assignment: Final Project
