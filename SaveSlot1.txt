@@ -1,0 +1,2 @@
+setupCompleted::True
+desiredTextSpeed::0.025

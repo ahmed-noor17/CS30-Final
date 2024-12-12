@@ -73,14 +73,22 @@ def moving():
     print("You begin moving.")
     while moving:
         try:
-            # The room we are in has a connection to another map
-            menu['movement_menu']['enter'] = change_map
+            if _map.rooms[current_room()]['connections']:
+                menu['movement_menu']['enter'] = change_map
         except KeyError:
-            # The room we are in has no connections to other maps
             try:
                 menu['movement_menu'].pop('enter')
             except Exception:
                 pass
+        # try:
+        #     # The room we are in has a connection to another map
+        #     menu['movement_menu']['enter'] = change_map
+        # except KeyError:
+        #     # The room we are in has no connections to other maps
+        #     try:
+        #         menu['movement_menu'].pop('enter')
+        #     except Exception:
+        #         pass
         display_menu('movement_menu')
         print_location(False)
         moving = ("y" in input("Contiune moving? y/n: "))
