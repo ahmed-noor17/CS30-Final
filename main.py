@@ -10,6 +10,7 @@
 import os
 import time
 import map as _map
+from tabulate import tabulate
 save_file1 = 'SaveSlot1.txt'
 playing_game = True
 game_title = '''
@@ -20,6 +21,8 @@ game_title = '''
 
 player_pos = [1, 4, "house"]  # [x, y, map]
 
+
+# Functions -------------------------------------------------------------------
 def up():
     print("You head north.")
     update_position("y", 1)
@@ -52,21 +55,33 @@ def update_position(axis, value):
     if axis == "x":
         try:
             try_position = _map.game_map[player_pos[2]][player_pos[1]][player_pos[0] + value]
-            if player_pos[0] + value < 0 or try_position == None:
+            if player_pos[0] + value < 0 or try_position == None or try_position == '':
                 raise IndexError
-
             player_pos[0] += value
         except IndexError:
             print("You cannot go that way.")
-    else:
+    elif axis == "y":
         try:
             try_position = _map.game_map[player_pos[2]][player_pos[1] - value][player_pos[0]]
-            if player_pos[1] - value < 0 or try_position == None:
+            if player_pos[1] - value < 0 or try_position == None or try_position == '':
                 raise IndexError
-
             player_pos[1] -= value
         except IndexError:
             print("You cannot go that way.")
+
+
+def update_map_display():
+    ''' Creates and updates a separate map that displays your location
+        and the surrounding areas that you can move to. This gets
+        written to an external text file.
+    '''
+    global map_display
+    map_display = [
+        [_map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]+1]],
+        [_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]-1], f'*{_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]}*', _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]+1]],
+        [_map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]+1]]]
+    return tabulate(map_display, tablefmt="grid").title()
+
 
 def moving():
     moving = True
@@ -98,7 +113,6 @@ def current_room():
     return _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]
 
 
-# Functions -------------------------------------------------------------------
 def setup():
     os.system('cls' if os.name == 'nt' else 'clear')
     global desired_text_speed
@@ -166,17 +180,18 @@ def _print(text: str, delay=0.025, newline=True):
 def play():
     # SHOULD CHECK IF THERE IS A SAVE FILE HERE (to skip intro)
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("Story...")  # Placeholder text for story introduction
-    time.sleep(2)
-    os.system('cls' if os.name == 'nt' else 'clear')
+    # print("Story...")  # Placeholder text for story introduction
+    # time.sleep(2)
+    # os.system('cls' if os.name == 'nt' else 'clear')
     # Code below should appear after story text.
     while playing_game:
-        r = display_menu('game_menu')
-        if r in ['game_menu', None]:
-            r = 'game_menu'
-            pass
-        else:
-            return display_menu(r)
+        display_menu('game_menu')
+        # r = display_menu('game_menu')
+        # if r in ['game_menu', None]:
+        #     r = 'game_menu'
+        #     pass
+        # else:
+        #     return display_menu(r)
 
 
 def _quit():
@@ -205,6 +220,8 @@ def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
                 print(game_title)
+        if current_menu == 'movement_menu':
+            print(update_map_display())
         print("\nOptions:")  # Prints and takes input for menu options
         for option in menu[current_menu]:
             print(" - " + option.capitalize())
@@ -215,8 +232,7 @@ def display_menu(current_menu):
             if "n" in back:
                 break
             else:
-                current_menu = 'main_menu'
-                return current_menu
+                return display_menu('main_menu')
         elif choice in menu[current_menu]:
             print("\n")
             menu[current_menu][choice]()

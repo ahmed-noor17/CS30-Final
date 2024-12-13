@@ -1,19 +1,25 @@
 map_file = 'map.txt'
 from tabulate import tabulate
+from main import player_pos
 
-game_map = {"house": [[None, "backyard", None, None],
-       ["dining room", "back door", "lounge", None],
-       ["kitchen", "hallway", "stairwell", None],
-       ["living room", "foyer", "bedroom", None],
-       ["bathroom", "entrance hall", "laundry room", "garage"]],
+game_map = {
+    "house": [['', '', '', '', '', ''],
+            ['', None, "backyard", None, None, ''],
+            ['', "dining room", "back door", "lounge", None, ''],
+            ['', "kitchen", "hallway", "stairwell", None, ''],
+            ['', "living room", "foyer", "bedroom", None, ''],
+            ['', "bathroom", "entrance hall", "laundry room", "garage", ''],
+            ['', '', '', '', '', '']],
 
-"dungeon": [['witchery room','warden office','orb vault','meeting room','dungeon guard room'],
-        ['experimentation room','equipment room','hallway','dark room','solitary confinement'],
-        ['library','hallway','stairwell','hallway','the gargoyle'],
-        ['portal room','workshop','hallway','prison cell','torture room'],
-        ['chapel','summoning room','entrance','prison cell','prison cell']]
-
+    "dungeon": [['', '', '', '', '', '', ''],
+        ['', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', ''],
+        ['', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', ''],
+        ['', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', ''],
+        ['', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', ''],
+        ['', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', ''],
+        ['', '', '', '', '', '', '']]
 }
+
 rooms = {
     "kitchen": {"description": "The kitchen is very tidy."},
     "dining room": {"description": "There is a table and many chairs."},
