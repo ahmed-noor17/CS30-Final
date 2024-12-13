@@ -80,7 +80,7 @@ def update_map_display():
         [_map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]+1]],
         [_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]-1], current_room(), _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]+1]],
         [_map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]+1]]]
-    return tabulate(map_display, tablefmt="grid")
+    return tabulate(map_display, tablefmt="grid").title()
 
 
 def moving():
@@ -109,7 +109,7 @@ def print_location(print_description):
 
 
 def current_room():
-    return ("\033[1m" + _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]] + "\033[0m")
+    return _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]
 
 
 def setup():

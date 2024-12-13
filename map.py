@@ -1,6 +1,5 @@
 map_file = 'map.txt'
 from tabulate import tabulate
-from main import player_pos
 
 game_map = {
     "house": [['', '', '', '', '', ''],
