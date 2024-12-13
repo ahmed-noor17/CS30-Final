@@ -78,9 +78,9 @@ def update_map_display():
     global map_display
     map_display = [
         [_map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]+1]],
-        [_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]-1], f'*{_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]}*', _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]+1]],
+        [_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]-1], current_room(), _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]+1]],
         [_map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]+1]]]
-    return tabulate(map_display, tablefmt="grid").title()
+    return tabulate(map_display, tablefmt="grid")
 
 
 def moving():
@@ -97,7 +97,6 @@ def moving():
                 pass
         display_menu('movement_menu')
         print_location(False)
-        moving = ("y" in input("Contiune moving? y/n: "))
         print("\n")
 
 
@@ -110,7 +109,7 @@ def print_location(print_description):
 
 
 def current_room():
-    return _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]
+    return ("\033[1m" + _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]] + "\033[0m")
 
 
 def setup():
@@ -200,6 +199,7 @@ def _quit():
     if input("(Or any character before ENTER to continue)") == '':
         playing_game = False
     os.system('cls' if os.name == 'nt' else 'clear')
+    exit("See you next time!")
 
 
 menu = {
@@ -268,4 +268,3 @@ if __name__ == '__main__':
                     f.write("setupCompleted::True")  # Future boots will skip
     while playing_game:
         main()
-    exit("See you next time!")

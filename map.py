@@ -4,10 +4,10 @@ from main import player_pos
 
 game_map = {
     "house": [['', '', '', '', '', ''],
-            ['', None, "backyard", None, None, ''],
-            ['', "dining room", "back door", "lounge", None, ''],
-            ['', "kitchen", "hallway", "stairwell", None, ''],
-            ['', "living room", "foyer", "bedroom", None, ''],
+            ['', '', "backyard", '', '', ''],
+            ['', "dining room", "back door", "lounge", '', ''],
+            ['', "kitchen", "hallway", "stairwell", '', ''],
+            ['', "living room", "foyer", "bedroom", '', ''],
             ['', "bathroom", "entrance hall", "laundry room", "garage", ''],
             ['', '', '', '', '', '']],
 
