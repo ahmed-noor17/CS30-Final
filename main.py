@@ -176,8 +176,19 @@ def _print(text: str, delay=0.025, newline=True):
         print(text, flush=not newline)
 
 
+def story():
+    pass
+
+
 def play():
-    # SHOULD CHECK IF THERE IS A SAVE FILE HERE (to skip intro)
+    with open(save_file1) as f:
+        for line in f.readlines(3):
+            if line == "skipIntroduction::True":
+                pass
+            elif "n" in input("Would you like to skip the story introduction? (Y/N)"):
+                return story()
+        with open(save_file1, 'w') as f:
+            f.write("skipIntroduction::True")  # Future boots will skip
     os.system('cls' if os.name == 'nt' else 'clear')
     # print("Story...")  # Placeholder text for story introduction
     # time.sleep(2)
@@ -185,12 +196,6 @@ def play():
     # Code below should appear after story text.
     while playing_game:
         display_menu('game_menu')
-        # r = display_menu('game_menu')
-        # if r in ['game_menu', None]:
-        #     r = 'game_menu'
-        #     pass
-        # else:
-        #     return display_menu(r)
 
 
 def _quit():
