@@ -10,6 +10,9 @@
 import os
 import time
 import map as _map
+import inventory as _inventory
+import character as _character
+import attack as _attack
 from tabulate import tabulate
 save_file1 = 'SaveSlot1.txt'
 playing_game = True
@@ -19,8 +22,16 @@ game_title = '''
 |    -|   __|  |  |    -|   __|__   |__   |
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
-player_pos = [1, 4, "house"]  # [x, y, map]
+player = {
+	'character': _character.Character(100, 5, 100, ['slash']),
+	'position': [1, 4, "house"],  # [x, y, map]
+	'inventory': _inventory.Inventory([None])
+}
 
+attacks = {
+	'slash': _attack.Attack(5, 'slashed!'),
+	'fireball': _attack.Attack(10, 'casted fireball!')
+}
 
 # Functions -------------------------------------------------------------------
 def up():
@@ -198,6 +209,19 @@ def play():
         display_menu('game_menu')
 
 
+def view_character():
+    print("Stats:")
+    print(player['character'])
+
+
+def view_inventory():
+    print(player['inventory'].contents)
+
+
+def combat():
+    pass
+
+
 def _quit():
     global playing_game
     print("Press ENTER to confirm exit.")
@@ -214,7 +238,10 @@ menu = {
         "quit": _quit
     },
     "game_menu": {
-        "move": moving
+        "move": moving,
+        "fight": combat,
+        "view character": view_character,
+        "inventory": view_inventory
     },
     "movement_menu": {"up": up, "down": down,
           "left": left, "right": right}
@@ -232,7 +259,7 @@ def display_menu(current_menu):
             print(" - " + option.capitalize())
         choice = input("\nChoice: ").lower()
         if choice == "quit" and current_menu != "main_menu":
-            back = input("Would you like to quit to main menu? (Y/N)")
+            back = input("Would you like to quit to main menu? (Y/N) ")
             os.system('cls' if os.name == 'nt' else 'clear')
             if "n" in back:
                 break
