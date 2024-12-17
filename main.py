@@ -23,14 +23,15 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-	'character': _character.Character(100, 5, 100, ['slash']),
+	'character': _character.Character("you", 100, 5, 100, ['slash']),
 	'position': [1, 4, "house"],  # [x, y, map]
-	'inventory': _inventory.Inventory([None])
+	'inventory': _inventory.Inventory([None]),
+    'enemies': []
 }
 
 enemies = {
-	'goblin': _character.Character(10, 5, 95, ['slash']),
-	'orc': _character.Character(20, 8, 90, ['slash'])
+	'goblin': _character.Character("goblin", 50, 5, 95, ['slash']),
+	'orc': _character.Character("orc", 120, 8, 90, ['slash'])
 }
 
 attacks = {
@@ -231,20 +232,57 @@ def enemy_turn():
 
 
 def combat(enemy):
+    player['enemies'].append(enemies[enemy])
+    enemies[enemy].hp = enemies[enemy].max_hp  # Restore the enemy's hp back to full
     print(f"You encountered a {enemy}")
     fighting = True
     while fighting:
         display_menu('combat_menu')
-        if enemy.health <= 0:
+        if len(player['enemies']) <= 0:
             print("You won!")
             fighting = False
             break
         enemy_turn()
-        if player.character.health <= 0:
+        if player['character'].hp <= 0:
             print("You lost!")
             fighting = False
             #game_over()
             break
+
+
+def attack_menu():
+    print("Attacks:")
+    for attack in player['character'].moves:
+        print(f" - {attack}")
+    while True:
+        use_move = input("Choose a move: ").strip().lower()
+        if use_move in player['character'].moves and use_move in list(attacks.keys()):
+            while True:
+                if len(player['enemies']) <= 1:
+                    target = player['enemies'][0]
+                else:
+                    for target_enemy in player['enemies']:
+                        print(f" - {target_enemy.title()}")
+                    target = input("Choose a target: ").strip().lower()
+                if target in player['enemies']:
+                    use_attack(attacks[use_move], player['character'], player['enemies'][player['enemies'].index(target)])
+                    break
+            break
+
+
+def flee_battle():
+    print("You cannot flee yet!")
+    pass
+
+
+def use_attack(attack, attacker, target):
+    attack_damage = attack.damage * attacker.atk
+    target.hp -= attack_damage
+    print(f"{attacker.name.title()} {attack.use_text}")
+    print(f"Dealt {attack_damage} damage!")
+    print(f"{target.name.title()} has {target.hp} health remaining!")
+    if target.hp <= 0:
+        player['enemies'].remove(target)
 
 
 def _quit():
@@ -270,7 +308,8 @@ menu = {
     },
     "movement_menu": {"up": up, "down": down,
           "left": left, "right": right},
-    "combat_menu": {}
+
+    "combat_menu": {"attack": attack_menu, "run": flee_battle}
 }
 
 

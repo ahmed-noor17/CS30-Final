@@ -1,9 +1,11 @@
 class Character:
-    def __init__(self, hp, atk, acc, moves):
-        self.hp = hp
+    def __init__(self, name, max_hp, atk, acc, moves):
+        self.name = name
+        self.max_hp = max_hp
+        self.hp = max_hp
         self.atk = atk
         self.acc = acc
         self.moves = moves
     
     def __str__(self):
-        return f"HP: {self.hp}\nATK: {self.atk}\nACC: {self.acc}"
+        return f"NAME: {self.name}\nHP: {self.hp}\nATK: {self.atk}\nACC: {self.acc}"
