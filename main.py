@@ -28,6 +28,11 @@ player = {
 	'inventory': _inventory.Inventory([None])
 }
 
+enemies = {
+	'goblin': _character.Character(10, 5, 95, ['slash']),
+	'orc': _character.Character(20, 8, 90, ['slash'])
+}
+
 attacks = {
 	'slash': _attack.Attack(5, 'slashed!'),
 	'fireball': _attack.Attack(10, 'casted fireball!')
@@ -55,9 +60,8 @@ def right():
 
 
 def change_map():
-    global player_pos
     print("Changing map...")
-    player_pos = list(_map.rooms[current_room()]['connections'])
+    player['position'] = list(_map.rooms[current_room()]['connections'])
 
 
 def update_position(axis, value):
@@ -65,18 +69,18 @@ def update_position(axis, value):
         location is off the map or a negative number.'''
     if axis == "x":
         try:
-            try_position = _map.game_map[player_pos[2]][player_pos[1]][player_pos[0] + value]
-            if player_pos[0] + value < 0 or try_position == None or try_position == '':
+            try_position = _map.game_map[player['position'][2]][player['position'][1]][player['position'][0] + value]
+            if player['position'][0] + value < 0 or try_position == None or try_position == '':
                 raise IndexError
-            player_pos[0] += value
+            player['position'][0] += value
         except IndexError:
             print("You cannot go that way.")
     elif axis == "y":
         try:
-            try_position = _map.game_map[player_pos[2]][player_pos[1] - value][player_pos[0]]
-            if player_pos[1] - value < 0 or try_position == None or try_position == '':
+            try_position = _map.game_map[player['position'][2]][player['position'][1] - value][player['position'][0]]
+            if player['position'][1] - value < 0 or try_position == None or try_position == '':
                 raise IndexError
-            player_pos[1] -= value
+            player['position'][1] -= value
         except IndexError:
             print("You cannot go that way.")
 
@@ -88,9 +92,9 @@ def update_map_display():
     '''
     global map_display
     map_display = [
-        [_map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]-1][player_pos[0]+1]],
-        [_map.game_map[player_pos[2]][player_pos[1]][player_pos[0]-1], current_room(), _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]+1]],
-        [_map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]-1], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]], _map.game_map[player_pos[2]][player_pos[1]+1][player_pos[0]+1]]]
+        [_map.game_map[player['position'][2]][player['position'][1]-1][player['position'][0]-1], _map.game_map[player['position'][2]][player['position'][1]-1][player['position'][0]], _map.game_map[player['position'][2]][player['position'][1]-1][player['position'][0]+1]],
+        [_map.game_map[player['position'][2]][player['position'][1]][player['position'][0]-1], current_room(), _map.game_map[player['position'][2]][player['position'][1]][player['position'][0]+1]],
+        [_map.game_map[player['position'][2]][player['position'][1]+1][player['position'][0]-1], _map.game_map[player['position'][2]][player['position'][1]+1][player['position'][0]], _map.game_map[player['position'][2]][player['position'][1]+1][player['position'][0]+1]]]
     return tabulate(map_display, tablefmt="grid").title()
 
 
@@ -120,7 +124,7 @@ def print_location(print_description):
 
 
 def current_room():
-    return _map.game_map[player_pos[2]][player_pos[1]][player_pos[0]]
+    return _map.game_map[player['position'][2]][player['position'][1]][player['position'][0]]
 
 
 def setup():
@@ -218,8 +222,29 @@ def view_inventory():
     print(player['inventory'].contents)
 
 
-def combat():
-    pass
+def fight_test():
+    combat('goblin')
+
+
+def enemy_turn():
+    print("Enemy took a turn!")
+
+
+def combat(enemy):
+    print(f"You encountered a {enemy}")
+    fighting = True
+    while fighting:
+        display_menu('combat_menu')
+        if enemy.health <= 0:
+            print("You won!")
+            fighting = False
+            break
+        enemy_turn()
+        if player.character.health <= 0:
+            print("You lost!")
+            fighting = False
+            #game_over()
+            break
 
 
 def _quit():
@@ -239,12 +264,13 @@ menu = {
     },
     "game_menu": {
         "move": moving,
-        "fight": combat,
+        "fight": fight_test,
         "view character": view_character,
         "inventory": view_inventory
     },
     "movement_menu": {"up": up, "down": down,
-          "left": left, "right": right}
+          "left": left, "right": right},
+    "combat_menu": {}
 }
 
 
