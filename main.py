@@ -26,12 +26,12 @@ player = {
 	'character': _character.Character("you", 100, 5, 100, ['slash']),
 	'position': [1, 4, "house"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
-    'enemies': []
+    'enemies': {}
 }
 
 enemies = {
-	'goblin': _character.Character("goblin", 50, 5, 95, ['slash']),
-	'orc': _character.Character("orc", 120, 8, 90, ['slash'])
+	'goblin': ["goblin", 50, 5, 95, ['slash']],
+	'orc': ["orc", 100, 8, 90, ['slash']]
 }
 
 attacks = {
@@ -71,7 +71,7 @@ def update_position(axis, value):
     if axis == "x":
         try:
             try_position = _map.game_map[player['position'][2]][player['position'][1]][player['position'][0] + value]
-            if player['position'][0] + value < 0 or try_position == None or try_position == '':
+            if player['position'][0] + value < 0 or try_position == 'X':
                 raise IndexError
             player['position'][0] += value
         except IndexError:
@@ -79,7 +79,7 @@ def update_position(axis, value):
     elif axis == "y":
         try:
             try_position = _map.game_map[player['position'][2]][player['position'][1] - value][player['position'][0]]
-            if player['position'][1] - value < 0 or try_position == None or try_position == '':
+            if player['position'][1] - value < 0 or try_position == 'X':
                 raise IndexError
             player['position'][1] -= value
         except IndexError:
@@ -224,21 +224,26 @@ def view_inventory():
 
 
 def fight_test():
-    combat('goblin')
+    combat(['goblin', 'goblin', 'goblin', 'goblin', 'goblin', 'orc'])
 
 
 def enemy_turn():
     print("Enemy took a turn!")
 
 
-def combat(enemy):
-    player['enemies'].append(enemies[enemy])
-    enemies[enemy].hp = enemies[enemy].max_hp  # Restore the enemy's hp back to full
-    print(f"You encountered a {enemy}")
+def combat(encounter_enemies):
+    for enemy in encounter_enemies:
+        enemy_object = _character.Character(enemies[enemy][0], enemies[enemy][1], enemies[enemy][2], enemies[enemy][3], enemies[enemy][4])
+        enemy_count = 1
+        while enemy_object.name in list(player['enemies'].keys()):
+            enemy_count += 1
+            enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
+        player['enemies'][enemy_object.name] = enemy_object
+        print(f"You encountered a {enemy}")
     fighting = True
     while fighting:
         display_menu('combat_menu')
-        if len(player['enemies']) <= 0:
+        if len(list(player['enemies'].keys())) <= 0:
             print("You won!")
             fighting = False
             break
@@ -253,25 +258,30 @@ def combat(enemy):
 def attack_menu():
     print("Attacks:")
     for attack in player['character'].moves:
-        print(f" - {attack}")
+        print(f" - {attack.title()}")
     while True:
-        use_move = input("Choose a move: ").strip().lower()
+        use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
             while True:
-                if len(player['enemies']) <= 1:
-                    target = player['enemies'][0]
-                else:
-                    for target_enemy in player['enemies']:
-                        print(f" - {target_enemy.title()}")
-                    target = input("Choose a target: ").strip().lower()
-                if target in player['enemies']:
-                    use_attack(attacks[use_move], player['character'], player['enemies'][player['enemies'].index(target)])
+                #if len(list(player['enemies'].keys())) <= 1:
+                    #target = player['enemies'][0]
+                #else:
+                for target_enemy in list(player['enemies'].keys()):
+                    print(f" - {target_enemy.title()}")
+                target = input("Choose a target: ").lower()
+                if target in list(player['enemies'].keys()):
+                    use_attack(attacks[use_move], player['character'], player['enemies'][target])
                     break
             break
 
 
 def flee_battle():
     print("You cannot flee yet!")
+    pass
+
+
+def use_item():
+    print("You cannot use items yet!")
     pass
 
 
@@ -282,7 +292,8 @@ def use_attack(attack, attacker, target):
     print(f"Dealt {attack_damage} damage!")
     print(f"{target.name.title()} has {target.hp} health remaining!")
     if target.hp <= 0:
-        player['enemies'].remove(target)
+        print(f"Defeated {target.name.title()}!")
+        player['enemies'].pop(target.name)
 
 
 def _quit():
@@ -309,7 +320,7 @@ menu = {
     "movement_menu": {"up": up, "down": down,
           "left": left, "right": right},
 
-    "combat_menu": {"attack": attack_menu, "run": flee_battle}
+    "combat_menu": {"attack": attack_menu, "item": use_item, "run": flee_battle}
 }
 
 
