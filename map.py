@@ -2,21 +2,30 @@ map_file = 'map.txt'
 from tabulate import tabulate
 
 game_map = {
-    "house": [['', '', '', '', '', ''],
-            ['', '', "backyard", '', '', ''],
-            ['', "dining room", "back door", "lounge", '', ''],
-            ['', "kitchen", "hallway", "stairwell", '', ''],
-            ['', "living room", "foyer", "bedroom", '', ''],
-            ['', "bathroom", "entrance hall", "laundry room", "garage", ''],
-            ['', '', '', '', '', '']],
+    "house": [['X', 'X', 'X', 'X', 'X', 'X'],
+            ['X', 'X', "backyard", 'X', 'X', 'X'],
+            ['X', "dining room", "back door", "lounge", 'X', 'X'],
+            ['X', "kitchen", "hallway", "stairwell", 'X', 'X'],
+            ['X', "living room", "foyer", "bedroom", 'X', 'X'],
+            ['X', "bathroom", "entrance hall", "laundry room", "garage", 'X'],
+            ['X', 'X', 'X', 'X', 'X', 'X']],
 
-    "dungeon": [['', '', '', '', '', '', ''],
-        ['', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', ''],
-        ['', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', ''],
-        ['', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', ''],
-        ['', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', ''],
-        ['', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', ''],
-        ['', '', '', '', '', '', '']]
+    "dungeon": [['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        ['X', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', 'X'],
+        ['X', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', 'X'],
+        ['X', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', 'X'],
+        ['X', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', 'X'],
+        ['X', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', 'X'],
+        ['X', 'X', 'X', 'X', 'X', 'X', 'X']],
+
+    "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+    ['X', 'black market', '', 'north entrance', '', 'X'],
+    ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
+    ['X', 'house', 'market', 'market', 'stairs', '', 'X'],
+    ['X', 'house', 'market', 'X', '', 'X', 'X'],
+    ['X', 'house', 'house', 'X', 'house', ''],
+    ['X', 'west entrance', '', 'X', 'fountain'],
+    ['X', '???', 'X']]
 }
 
 rooms = {
