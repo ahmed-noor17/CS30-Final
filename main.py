@@ -9,6 +9,7 @@
 # Imports and Global Variables ------------------------------------------------
 import os
 import time
+import random
 import map as _map
 import inventory as _inventory
 import character as _character
@@ -23,20 +24,20 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-	'character': _character.Character("you", 100, 5, 100, ['slash']),
+	'character': _character.Character("you", 100, 5, 95, ['slash', 'fireball']),
 	'position': [1, 4, "house"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {}
 }
 
 enemies = {
-	'goblin': ["goblin", 50, 5, 95, ['slash']],
-	'orc': ["orc", 100, 8, 90, ['slash']]
+	'goblin': ["goblin", 50, 5, 80, ['slash']],
+	'orc': ["orc", 100, 8, 80, ['slash']]
 }
 
 attacks = {
-	'slash': _attack.Attack(5, 'slashed!'),
-	'fireball': _attack.Attack(10, 'casted fireball!')
+	'slash': _attack.Attack(5, 100, 'slashed!'),
+	'fireball': _attack.Attack(10, 99999, 'casted fireball!')
 }
 
 # Functions -------------------------------------------------------------------
@@ -228,7 +229,11 @@ def fight_test():
 
 
 def enemy_turn():
-    print("Enemy took a turn!")
+    for enemy in list(player['enemies'].keys()):
+        enemy_object = player['enemies'][enemy]
+        use_attack(attacks[enemy_object.moves[0]], enemy_object, player['character'])
+        print(f"{enemy_object.name.title()} took a turn!")
+
 
 
 def combat(encounter_enemies):
@@ -237,11 +242,16 @@ def combat(encounter_enemies):
         enemy_count = 1
         while enemy_object.name in list(player['enemies'].keys()):
             enemy_count += 1
-            enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
+            if enemy_count > 2:  # This names the enemies if there are multiple of the same type
+                enemy_object.name = f"{enemy_object.name[:-2]} {str(enemy_count)}"
+            else:
+                enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
         print(f"You encountered a {enemy}")
+
     fighting = True
     while fighting:
+        print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")
         display_menu('combat_menu')
         if len(list(player['enemies'].keys())) <= 0:
             print("You won!")
@@ -253,6 +263,7 @@ def combat(encounter_enemies):
             fighting = False
             #game_over()
             break
+    player['enemies'].clear()
 
 
 def attack_menu():
@@ -286,14 +297,19 @@ def use_item():
 
 
 def use_attack(attack, attacker, target):
-    attack_damage = attack.damage * attacker.atk
-    target.hp -= attack_damage
-    print(f"{attacker.name.title()} {attack.use_text}")
-    print(f"Dealt {attack_damage} damage!")
-    print(f"{target.name.title()} has {target.hp} health remaining!")
-    if target.hp <= 0:
-        print(f"Defeated {target.name.title()}!")
-        player['enemies'].pop(target.name)
+    attack_accuracy = attack.acc * attacker.acc/100
+    if random.randint(0, 100) <= attack_accuracy:
+        attack_damage = attack.damage * attacker.atk
+        target.hp -= attack_damage
+        print(f"{attacker.name.title()} {attack.use_text}")
+        print(f"Dealt {attack_damage} damage!")
+        print(f"{target.name.title()} has {target.hp} health remaining!")
+        if target.hp <= 0:
+            print(f"Defeated {target.name.title()}!")
+            if target.name != 'you':
+                player['enemies'].pop(target.name)
+    else:
+        print(f"{attacker.name.title()} missed! What an idiot!")
 
 
 def _quit():
