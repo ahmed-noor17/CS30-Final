@@ -218,7 +218,8 @@ def _print(text: str, delay=0.025, newline=True):
 
 
 def story():
-    pass
+    os.system('cls' if os.name == 'nt' else 'clear')
+    return display_menu('game_menu')
 
 
 def play():
@@ -226,19 +227,17 @@ def play():
         for line in file.readlines():
             if "skipIntroduction" in line:
                 temp_line = line
-        if temp_line == "skipIntroduction::True\n":
-            pass
-        elif "n" in input("Would you like to skip the story introduction? (Y/N)").lower():
-            return story()
-        else:
+        if temp_line == "skipIntroduction::False\n":
             with open(save_file1, "r") as file:
                 temp_list = file.readlines()
                 temp_list[2] = f"skipIntroduction::True\n"
             with open(save_file1, "w") as file:
                 file.writelines(temp_list)
+            if "n" in input("Would you like to skip the story introduction? (Y/N)").lower():
+                return story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:
-        display_menu('game_menu')
+        return display_menu('game_menu')
 
 
 def view_character():
