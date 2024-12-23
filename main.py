@@ -116,7 +116,7 @@ def moving():
             print(" - " + option.capitalize())
         choice = input("\nChoice: ").lower()
         if choice == "stop":
-            if "n" in input("Would you like to stop moving? (Y/N) "):
+            if "n" in input("Would you like to stop moving? (Y/N) ").lower():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("You did not move.")
                 print_location(True)
@@ -126,7 +126,7 @@ def moving():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 return display_menu('game_menu')
         elif choice == "quit":
-            back = input("Would you like to quit to main menu? (Y/N) ")
+            back = input("Would you like to quit to main menu? (Y/N) ").lower()
             os.system('cls' if os.name == 'nt' else 'clear')
             if "n" in back:
                 break
@@ -165,7 +165,7 @@ def setup():
                 desired_text_speed = float(line[1])
     _print("This is the game's current text speed.")
     _print("Would you like to change the text speed? (Y/N) ", newline=False)
-    if "n" in input():
+    if "n" in input().lower():
         os.system('cls' if os.name == 'nt' else 'clear')
         return None
     _print("You are changing the text speed.")
@@ -186,13 +186,12 @@ def setup():
             break
         else:
             pass
-        _print(
-            "This is how fast the text will appear. Here is some extra text.")
+        _print("This is how fast the text will appear. Here is some extra text.")
     with open(save_file1, "r") as file:
-        temp_f_line_list = file.readlines()  # Temp list of all lines in file
-        temp_f_line_list[1] = f"desiredTextSpeed::{str(desired_text_speed)}\n"
+        temp_list = file.readlines()  # Temp list of all lines in file
+        temp_list[1] = f"desiredTextSpeed::{str(desired_text_speed)}\n"
         with open(save_file1, "w") as file:
-            file.writelines(temp_f_line_list)  # Updates setting in file
+            file.writelines(temp_list)  # Updates setting in file
     return None
 
 
@@ -223,19 +222,21 @@ def story():
 
 
 def play():
-    with open(save_file1) as f:
-        for line in f.readlines(3):
-            if line == "skipIntroduction::True":
-                pass
-            elif "n" in input("Would you like to skip the story introduction? (Y/N)"):
-                return story()
-        with open(save_file1, 'w') as f:
-            f.write("skipIntroduction::True")  # Future boots will skip
+    with open(save_file1) as file:
+        for line in file.readlines():
+            if "skipIntroduction" in line:
+                temp_line = line
+        if temp_line == "skipIntroduction::True\n":
+            pass
+        elif "n" in input("Would you like to skip the story introduction? (Y/N)").lower():
+            return story()
+        else:
+            with open(save_file1, "r") as file:
+                temp_list = file.readlines()
+                temp_list[2] = f"skipIntroduction::True\n"
+            with open(save_file1, "w") as file:
+                file.writelines(temp_list)
     os.system('cls' if os.name == 'nt' else 'clear')
-    # print("Story...")  # Placeholder text for story introduction
-    # time.sleep(2)
-    # os.system('cls' if os.name == 'nt' else 'clear')
-    # Code below should appear after story text.
     while playing_game:
         display_menu('game_menu')
 
@@ -370,7 +371,7 @@ menu = {
 def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
-                print(game_title)
+            print(game_title)
         if current_menu == 'movement_menu':
             print(update_map_display())
         print("\nOptions:")  # Prints and takes input for menu options
@@ -379,12 +380,12 @@ def display_menu(current_menu):
         choice = input("\nChoice: ").lower()
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
-            back = input("Would you like to quit to main menu? (Y/N) ")
+            back = input("Would you like to quit to main menu? (Y/N) ").lower()
             os.system('cls' if os.name == 'nt' else 'clear')
             if "n" in back:
                 break
             else:
-                return display_menu('main_menu')
+                current_menu = 'main_menu'
         elif choice in menu[current_menu]:
             print("\n")
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -404,20 +405,27 @@ def main():
 # Main ------------------------------------------------------------------------
 if __name__ == '__main__':
     os.system('cls' if os.name == 'nt' else 'clear')  # Clears console
-    with open(save_file1) as f:
-        for line in f.readlines():
-            if line == "setupCompleted::True":
+    with open(save_file1) as file:
+        for line in file.readlines():
+            if "setupCompleted" in line:
+                temp_line = line
+        if temp_line == "setupCompleted::True\n":
+            pass
+        else:  # Checks for first time boot
+            choice = input("Would you like to change the "
+                            + "default settings? (Y/N) ").lower()
+            if "n" in choice:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 pass
-            elif line == "setupCompleted::False":  # Checks for first time boot
-                choice = input("Would you like to change the "
-                               + "default settings? (Y/N) ").lower()
-                if "n" in choice:
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    pass
-                else:
-                    setup()  # Makes user confirm settings before continuing
-                    f.close()
-                with open(save_file1, 'w') as f:
-                    f.write("setupCompleted::True")  # Future boots will skip
+            else:
+                setup()  # Makes user confirm settings before continuing
+                file.close()
+            with open(save_file1, "r") as file:
+                temp_list = file.readlines()
+                temp_list[0] = f"setupCompleted::True\n"
+                file.close()
+            with open(save_file1, "w") as file:
+                file.writelines(temp_list)  # Future boots will skip
+                file.close()
     while playing_game:
         main()

@@ -18,18 +18,19 @@ game_map = {
         ['X', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', 'X'],
         ['X', 'X', 'X', 'X', 'X', 'X', 'X']],
 
-    "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', 'black market', '', 'north entrance', '', 'X'],
-    ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
-    ['X', 'house', 'market', 'market', 'stairs', '', 'X'],
-    ['X', 'house', 'market', 'X', '', 'X', 'X'],
-    ['X', 'house', 'house', 'X', 'house', ''],
-    ['X', 'west entrance', '', 'X', 'fountain'],
-    ['X', '???', 'X']]
+    "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        ['X', 'black market', '', 'north entrance', '', 'X', 'X', 'X'],
+        ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
+        ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
+        ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
+        ['X', 'house', 'house', 'X', 'house', '', 'X', 'X'],
+        ['X', 'west entrance', '', 'X', 'fountain', 'X', 'X', 'X'],
+        ['X', '???', 'X', 'house', '', 'X', 'X', 'X'],
+        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']]
 }
 
 rooms = {
-    "kitchen": {"description": "The kitchen is very tidy."},
+    "kitchen": {"description": "The kitchen is very tidy."},  # This is the House
     "dining room": {"description": "There is a table and many chairs."},
     "stairwell": {"description": "There is a large staircase."},
     "living room": {"description": "The TV is playing something."},
@@ -42,24 +43,25 @@ rooms = {
     "back door": {"description": "This door leads to the dungeon.", "connections": [2, 4, "dungeon"]},
     "hallway": {"description": "A long carpet is rolled out on the floor."},
     "backyard": {"description": "The sun is shining and a peaceful breeze is blowing."},
-    "witchery room": {"description": "there's a cauldron and many odd looking plants."},
-    "warden office": {"description": "there's a singular desk with a light above, and some paperwork in a scripture you don't recognize."},
-    "orb vault": {"description": "you do not what's in the orb vault, but you can sense an orb in there..."},
-    "meeting room": {"description": "there's a singular desk with many chairs around."},
-    "dungeon guard room": {"description": "there's a few bunk beds around and a game of monopoly on a nightstand."},
-    "experimentation room": {"description": "there's a surgical desk with blood all around and some strange tools."},
-    "equipment room": {"description": "it seems this is where the guards keep their equipment..."},
-    "dark room": {"description": "it is pitch black inside this room, your eyes make out some odd shapes in the corners of the room. You feel a presence looming over you..."},
-    "solitary confinement":{"description": "a singular skeleton rests hanged by chains on the wall of this dimly lit room."},
-    "library": {"description": "it seems this is where they kept records of experiments. You cannot make sense of any of it."},
-    "stairwell": {"description": "it leads upwards, into the darkness. Perhaps you shouldn't venture more..."},
-    "the gargoyle": {"description": "a stone statue of a gargoyle pierces your soul with its stare inside this room"},
-    "portal room": {"there's a portal on the wall. You do not know where it leads."},
-    "workshop": {"description": "there are many unfamiliar tools here, it seems to be a workshop."},
-    "prison cell": {"description": "it looks like your average jail cell. "},
-    "entrance": {"description": "this leads to your house.", "connections": [1, 4, "house"]},
-    "chapel": {"description": "this room seems it's where they worshipped someone... or something...?"},
-    "summoning room": {"description": "there's an ominous summoning circle in the middle of the room with candles surrounding it."}
+
+    "witchery room": {"description": "There's a cauldron and many odd looking plants."},  # This is where the Orb Dungeon starts
+    "warden office": {"description": "There's a singular desk with a light above, and some paperwork in a scripture you don't recognize."},
+    "orb vault": {"description": "You do not what's in the orb vault, but you can sense an orb in there..."},
+    "meeting room": {"description": "There's a singular desk with many chairs around."},
+    "dungeon guard room": {"description": "There's a few bunk beds around and a game of monopoly on a nightstand."},
+    "experimentation room": {"description": "There's a surgical desk with blood all around and some strange tools."},
+    "equipment room": {"description": "It seems this is where the guards keep their equipment..."},
+    "dark room": {"description": "It is pitch black inside this room, your eyes make out some odd shapes in the corners of the room. You feel a presence looming over you..."},
+    "solitary confinement":{"description": "A singular skeleton rests hanged by chains on the wall of this dimly lit room."},
+    "library": {"description": "It seems this is where they kept records of experiments. You cannot make sense of any of it."},
+    "stairwell": {"description": "It leads upwards, into the darkness. Perhaps you shouldn't venture more..."},
+    "the gargoyle": {"description": "A stone statue of a gargoyle pierces your soul with its stare inside this room"},
+    "portal room": {"description": "There's a portal on the wall. You do not know where it leads."},
+    "workshop": {"description": "There are many unfamiliar tools here, it seems to be a workshop."},
+    "prison cell": {"description": "It looks like your average jail cell. "},
+    "entrance": {"description": "This leads to your house.", "connections": [1, 4, "house"]},
+    "chapel": {"description": "This room seems it's where they worshipped someone... or something...?"},
+    "summoning room": {"description": "There's an ominous summoning circle in the middle of the room with candles surrounding it."}
     }
 
 
