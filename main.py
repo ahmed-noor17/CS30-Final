@@ -89,14 +89,13 @@ def update_position(axis, value):
 
 def update_map_display():
     ''' Creates and updates a separate map that displays your location
-        and the surrounding areas that you can move to. This gets
-        written to an external text file.
+        and the surrounding areas that you can move to.
     '''
     global map_display
     map_display = [
-        [_map.game_map[player['position'][2]][player['position'][1]-1][player['position'][0]-1], _map.game_map[player['position'][2]][player['position'][1]-1][player['position'][0]], _map.game_map[player['position'][2]][player['position'][1]-1][player['position'][0]+1]],
-        [_map.game_map[player['position'][2]][player['position'][1]][player['position'][0]-1], current_room(), _map.game_map[player['position'][2]][player['position'][1]][player['position'][0]+1]],
-        [_map.game_map[player['position'][2]][player['position'][1]+1][player['position'][0]-1], _map.game_map[player['position'][2]][player['position'][1]+1][player['position'][0]], _map.game_map[player['position'][2]][player['position'][1]+1][player['position'][0]+1]]]
+        [current_room(-1, -1), current_room(-1, 0), current_room(-1, +1)],
+        [current_room(0, -1), f"*{current_room()}*", current_room(0, +1)],
+        [current_room(+1, -1), current_room(+1, 0), current_room(+1, +1)]]
     return tabulate(map_display, tablefmt="grid").title()
 
 
@@ -112,12 +111,38 @@ def moving():
                 menu['movement_menu'].pop('enter')
             except Exception:
                 pass
-        display_menu('movement_menu')
-        print_location(False)
-        print("\n")
+        print(update_map_display() + "\n")  # This is where the menu code starts
+        for option in menu["movement_menu"]:  # You can move this to a separate function if you want, Aiden
+            print(" - " + option.capitalize())
+        choice = input("\nChoice: ").lower()
+        if choice == "stop":
+            if "n" in input("Would you like to stop moving? (Y/N) "):
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print("You did not move.")
+                print_location(True)
+                pass
+            else:
+                moving = False
+                os.system('cls' if os.name == 'nt' else 'clear')
+                return display_menu('game_menu')
+        elif choice == "quit":
+            back = input("Would you like to quit to main menu? (Y/N) ")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            if "n" in back:
+                break
+            else:
+                return display_menu('main_menu')
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            try:
+                menu['movement_menu'][choice]()
+            except KeyError:
+                print("That is not a direction")
+                pass
+            print_location()
 
 
-def print_location(print_description):
+def print_location(print_description=False):
     ''' Tells the player what room they are in. Can be passed
         a bool to make it describe the room or not.'''
     print(f"You are in the {current_room().capitalize()}")
@@ -125,8 +150,8 @@ def print_location(print_description):
         print(_map.rooms[current_room()]['description'])
 
 
-def current_room():
-    return _map.game_map[player['position'][2]][player['position'][1]][player['position'][0]]
+def current_room(y_offset=0, x_offset=0):
+    return _map.game_map[player['position'][2]][player['position'][1] + y_offset][player['position'][0] + x_offset]  # map, y, x
 
 
 def setup():
@@ -317,8 +342,10 @@ def _quit():
     print("Press ENTER to confirm exit.")
     if input("(Or any character before ENTER to continue)") == '':
         playing_game = False
-    os.system('cls' if os.name == 'nt' else 'clear')
-    exit("See you next time!")
+        exit("\nSee you next time!\n")
+    else:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        return display_menu('main_menu')
 
 
 menu = {
@@ -350,6 +377,7 @@ def display_menu(current_menu):
         for option in menu[current_menu]:
             print(" - " + option.capitalize())
         choice = input("\nChoice: ").lower()
+        os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
             back = input("Would you like to quit to main menu? (Y/N) ")
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -359,10 +387,11 @@ def display_menu(current_menu):
                 return display_menu('main_menu')
         elif choice in menu[current_menu]:
             print("\n")
+            os.system('cls' if os.name == 'nt' else 'clear')
             menu[current_menu][choice]()
             break
         else:
-            os.system('cls' if os.name == 'nt' else 'clear')
+            pass
 
 
 def main():
