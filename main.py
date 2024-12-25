@@ -3,7 +3,7 @@
 # Name: Ahmed Noor, Damian Knourek, Aiden Dielschneider
 # Class: CS30
 # Assignment: Final Project
-# Version: TEST3
+# Version: Pre-Alpha v1.0
 # Date: December 9th, 2024
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
@@ -63,7 +63,7 @@ def right():
 
 def change_map():
     print("Changing map...")
-    player['position'] = list(_map.rooms[current_room()]['connections'])
+    player['position'] = list(_map.rooms[player['position'][2]][current_room()]['connections'])
 
 
 def update_position(axis, value):
@@ -99,23 +99,32 @@ def update_map_display():
     return tabulate(map_display, tablefmt="grid").title()
 
 
+move_options = {"w": "up",
+                "a": "left",
+                "s": "down",
+                "d": "right"}
+
+
 def moving():
     moving = True
     print("You begin moving.")
     while moving:
         try:
-            if _map.rooms[current_room()]['connections']:
+            if _map.rooms[player['position'][2]][current_room()]['connections']:
                 menu['movement_menu']['enter'] = change_map
         except KeyError:
             try:
                 menu['movement_menu'].pop('enter')
             except Exception:
                 pass
-        print(update_map_display() + "\n")  # This is where the menu code starts
+        print(update_map_display() + "\n")  # This is where the movement menu code starts
         for option in menu["movement_menu"]:  # You can move this to a separate function if you want, Aiden
             print(" - " + option.capitalize())
         choice = input("\nChoice: ").lower()
-        if choice == "stop":
+        print("\n")
+        if choice in move_options.keys():
+            menu['movement_menu'][move_options[choice]]()
+        elif choice == "stop":
             if "n" in input("Would you like to stop moving? (Y/N) ").lower():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("You did not move.")
@@ -147,7 +156,7 @@ def print_location(print_description=False):
         a bool to make it describe the room or not.'''
     print(f"You are in the {current_room().capitalize()}")
     if print_description:
-        print(_map.rooms[current_room()]['description'])
+        print(_map.rooms[player['position'][2]][current_room()]['description'])
 
 
 def current_room(y_offset=0, x_offset=0):
@@ -243,10 +252,12 @@ def play():
 def view_character():
     print("Stats:")
     print(player['character'])
+    return display_menu('game_menu')
 
 
 def view_inventory():
     print(player['inventory'].contents)
+    return display_menu('game_menu')
 
 
 def fight_test():
@@ -371,11 +382,12 @@ def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
             print(game_title)
-        if current_menu == 'movement_menu':
+        if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
             print(update_map_display())
         print("\nOptions:")  # Prints and takes input for menu options
         for option in menu[current_menu]:
             print(" - " + option.capitalize())
+        print(current_menu)
         choice = input("\nChoice: ").lower()
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
@@ -386,7 +398,6 @@ def display_menu(current_menu):
             else:
                 current_menu = 'main_menu'
         elif choice in menu[current_menu]:
-            print("\n")
             os.system('cls' if os.name == 'nt' else 'clear')
             menu[current_menu][choice]()
             break
