@@ -24,20 +24,26 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-	'character': _character.Character("you", 100, 5, 95, ['slash', 'fireball']),
+	'character': _character.Character("john hulk", 100, 5, 95, ['slash', 'fireball']),
 	'position': [1, 4, "house"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {}
 }
 
 enemies = {
-	'goblin': ["goblin", 50, 5, 80, ['slash']],
-	'orc': ["orc", 100, 8, 80, ['slash']]
+	'goblin': ["goblin", 50, 5, 80, ['heal']],
+	'orc': ["orc", 100, 8, 80, ['slash']],
+    'blemmyae': ["blemmyae", 150, 10, 80, ['headbutt', 'bash']],
+    'manticore': ["manticore", 200, 5, 95, ['headbutt', 'fireball']]
+
 }
 
 attacks = {
-	'slash': _attack.Attack(5, 100, 'slashed!'),
-	'fireball': _attack.Attack(10, 99999, 'casted fireball!')
+	'slash': _attack.Attack(5, 100, 'slashed {target}!'),
+    'bash': _attack.Attack(7, 80, 'bashed {target}!'),
+	'fireball': _attack.Attack(10, 95, 'casted fireball!'),
+    'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!'),
+    'heal': _attack.Attack(-5, 99999, "healed {target}!")
 }
 
 # Functions -------------------------------------------------------------------
@@ -261,15 +267,15 @@ def view_inventory():
 
 
 def fight_test():
-    combat(['goblin', 'goblin', 'goblin', 'goblin', 'goblin', 'orc'])
+    combat(['goblin', 'goblin', 'blemmyae', 'manticore', 'orc'])
 
 
 def enemy_turn():
     for enemy in list(player['enemies'].keys()):
         enemy_object = player['enemies'][enemy]
-        use_attack(attacks[enemy_object.moves[0]], enemy_object, player['character'])
-        print(f"{enemy_object.name.title()} took a turn!")
-
+        _print(f"\n{enemy_object.name.title()} took a turn!")
+        use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
+        time.sleep(0.5)
 
 
 def combat(encounter_enemies):
@@ -283,7 +289,7 @@ def combat(encounter_enemies):
             else:
                 enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
-        print(f"You encountered a {enemy}")
+        print(f"You encountered a {enemy.title()}!")
 
     fighting = True
     while fighting:
@@ -337,9 +343,9 @@ def use_attack(attack, attacker, target):
     if random.randint(0, 100) <= attack_accuracy:
         attack_damage = attack.damage * attacker.atk
         target.hp -= attack_damage
-        print(f"{attacker.name.title()} {attack.use_text}")
-        print(f"Dealt {attack_damage} damage!")
-        print(f"{target.name.title()} has {target.hp} health remaining!")
+        _print(f"{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
+        _print(f"Dealt {attack_damage} damage!")
+        _print(f"{target.name.title()} has {target.hp} health remaining!")
         if target.hp <= 0:
             print(f"Defeated {target.name.title()}!")
             if target.name != 'you':
