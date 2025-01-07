@@ -181,7 +181,7 @@ def setup():
     os.system('cls' if os.name == 'nt' else 'clear')
     global desired_text_speed
     desired_text_speed = 0.025
-    with open(save_file1) as file:  # Reads the speed on file and sets it
+    with open(current_save_file) as file:  # Reads the speed on file and sets it
         for line in file.readlines():
             if "desiredTextSpeed" in line:
                 line = line.strip().split('::')
@@ -210,10 +210,10 @@ def setup():
         else:
             pass
         _print("This is how fast the text will appear. Here is some extra text.")
-    with open(save_file1, "r") as file:
+    with open(current_save_file, "r") as file:
         temp_list = file.readlines()  # Temp list of all lines in file
         temp_list[1] = f"desiredTextSpeed::{str(desired_text_speed)}\n"
-        with open(save_file1, "w") as file:
+        with open(current_save_file, "w") as file:
             file.writelines(temp_list)  # Updates setting in file
     return None
 
