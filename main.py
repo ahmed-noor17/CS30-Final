@@ -16,7 +16,6 @@ import character as _character
 import combat as _combat
 import attack as _attack
 from tabulate import tabulate
-save_file1 = 'SaveSlot1.txt'
 playing_game = True
 game_title = '''
  _____ _____ _____ _____ _____ _____ _____
@@ -25,7 +24,7 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-	'character': _character.Character("john hulk", 100, 5, 95, ['slash', 'fireball']),
+	'character': _character.Character("john", 100, 5, 95, ['slash', 'fireball']),
 	'position': [1, 4, "house"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {}
@@ -46,6 +45,14 @@ attacks = {
     'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!'),
     'heal': _attack.Attack(-5, 99999, "healed {target}!")
 }
+
+save_files = {
+	'file 1': 'SaveSlot1.txt',
+    'file 2': 'SaveSlot2.txt',
+    'file 3': 'SaveSlot3.txt'
+}
+
+current_save_file = None
 
 # Functions -------------------------------------------------------------------
 def up():
@@ -235,22 +242,19 @@ def _print(text: str, delay=0.025, newline=True):
 
 def story():
     os.system('cls' if os.name == 'nt' else 'clear')
+    _print("This is where the story would go if we had one...")
     return display_menu('game_menu')
 
 
 def play():
-    with open(save_file1) as file:
-        for line in file.readlines():
-            if "skipIntroduction" in line:
-                temp_line = line
-        if temp_line == "skipIntroduction::False\n":
-            with open(save_file1, "r") as file:
-                temp_list = file.readlines()
-                temp_list[2] = f"skipIntroduction::True\n"
-            with open(save_file1, "w") as file:
-                file.writelines(temp_list)
-            if "n" in input("Would you like to skip the story introduction? (Y/N)").lower():
-                return story()
+    print("Save files:")
+    for save in list(save_files.keys()):
+        print(f" - {save.title()}")
+    chosen_save_file = input("Choose a save file: ").lower()
+    if chosen_save_file in list(save_files.keys()):
+        current_save_file = chosen_save_file
+    
+    story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:
         return display_menu('game_menu')
@@ -338,27 +342,5 @@ def main():
 # Main ------------------------------------------------------------------------
 if __name__ == '__main__':
     os.system('cls' if os.name == 'nt' else 'clear')  # Clears console
-    with open(save_file1) as file:
-        for line in file.readlines():
-            if "setupCompleted" in line:
-                temp_line = line
-        if temp_line == "setupCompleted::True\n":
-            pass
-        else:  # Checks for first time boot
-            choice = input("Would you like to change the "
-                            + "default settings? (Y/N) ").lower()
-            if "n" in choice:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                pass
-            else:
-                setup()  # Makes user confirm settings before continuing
-                file.close()
-            with open(save_file1, "r") as file:
-                temp_list = file.readlines()
-                temp_list[0] = f"setupCompleted::True\n"
-                file.close()
-            with open(save_file1, "w") as file:
-                file.writelines(temp_list)  # Future boots will skip
-                file.close()
     while playing_game:
         main()
