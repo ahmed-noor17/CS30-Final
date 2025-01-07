@@ -6,6 +6,7 @@ player_hp::100
 player_atk::5
 player_acc::95
 player_moves::slash, fireball
-player_position::1, 4
+player_x_position::1
+player_y_position::4
 player_map::house
 player_inventory::None

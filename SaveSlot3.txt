@@ -1,11 +1,12 @@
 desired_text_speed::0.025
 skip_introduction::False
 player_name::john
-player_max_hp::100
+player_max_hp::500
 player_hp::100
 player_atk::5
 player_acc::95
 player_moves::slash, fireball
-player_position::1, 4
-player_map::house
+player_x_position::1
+player_y_position::4
+player_map::dungeon
 player_inventory::None

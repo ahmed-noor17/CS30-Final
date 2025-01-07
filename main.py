@@ -24,10 +24,14 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-	'character': _character.Character("john", 100, 5, 95, ['slash', 'fireball']),
-	'position': [1, 4, "house"],  # [x, y, map]
-	'inventory': _inventory.Inventory([None]),
+    'character': None,
+	'position': None,  # [x, y, map]
+	'inventory': None,
     'enemies': {}
+	#'character': _character.Character("john", 100, 5, 95, ['slash', 'fireball']),
+	#'position': [1, 4, "house"],  # [x, y, map]
+	#'inventory': _inventory.Inventory([None]),
+    #'enemies': {}
 }
 
 enemies = {
@@ -50,6 +54,23 @@ save_files = {
 	'file 1': 'SaveSlot1.txt',
     'file 2': 'SaveSlot2.txt',
     'file 3': 'SaveSlot3.txt'
+}
+
+text_speed = 0.025
+
+data_to_save = {
+    'text_speed': None,
+    'skip_introduction': None,
+    'player_name': None,
+    'player_max_hp': None,
+    'player_hp': None,
+    'player_atk': None,
+    'player_acc': None,
+    'player_moves': None,
+    'player_x_position': None,
+    'player_y_position': None,
+    'player_map': None,
+    'player_inventory': None
 }
 
 current_save_file = None
@@ -174,13 +195,38 @@ def print_location(print_description=False):
 
 
 def current_room(y_offset=0, x_offset=0):
-    return _map.game_map[player['position'][2]][player['position'][1] + y_offset][player['position'][0] + x_offset]  # map, y, x
+    return _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+
+
+def save_data():
+    ''' Writes data to save file.'''
+    try:
+        with open(current_save_file, 'w') as f:
+            for data in list(data_to_save.keys()):
+                f.write(f"{data}::{data_to_save[data]}\n")
+
+    except Exception:
+        print("An error occurred while saving data.")
+
+def load_data():
+    try:
+        with open(current_save_file, 'r') as f:
+            file_list = f.readlines()
+            for line in file_list:
+                data = line.strip().split('::')
+                if ", " in data[1]:
+                    data[1] = data[1].split(", ")
+                data_to_save[data[0]] = data[1]
+        player['character'] = _character.Character(data_to_save['player_name'], data_to_save['player_max_hp'], data_to_save['player_atk'], data_to_save['player_acc'], data_to_save['player_moves'])
+        player['position'] = [data_to_save['player_x_position'], data_to_save['player_y_position'], data_to_save['player_map']]
+        player['inventory'] = _inventory.Inventory(data_to_save['player_inventory']),
+    except FileNotFoundError:
+        print("File does not exist.")
 
 
 def setup():
     os.system('cls' if os.name == 'nt' else 'clear')
-    global desired_text_speed
-    desired_text_speed = 0.025
+    text_speed = 0.025
     with open(current_save_file) as file:  # Reads the speed on file and sets it
         for line in file.readlines():
             if "desiredTextSpeed" in line:
@@ -220,7 +266,7 @@ def setup():
 
 def _print(text: str, delay=0.025, newline=True):
     try:  # Function prints text with a typing effect. 
-        delay = desired_text_speed  # Has to be done this way...
+        delay = text_speed  # Has to be done this way...
     except NameError:
         pass
     punctuation = ['.', '!', '?']
@@ -247,12 +293,16 @@ def story():
 
 
 def play():
-    print("Save files:")
-    for save in list(save_files.keys()):
-        print(f" - {save.title()}")
-    chosen_save_file = input("Choose a save file: ").lower()
-    if chosen_save_file in list(save_files.keys()):
-        current_save_file = chosen_save_file
+    while True:
+        print("\nSave files:")
+        for save in list(save_files.keys()):
+            print(f" - {save.title()}")
+        chosen_save_file = input("Choose a save file: ").lower()
+        if chosen_save_file in list(save_files.keys()):
+            global current_save_file
+            current_save_file = save_files[chosen_save_file]
+            load_data()
+            break
     
     story()
     os.system('cls' if os.name == 'nt' else 'clear')
