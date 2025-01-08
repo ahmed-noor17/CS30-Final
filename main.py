@@ -5,7 +5,7 @@
 # Assignment: Final Project
 # Version: Pre-Alpha v1.0
 # Date: December 9th, 2024
-################################################################################
+###############################################################################
 # Imports and Global Variables ------------------------------------------------
 import os
 import time
@@ -350,8 +350,6 @@ menu = {
     },
     "movement_menu": {"up": up, "down": down,
           "left": left, "right": right},
-
-    #"combat_menu": {"attack": _combat.attack_menu, "item": _combat.use_item, "run": _combat.flee_battle}
 }
 
 
