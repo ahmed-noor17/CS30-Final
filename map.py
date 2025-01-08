@@ -19,14 +19,14 @@ game_map = {
         ['X', 'X', 'X', 'X', 'X', 'X', 'X']],
 
     "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-        ['X', 'black market', '', 'north entrance', '', 'X', 'X', 'X'],
-        ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
-        ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
-        ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
-        ['X', 'house', 'house', 'X', 'house', '', 'restaurant', 'X'],
-        ['X', 'west entrance', '', 'X', 'fountain', '', 'barracks', 'X'],
-        ['X', '???', 'X', 'house', '', 'townhall', 'X', 'X'],
-        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']]
+    ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
+    ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
+    ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X']
+    ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
+    ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
+    ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
+    ['X', 'west entrance', '', 'X', 'fountain', 'park', 'town hall', 'X'],
+    ['X', '???', 'X', 'barracks', 'house', 'south entrance', 'house', 'X']]
 }
 
 rooms = {
@@ -64,10 +64,11 @@ rooms = {
         "chapel": {"description": "This room seems it's where they worshipped someone... or something...?"},
         "summoning room": {"description": "There's an ominous summoning circle in the middle of the room with candles surrounding it."}},
     'ironwood': {
-        "black market": {"description": "this should be the description"},  # Ironwood
+        "black market": {"description": "this should be the description"},
         "north entrance": {"description": "this should be the description"},
         "tavern": {"description": "this should be the description"},
         "common area": {"description": "this should be the description"},
+        "yggdrasil": {"description": "The oldest tree in town."},
         "well": {"description": "this should be the description"},
         "sewer entrance": {"description": "this should be the description"},
         "house": {"description": "this should be the description"},
@@ -75,6 +76,8 @@ rooms = {
         "stairs": {"description": "this should be the description"},
         "west entrance": {"description": "this should be the description"},
         "fountain": {"description": "this should be the description"},
+        "park": {"description": "this should be the description"},
+        "south entrance": {"description": "this should be the description"},
         "restaurant": {"description": "this should be the description"},
         "barracks": {"description": "this should be the description"},
         "townhall": {"description": "this should be the description"},
