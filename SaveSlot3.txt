@@ -1,6 +1,6 @@
 desired_text_speed::0.025
 skip_introduction::False
-player_name::john
+player_name::john3
 player_max_hp::500
 player_hp::100
 player_atk::5

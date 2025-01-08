@@ -24,14 +24,10 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-    'character': None,
-	'position': None,  # [x, y, map]
-	'inventory': None,
+	'character': _character.Character("john", 100, 5, 95, ['slash', 'fireball']),
+	'position': [1, 4, "house"],  # [x, y, map]
+	'inventory': _inventory.Inventory([None]),
     'enemies': {}
-	#'character': _character.Character("john", 100, 5, 95, ['slash', 'fireball']),
-	#'position': [1, 4, "house"],  # [x, y, map]
-	#'inventory': _inventory.Inventory([None]),
-    #'enemies': {}
 }
 
 enemies = {
@@ -59,19 +55,21 @@ save_files = {
 text_speed = 0.025
 
 data_to_save = {
-    'text_speed': None,
+    'text_speed': text_speed,
     'skip_introduction': None,
-    'player_name': None,
-    'player_max_hp': None,
-    'player_hp': None,
-    'player_atk': None,
-    'player_acc': None,
-    'player_moves': None,
-    'player_x_position': None,
-    'player_y_position': None,
-    'player_map': None,
-    'player_inventory': None
+    'player_name': player['character'].name,
+    'player_max_hp': player['character'].max_hp,
+    'player_hp': player['character'].hp,
+    'player_atk': player['character'].atk,
+    'player_acc': player['character'].acc,
+    'player_moves': player['character'].moves,
+    'player_x_position': player['position'][0],
+    'player_y_position': player['position'][1],
+    'player_map': player['position'][2],
+    'player_inventory': player['inventory']
 }
+
+loaded_data = data_to_save.copy()
 
 current_save_file = None
 
@@ -168,14 +166,14 @@ def moving():
             else:
                 moving = False
                 os.system('cls' if os.name == 'nt' else 'clear')
-                return display_menu('game_menu')
+                return
         elif choice == "quit":
             back = input("Would you like to quit to main menu? (Y/N) ").lower()
             os.system('cls' if os.name == 'nt' else 'clear')
             if "n" in back:
                 break
             else:
-                return display_menu('main_menu')
+                return
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             try:
@@ -216,10 +214,10 @@ def load_data():
                 data = line.strip().split('::')
                 if ", " in data[1]:
                     data[1] = data[1].split(", ")
-                data_to_save[data[0]] = data[1]
-        player['character'] = _character.Character(data_to_save['player_name'], data_to_save['player_max_hp'], data_to_save['player_atk'], data_to_save['player_acc'], data_to_save['player_moves'])
-        player['position'] = [int(data_to_save['player_x_position']), int(data_to_save['player_y_position']), data_to_save['player_map']]
-        player['inventory'] = _inventory.Inventory(data_to_save['player_inventory']),
+                loaded_data[data[0]] = data[1]
+        player['character'] = _character.Character(loaded_data['player_name'], loaded_data['player_max_hp'], loaded_data['player_atk'], loaded_data['player_acc'], loaded_data['player_moves'])
+        player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
+        player['inventory'] = _inventory.Inventory(loaded_data['player_inventory']),
     except FileNotFoundError:
         print("File does not exist.")
 
@@ -307,12 +305,13 @@ def play():
     story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:
-        return display_menu('game_menu')
+        display_menu('game_menu')
 
 
 def view_character():
     print("Stats:")
     print(player['character'])
+    print(player['character'].hp)
     return display_menu('game_menu')
 
 
@@ -322,7 +321,7 @@ def view_inventory():
 
 
 def fight_test():
-    _combat.combat(['goblin', 'goblin', 'blemmyae', 'manticore', 'orc'])
+    _combat.combat(['orc'])
 
 
 def _quit():
@@ -346,7 +345,8 @@ menu = {
         "move": moving,
         "fight": fight_test,
         "view character": view_character,
-        "inventory": view_inventory
+        "inventory": view_inventory,
+        "save": save_data
     },
     "movement_menu": {"up": up, "down": down,
           "left": left, "right": right},
@@ -374,8 +374,7 @@ def display_menu(current_menu):
                 current_menu = 'main_menu'
         elif choice in menu[current_menu]:
             os.system('cls' if os.name == 'nt' else 'clear')
-            menu[current_menu][choice]()
-            break
+            return menu[current_menu][choice]()
         else:
             pass
 

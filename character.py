@@ -8,4 +8,4 @@ class Character:
         self.moves = moves
     
     def __str__(self):
-        return f"NAME: {self.name}\nHP: {self.hp}\nATK: {self.atk}\nACC: {self.acc}"
+        return f"NAME: {self.name}\nHP: {self.hp}/{self.max_hp}\nATK: {self.atk}\nACC: {self.acc}"
