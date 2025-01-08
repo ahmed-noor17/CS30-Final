@@ -21,7 +21,7 @@ game_map = {
     "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
     ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
     ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
-    ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X']
+    ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X'],
     ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
     ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
     ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
