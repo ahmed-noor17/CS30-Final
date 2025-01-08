@@ -218,7 +218,7 @@ def load_data():
                     data[1] = data[1].split(", ")
                 data_to_save[data[0]] = data[1]
         player['character'] = _character.Character(data_to_save['player_name'], data_to_save['player_max_hp'], data_to_save['player_atk'], data_to_save['player_acc'], data_to_save['player_moves'])
-        player['position'] = [data_to_save['player_x_position'], data_to_save['player_y_position'], data_to_save['player_map']]
+        player['position'] = [int(data_to_save['player_x_position']), int(data_to_save['player_y_position']), data_to_save['player_map']]
         player['inventory'] = _inventory.Inventory(data_to_save['player_inventory']),
     except FileNotFoundError:
         print("File does not exist.")
