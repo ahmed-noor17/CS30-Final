@@ -76,6 +76,8 @@ def use_attack(attack, attacker, target):
     if random.randint(0, 100) <= attack_accuracy:
         attack_damage = attack.damage * attacker.atk
         target.hp -= attack_damage
+        if target.name == player['character'].name:
+            player['character'].hp = target.hp
         _print(f"{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
