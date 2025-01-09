@@ -39,14 +39,19 @@ enemies = {
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash']],
     'blemmyae': ["blemmyae", 1, 0, 0, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 0, 0, 400, 5, 95, ['headbutt', 'fireball']]
+}
 
+combat_encounters = {
+    'test_fight': ['goblin', 'goblin', 'orc'],
+    'aoe_test': ['goblin', 'goblin', 'goblin', 'goblin', 'goblin', 'goblin'],
+    'hard_fight': ['manticore', 'orc', 'orc', 'goblin']
 }
 
 attacks = {
 	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
     'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
 	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
-    'incinerate': _attack.Attack(10, 95, 'scorched {target}!', 'all enemies'),
+    'incinerate': _attack.Attack(5, 95, 'scorched {target}!', 'all enemies'),
     'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
     'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally')
 }
@@ -505,7 +510,7 @@ def view_inventory():
 
 
 def fight_test():
-    combat(['orc', 'goblin' , 'goblin' , 'goblin' , 'goblin' , 'goblin' , 'goblin'])
+    combat(combat_encounters['aoe_test'])
 
 
 def shopping():
