@@ -8,8 +8,8 @@ player_max_hp::100
 player_hp::100
 player_atk::10
 player_acc::95
-player_moves::slash, fireball, incinerate
+player_moves::slash, fireball, incinerate, heal
 player_x_position::1
 player_y_position::3
 player_map::tutorial
-player_inventory::None
+player_inventory::inferno orb, inferno orb
