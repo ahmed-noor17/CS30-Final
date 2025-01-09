@@ -51,6 +51,11 @@ attacks = {
     'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally')
 }
 
+consumables = {
+    'health potion': 'heal',
+    'inferno orb': 'incinerate'
+}
+
 save_files = {
 	'file 1': 'SaveSlot1.txt',
     'file 2': 'SaveSlot2.txt',
@@ -322,25 +327,32 @@ def attack_menu():
     while True:
         use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
-            if 'ally' in attacks[use_move].target_type:
-                target_list = [player['character']]
-            else:
-                target_list = list(player['enemies'].keys())
-            if 'single' in attacks[use_move].target_type:          
-                while True:
-                    if len(list(player['enemies'].keys())) <= 1:
-                        target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
-                    else:
-                        for target_enemy in target_list:
-                            print(f" - {target_enemy.title()}")
-                        target = input("Choose a target: ").lower()
-                    if target in list(player['enemies'].keys()):
-                        use_attack(attacks[use_move], player['character'], player['enemies'][target])
-                        break
-            elif 'all ' in attacks[use_move].target_type:
-                for target_enemy in target_list:
-                    use_attack(attacks[use_move], player['character'], player['enemies'][target_enemy])
-                break
+            choose_attack_target(use_move)
+            break
+
+
+def choose_attack_target(use_move):
+    while True:
+        if 'ally' in attacks[use_move].target_type:
+            use_attack(attacks[use_move], player['character'], player['character'])
+            break
+        else:
+            target_list = list(player['enemies'].keys())
+        if 'single' in attacks[use_move].target_type:          
+            while True:
+                if len(list(player['enemies'].keys())) <= 1:
+                    target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
+                else:
+                    for target_enemy in target_list:
+                        print(f" - {target_enemy.title()}")
+                    target = input("Choose a target: ").lower()
+                if target in list(player['enemies'].keys()):
+                    use_attack(attacks[use_move], player['character'], player['enemies'][target])
+                    break
+            break
+        elif 'all ' in attacks[use_move].target_type:
+            for target_enemy in target_list:
+                use_attack(attacks[use_move], player['character'], player['enemies'][target_enemy])
             break
 
 
@@ -351,8 +363,17 @@ def flee_battle():
 
 
 def use_item():
-    print("You cannot use items yet!")
-    pass
+    usable_items = []
+    print("Usable items:")
+    for item in player['inventory'].contents:
+        if item in list(consumables.keys()):
+            usable_items.append(item)
+            print(f" - {item.title()}")
+    while True:
+        use_item = input("Choose an item to use: ").lower()
+        if use_item in usable_items:
+            choose_attack_target(consumables[use_item])
+            break
 
 
 def use_attack(attack, attacker, target):
