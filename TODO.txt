@@ -10,7 +10,6 @@
     -Possibly requires combat rebalances
 -Item locked map tiles (e.g needing a key to pass through a door)
 -Using items in combat
--Fleeing combat
 -Mana system
 -Time system
 -Death and revival mechanics

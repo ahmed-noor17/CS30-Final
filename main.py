@@ -322,7 +322,10 @@ def attack_menu():
     while True:
         use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
-            target_list = list(player['enemies'].keys())
+            if 'ally' in attacks[use_move].target_type:
+                target_list = [player['character']]
+            else:
+                target_list = list(player['enemies'].keys())
             if 'single' in attacks[use_move].target_type:          
                 while True:
                     if len(list(player['enemies'].keys())) <= 1:
