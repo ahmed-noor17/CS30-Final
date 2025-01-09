@@ -6,7 +6,7 @@ player_xp::0
 player_gold::0
 player_max_hp::100
 player_hp::100
-player_atk::5
+player_atk::10
 player_acc::95
 player_moves::slash, fireball
 player_x_position::1

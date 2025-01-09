@@ -33,7 +33,7 @@ player = {
 #name, level, xp, gold, max_hp, atk, acc, moves
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
-	'orc': ["orc", 1, 35, 8, 70, 3, 160, ['slash']],
+	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash']],
     'blemmyae': ["blemmyae", 1, 0, 0, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 0, 0, 400, 5, 95, ['headbutt', 'fireball']]
 
@@ -259,7 +259,7 @@ def level_up():
 
 
 def level_formula():
-    return (1/5) * player['character'].level**2 * 100 + 60
+    return (1/5) * player['character'].level**2 * 100
 
 
 def enemy_turn():
@@ -423,7 +423,6 @@ def _print(text: str, delay=0.025, newline=True):
 def story():
     os.system('cls' if os.name == 'nt' else 'clear')
     _print("This is where the story would go if we had one...")
-    return display_menu('game_menu')
 
 
 def play():

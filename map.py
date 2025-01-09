@@ -19,14 +19,15 @@ game_map = {
         ['X', 'X', 'X', 'X', 'X', 'X', 'X']],
 
     "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-        ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
-        ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
-        ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X'],
-        ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
-        ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
-        ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
-        ['X', 'west entrance', '', 'X', 'fountain', 'park', 'town hall', 'X'],
-        ['X', '???', 'X', 'barracks', 'house', 'south entrance', 'house', 'X']],
+                ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
+                ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
+                ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X'],
+                ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
+                ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
+                ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
+                ['X', 'west entrance', '', 'X', 'fountain', 'park', 'town hall', 'X'],
+                ['X', '???', 'X', 'barracks', 'house', 'south entrance', 'house', 'X'],
+                ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']],
 
     "tutorial": [['X', 'X', 'X'],
             ['X', 'spirit gate', 'X'],
@@ -90,7 +91,7 @@ rooms = {
         "townhall": {"description": "this should be the description"},
         "???": {"description": "???"}},
     "tutorial": {
-        "spirit gate" : {"description": "this should be the description", "connections": [3, 3, "ironwood"]},
+        "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
     }
     }
 

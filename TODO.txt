@@ -1,0 +1,8 @@
+-Shop menu
+-Random encounters
+-Equipment and defense systems
+-Item locked map tiles (e.g needing a key to pass through a door)
+-Using items in combat
+-Fleeing combat
+-Mana system
+-MORE CONTENT!!!!!!!
