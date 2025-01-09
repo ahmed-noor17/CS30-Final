@@ -238,6 +238,13 @@ def load_data():
 # Combat ----------------------------------------------------------------------
 
 
+def game_over():
+    _print("You suddenly find yourself back at the beginning of the game wow you 'regressed' haha!")
+    player['position'] = [1, 3, "tutorial"]
+    player['character'].gold = 0
+    player['inventory'] = _inventory.Inventory([None])
+
+
 def enemy_turn():
     for enemy in list(player['enemies'].keys()):
         enemy_object = player['enemies'][enemy]
@@ -279,7 +286,7 @@ def combat(encounter_enemies):
         if player['character'].hp <= 0:
             print("You lost!")
             fighting = False
-            #game_over()
+            game_over()
             break
     player['enemies'].clear()
 
