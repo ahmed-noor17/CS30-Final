@@ -223,7 +223,7 @@ def load_data():
         global player
         player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
         player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
-        player['inventory'] = _inventory.Inventory(loaded_data['player_inventory'])
+        player['inventory'] = _inventory.Inventory(list(loaded_data['player_inventory']))
     except FileNotFoundError:
         print("File does not exist.")
 
@@ -460,7 +460,6 @@ def display_menu(current_menu):
         print("\nOptions:")  # Prints and takes input for menu options
         for option in menu[current_menu]:
             print(" - " + option.capitalize())
-        print(current_menu)
         choice = input("\nChoice: ").lower()
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
