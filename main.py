@@ -488,4 +488,4 @@ def main():
 if __name__ == '__main__':
     while playing_game:
         main()
-print("goodbye")
+print("hello aiden dill pickle")
