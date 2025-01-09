@@ -16,12 +16,15 @@ import character as _character
 import attack as _attack
 from tabulate import tabulate
 playing_game = True
+fighting = False
 
 game_title = '''
  _____ _____ _____ _____ _____ _____ _____
 | __  |   __|   __| __  |   __|   __|   __|
 |    -|   __|  |  |    -|   __|__   |__   |
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
+
+story_file = 'opening.txt'
 
 player = {
 	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
@@ -301,6 +304,7 @@ def combat(encounter_enemies):
         player['enemies'][enemy_object.name] = enemy_object
         print(f"You encountered a {enemy.title()}!")
 
+    global fighting
     fighting = True
     while fighting:
         print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")
@@ -331,9 +335,7 @@ def attack_menu():
         use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
             target_list = list(player['enemies'].keys())
-            print(attacks[use_move].target_type)
-            if 'single' in attacks[use_move].target_type: 
-                print("single target attack!")          
+            if 'single' in attacks[use_move].target_type:          
                 while True:
                     if len(list(player['enemies'].keys())) <= 1:
                         target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
@@ -345,7 +347,6 @@ def attack_menu():
                         use_attack(attacks[use_move], player['character'], player['enemies'][target])
                         break
             elif 'all ' in attacks[use_move].target_type:
-                print("aoe!")
                 for target_enemy in target_list:
                     use_attack(attacks[use_move], player['character'], player['enemies'][target_enemy])
                 break
@@ -353,8 +354,9 @@ def attack_menu():
 
 
 def flee_battle():
-    print("You cannot flee yet!")
-    pass
+    global fighting
+    fighting = False
+    print(f"{player['character'].name.title()} is attempting to flee!")
 
 
 def use_item():
@@ -445,7 +447,13 @@ def _print(text: str, delay=0.025, newline=True):
 
 def story():
     os.system('cls' if os.name == 'nt' else 'clear')
-    _print("This is where the story would go if we had one...")
+    try:
+        with open(story_file, 'r') as f:
+            file_list = f.readlines()
+            for line in file_list:
+                _print(line)
+    except FileNotFoundError:
+        print("ERROR: Could not find the story text file!")
 
 
 def play():
