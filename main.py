@@ -40,11 +40,12 @@ enemies = {
 }
 
 attacks = {
-	'slash': _attack.Attack(5, 100, 'slashed {target}!'),
-    'bash': _attack.Attack(7, 80, 'bashed {target}!'),
-	'fireball': _attack.Attack(10, 95, 'casted fireball!'),
-    'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!'),
-    'heal': _attack.Attack(-5, 99999, "healed {target}!")
+	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
+    'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
+	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
+    'incinerate': _attack.Attack(10, 95, 'scorched {target}!', 'all enemies'),
+    'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
+    'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally')
 }
 
 save_files = {
@@ -255,6 +256,7 @@ def level_up():
         player['character'].hp = player['character'].max_hp
         print(f"LEVEL UP! YOU ARE NOW LEVEL {player['character'].level}")
         required_xp = level_formula()
+        return level_up()
     print(f"EXP to next level up: {required_xp - player['character'].xp}")
 
 
@@ -316,16 +318,25 @@ def attack_menu():
     while True:
         use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
-            while True:
-                #if len(list(player['enemies'].keys())) <= 1:
-                    #target = player['enemies'][0]
-                #else:
-                for target_enemy in list(player['enemies'].keys()):
-                    print(f" - {target_enemy.title()}")
-                target = input("Choose a target: ").lower()
-                if target in list(player['enemies'].keys()):
-                    use_attack(attacks[use_move], player['character'], player['enemies'][target])
-                    break
+            target_list = list(player['enemies'].keys())
+            print(attacks[use_move].target_type)
+            if 'single' in attacks[use_move].target_type: 
+                print("single target attack!")          
+                while True:
+                    if len(list(player['enemies'].keys())) <= 1:
+                        target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
+                    else:
+                        for target_enemy in target_list:
+                            print(f" - {target_enemy.title()}")
+                        target = input("Choose a target: ").lower()
+                    if target in list(player['enemies'].keys()):
+                        use_attack(attacks[use_move], player['character'], player['enemies'][target])
+                        break
+            elif 'all ' in attacks[use_move].target_type:
+                print("aoe!")
+                for target_enemy in target_list:
+                    use_attack(attacks[use_move], player['character'], player['enemies'][target_enemy])
+                break
             break
 
 
@@ -352,7 +363,7 @@ def use_attack(attack, attacker, target):
             if target.name != player['character'].name:
                 player['enemies'].pop(target.name)
     else:
-        print(f"{attacker.name.title()} missed! What an idiot!")
+        print(f"{target.name.title()} evaded the attack!")
 
 
 # Base Functions --------------------------------------------------------------
@@ -454,7 +465,7 @@ def view_inventory():
 
 
 def fight_test():
-    combat(['orc'])
+    combat(['orc', 'goblin' , 'goblin' , 'goblin' , 'goblin' , 'goblin' , 'goblin'])
 
 
 def _quit():
