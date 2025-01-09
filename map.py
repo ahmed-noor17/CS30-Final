@@ -80,7 +80,7 @@ rooms = {
         "well": {"description": "this should be the description"},
         "sewer entrance": {"description": "this should be the description"},
         "house": {"description": "this should be the description"},
-        "market": {"description": "this should be the description"},
+        "market": {"description": "this should be the description", "shop": "Dan's Thingamabobs"},
         "stairs": {"description": "this should be the description"},
         "west entrance": {"description": "this should be the description"},
         "fountain": {"description": "this should be the description"},
@@ -92,7 +92,7 @@ rooms = {
         "???": {"description": "???"}},
     "tutorial": {
         "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
-    }
+        }
     }
 
 

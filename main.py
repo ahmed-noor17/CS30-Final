@@ -158,8 +158,6 @@ def moving():
             try:
                 menu['movement_menu'].pop('enter')
             except Exception:
-                print("An error occured trying to remove 'enter'. Press ENTER to continue.")
-                input()
                 pass
         try:
             if _map.rooms[player['position'][2]][current_room()]['shop']:
@@ -168,8 +166,6 @@ def moving():
             try:
                 menu['movement_menu'].pop('shop')
             except Exception:
-                print("An error occured trying to remove 'shop'. Press ENTER to continue.")
-                input()
                 pass
         print(update_map_display() + "\n")  # This is where the movement menu code starts
         for option in menu["movement_menu"]:
@@ -489,7 +485,12 @@ def fight_test():
 
 
 def shopping():
-    return display_menu('shop_menu')
+    current_shop = _map.rooms[player['position'][2]][current_room()]['shop'].lower()
+    print(f"{current_shop.title()}:\n")
+    for option in shops[current_shop]:
+            print(f" - {option.capitalize()}  ---  (${shops[current_shop][option]})")
+    input()
+    pass
 
 
 def buy():
@@ -511,6 +512,11 @@ def _quit():
         return display_menu('main_menu')
 
 
+shops = {"dan's thingamabobs": {"health potion": 4,
+                                "steel sword": 56,
+                                "inferno orb": 112}}
+
+
 menu = {
     "main_menu": {
         "play": play,
@@ -519,7 +525,6 @@ menu = {
     "game_menu": {
         "move": moving,
         "fight": fight_test,
-        "shop": shopping,
         "view character": view_character,
         "inventory": view_inventory,
         "save": save_data
@@ -545,9 +550,8 @@ def display_menu(current_menu):
             print(game_title)
         if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
             print(update_map_display())
-        #print("\nOptions:")  # Prints and takes input for menu options
         for option in menu[current_menu]:
-            print(" - " + option.capitalize())
+            print(" - " + option.capitalize())  # Prints and takes input for menu options
         choice = input("\nChoice: ").lower()
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
