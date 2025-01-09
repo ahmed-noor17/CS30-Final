@@ -137,7 +137,7 @@ def update_map_display():
         [current_room(-1, -1), current_room(-1, 0), current_room(-1, +1)],
         [current_room(0, -1), f"*{current_room()}*", current_room(0, +1)],
         [current_room(+1, -1), current_room(+1, 0), current_room(+1, +1)]]
-    return tabulate(map_display, tablefmt="grid", maxcolwidths=16).title()
+    return tabulate(map_display, tablefmt="rounded_grid").title()
 
 
 def moving():
@@ -155,11 +155,9 @@ def moving():
         print(update_map_display() + "\n")  # This is where the movement menu code starts
         for option in menu["movement_menu"]:
             print(" - " + option.capitalize())
+        print(" - Stop")
         choice = input("\nChoice: ").lower()
-        print("\n")
-        if choice in move_options.keys():
-            menu['movement_menu'][move_options[choice]]()
-        elif choice == "stop":
+        if choice == "stop":
             if "n" in input("Would you like to stop moving? (Y/N) ").lower():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("You did not move.")
@@ -176,14 +174,19 @@ def moving():
                 break
             else:
                 return
-        else:
+        elif choice in menu['movement_menu'] or choice in move_options.keys():
             os.system('cls' if os.name == 'nt' else 'clear')
             try:
-                menu['movement_menu'][choice]()
+                if choice in menu['movement_menu']:
+                    menu['movement_menu'][choice]()
+                elif choice in move_options.keys():
+                    menu['movement_menu'][move_options[choice]]()
             except KeyError:
                 print("That is not a direction")
                 pass
             print_location_description()
+        else:
+            pass
 
 
 def print_location_description():
