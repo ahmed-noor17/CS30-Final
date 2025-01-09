@@ -26,7 +26,7 @@ game_title = '''
 
 player = {
 	'character': _character.Character("if you see this it is a bug!", 100, 5, 95, ['slash', 'fireball']),
-	'position': [1, 4, "house"],  # [x, y, map]
+	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {}
 }
@@ -53,7 +53,7 @@ save_files = {
     'file 3': 'SaveSlot3.txt'
 }
 
-text_speed = 0.025
+text_speed = 0.01
 
 data_to_save = {
     'text_speed': text_speed,
@@ -73,6 +73,11 @@ data_to_save = {
 loaded_data = data_to_save.copy()
 
 current_save_file = None
+
+move_options = {"w": "up",
+                "a": "left",
+                "s": "down",
+                "d": "right"}
 
 # Movement --------------------------------------------------------------------
 
@@ -132,13 +137,7 @@ def update_map_display():
         [current_room(-1, -1), current_room(-1, 0), current_room(-1, +1)],
         [current_room(0, -1), f"*{current_room()}*", current_room(0, +1)],
         [current_room(+1, -1), current_room(+1, 0), current_room(+1, +1)]]
-    return tabulate(map_display, tablefmt="grid").title()
-
-
-move_options = {"w": "up",
-                "a": "left",
-                "s": "down",
-                "d": "right"}
+    return tabulate(map_display, tablefmt="grid", maxcolwidths=16).title()
 
 
 def moving():
@@ -154,7 +153,7 @@ def moving():
             except Exception:
                 pass
         print(update_map_display() + "\n")  # This is where the movement menu code starts
-        for option in menu["movement_menu"]:  # You can move this to a separate function if you want, Aiden
+        for option in menu["movement_menu"]:
             print(" - " + option.capitalize())
         choice = input("\nChoice: ").lower()
         print("\n")
@@ -164,7 +163,7 @@ def moving():
             if "n" in input("Would you like to stop moving? (Y/N) ").lower():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("You did not move.")
-                print_location(True)
+                print_location_description()
                 pass
             else:
                 moving = False
@@ -184,15 +183,16 @@ def moving():
             except KeyError:
                 print("That is not a direction")
                 pass
-            print_location()
+            print_location_description()
 
 
-def print_location(print_description=False):
-    ''' Tells the player what room they are in. Can be passed
-        a bool to make it describe the room or not.'''
-    print(f"You are in the {current_room().capitalize()}")
-    if print_description:
+def print_location_description():
+    ''' Tells the player the decription of the room
+        they are currently in.'''
+    try:
         print(_map.rooms[player['position'][2]][current_room()]['description'])
+    except KeyError:
+        pass
 
 
 def current_room(y_offset=0, x_offset=0):
@@ -209,7 +209,6 @@ def save_data():
             for data in list(data_to_save.keys()):
                 edited_data = str(data_to_save[data]).replace("'", "").replace('[', '').replace(']', '')
                 f.write(f"{data}::{edited_data}\n")
-
     except Exception:
         print("An error occurred while saving data.")
 
@@ -256,7 +255,6 @@ def combat(encounter_enemies):
 
     fighting = True
     while fighting:
-        print(player['character'])
         print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")
         display_menu('combat_menu')
         if len(list(player['enemies'].keys())) <= 0:
@@ -307,7 +305,7 @@ def use_attack(attack, attacker, target):
     if random.randint(0, 100) <= attack_accuracy:
         attack_damage = attack.damage * attacker.atk
         target.hp -= attack_damage
-        _print(f"{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
+        _print(f"\n{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
         if target.hp <= 0:
@@ -322,18 +320,18 @@ def use_attack(attack, attacker, target):
 
 
 def setup():
+    global text_speed
     os.system('cls' if os.name == 'nt' else 'clear')
-    text_speed = 0.025
     with open(current_save_file) as file:  # Reads the speed on file and sets it
         for line in file.readlines():
-            if "desiredTextSpeed" in line:
+            if "text_speed" in line:
                 line = line.strip().split('::')
-                desired_text_speed = float(line[1])
+                text_speed = float(line[1])
     _print("This is the game's current text speed.")
     _print("Would you like to change the text speed? (Y/N) ", newline=False)
     if "n" in input().lower():
         os.system('cls' if os.name == 'nt' else 'clear')
-        return None
+        return
     _print("You are changing the text speed.")
     while True:
         print()
@@ -346,7 +344,7 @@ def setup():
         choice = input(
             'Choose "Slow", "Mid", "Fast", "Instant" or "Quit": ').lower()
         if choice in list(text_speeds.keys()):
-            desired_text_speed = text_speeds[choice]
+            text_speed = text_speeds[choice]
         elif choice in "quit":
             os.system('cls' if os.name == 'nt' else 'clear')
             break
@@ -355,7 +353,7 @@ def setup():
         _print("This is how fast the text will appear. Here is some extra text.")
     with open(current_save_file, "r") as file:
         temp_list = file.readlines()  # Temp list of all lines in file
-        temp_list[1] = f"desiredTextSpeed::{str(desired_text_speed)}\n"
+        temp_list[0] = f"text_speed::{str(text_speed)}\n"
         with open(current_save_file, "w") as file:
             file.writelines(temp_list)  # Updates setting in file
     return None
@@ -400,7 +398,6 @@ def play():
             current_save_file = save_files[chosen_save_file]
             load_data()
             break
-    
     story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:
@@ -437,7 +434,6 @@ def _quit():
 menu = {
     "main_menu": {
         "play": play,
-        "setup": setup,
         "quit": _quit
     },
     "game_menu": {
@@ -479,7 +475,7 @@ def display_menu(current_menu):
 
 
 def main():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')  # Clears console
     global playing_game
     while playing_game:
         display_menu('main_menu')
@@ -487,6 +483,5 @@ def main():
 
 # Main ------------------------------------------------------------------------
 if __name__ == '__main__':
-    os.system('cls' if os.name == 'nt' else 'clear')  # Clears console
     while playing_game:
         main()

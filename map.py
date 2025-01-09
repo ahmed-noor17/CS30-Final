@@ -3,12 +3,12 @@ from tabulate import tabulate
 
 game_map = {
     "house": [['X', 'X', 'X', 'X', 'X', 'X'],
-            ['X', 'X', "backyard", 'X', 'X', 'X'],
-            ['X', "dining room", "back door", "lounge", 'X', 'X'],
-            ['X', "kitchen", "hallway", "stairwell", 'X', 'X'],
-            ['X', "living room", "foyer", "bedroom", 'X', 'X'],
-            ['X', "bathroom", "entrance hall", "laundry room", "garage", 'X'],
-            ['X', 'X', 'X', 'X', 'X', 'X']],
+        ['X', 'X', "backyard", 'X', 'X', 'X'],
+        ['X', "dining room", "back door", "lounge", 'X', 'X'],
+        ['X', "kitchen", "hallway", "stairwell", 'X', 'X'],
+        ['X', "living room", "foyer", "bedroom", 'X', 'X'],
+        ['X', "bathroom", "entrance hall", "laundry room", "garage", 'X'],
+        ['X', 'X', 'X', 'X', 'X', 'X']],
 
     "dungeon": [['X', 'X', 'X', 'X', 'X', 'X', 'X'],
         ['X', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', 'X'],
@@ -19,14 +19,20 @@ game_map = {
         ['X', 'X', 'X', 'X', 'X', 'X', 'X']],
 
     "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
-    ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
-    ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X'],
-    ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
-    ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
-    ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
-    ['X', 'west entrance', '', 'X', 'fountain', 'park', 'town hall', 'X'],
-    ['X', '???', 'X', 'barracks', 'house', 'south entrance', 'house', 'X']]
+        ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
+        ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
+        ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X'],
+        ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
+        ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
+        ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
+        ['X', 'west entrance', '', 'X', 'fountain', 'park', 'town hall', 'X'],
+        ['X', '???', 'X', 'barracks', 'house', 'south entrance', 'house', 'X']],
+
+    "tutorial": [['X', 'X', 'X'],
+            ['X', 'spirit gate', 'X'],
+            ['X', '', 'X'],
+            ['X', '', 'X'],
+            ['X', 'X', 'X']]
 }
 
 rooms = {
@@ -45,6 +51,7 @@ rooms = {
         "hallway": {"description": "A long carpet is rolled out on the floor."},
         "backyard": {"description": "The sun is shining and a peaceful breeze is blowing."}},
     'dungeon': {
+        "hallway": {"description": "A long carpet is rolled out on the floor."},
         "witchery room": {"description": "There's a cauldron and many odd looking plants."},
         "warden office": {"description": "There's a singular desk with a light above, and some paperwork in a scripture you don't recognize."},
         "orb vault": {"description": "You do not what's in the orb vault, but you can sense an orb in there..."},
@@ -82,6 +89,9 @@ rooms = {
         "barracks": {"description": "this should be the description"},
         "townhall": {"description": "this should be the description"},
         "???": {"description": "???"}},
+    "tutorial": {
+        "spirit gate" : {"description": "this should be the description", "connections": [3, 3, "ironwood"]},
+    }
     }
 
 
