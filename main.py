@@ -16,6 +16,7 @@ import character as _character
 import attack as _attack
 from tabulate import tabulate
 playing_game = True
+
 game_title = '''
  _____ _____ _____ _____ _____ _____ _____
 | __  |   __|   __| __  |   __|   __|   __|
@@ -66,7 +67,7 @@ data_to_save = {
     'player_x_position': player['position'][0],
     'player_y_position': player['position'][1],
     'player_map': player['position'][2],
-    'player_inventory': player['inventory']
+    'player_inventory': player['inventory'].contents
 }
 
 loaded_data = data_to_save.copy()
@@ -206,7 +207,8 @@ def save_data():
     try:
         with open(current_save_file, 'w') as f:
             for data in list(data_to_save.keys()):
-                f.write(f"{data}::{data_to_save[data]}\n")
+                edited_data = str(data_to_save[data]).replace("'", "").replace('[', '').replace(']', '')
+                f.write(f"{data}::{edited_data}\n")
 
     except Exception:
         print("An error occurred while saving data.")

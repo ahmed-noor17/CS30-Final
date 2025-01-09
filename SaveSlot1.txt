@@ -1,6 +1,6 @@
 text_speed::0.025
 skip_introduction::None
-player_name::john
+player_name::if you see this it is a bug!
 player_max_hp::100
 player_hp::100
 player_atk::5
@@ -9,4 +9,4 @@ player_moves::slash, fireball
 player_x_position::1
 player_y_position::4
 player_map::house
-player_inventory::sword, spellbook
+player_inventory::None
