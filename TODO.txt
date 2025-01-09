@@ -1,8 +1,22 @@
 -Shop menu
+    -Option appears when at location
+    -Buy/Sell option
+        -Function needing argument for specified items
+    -Item database
+        -Key/Consumable/Equipment/Misc
 -Random encounters
+    -In world map and dungeons
 -Equipment and defense systems
+    -Possibly requires combat rebalances
 -Item locked map tiles (e.g needing a key to pass through a door)
 -Using items in combat
 -Fleeing combat
 -Mana system
+-Time system
+-Death and revival mechanics
 -MORE CONTENT!!!!!!!
+    -World Map
+    -Towns
+    -Dungeons
+    -Enemies
+    -Items
