@@ -1,15 +1,17 @@
--Shop menu
+-Shop menu  (Ahmed)
     -Option appears when at location
     -Buy/Sell option
         -Function needing argument for specified items
     -Item database
         -Key/Consumable/Equipment/Misc
--Random encounters
+-World Map  (Ahmed)
+-Local Map
+-Random encounters  (Aiden)
     -In world map and dungeons
 -Equipment and defense systems
     -Possibly requires combat rebalances
 -Item locked map tiles (e.g needing a key to pass through a door)
--Using items in combat
+-Using items in combat  (Aiden)
 -Mana system
 -Time system
 -Death and revival mechanics

@@ -94,7 +94,11 @@ current_save_file = None
 move_options = {"w": "up",
                 "a": "left",
                 "s": "down",
-                "d": "right"}
+                "d": "right",
+                "north": "up",
+                "west": "left",
+                "south": "down",
+                "east": "right"}
 
 # Movement --------------------------------------------------------------------
 
@@ -121,7 +125,7 @@ def right():
 
 def change_map():
     print("Changing map...")
-    player['position'] = list(_map.rooms[player['position'][2]][current_room()]['connections'])
+    player['position'] = list(_map.rooms[player['position'][2]][get_room()]['connections'])
 
 
 def update_position(axis, value):
@@ -129,7 +133,7 @@ def update_position(axis, value):
         location is off the map or a negative number.'''
     if axis == "x":
         try:
-            try_position = _map.game_map[player['position'][2]][player['position'][1]][player['position'][0] + value]
+            try_position = get_room(x_offset=value)
             if player['position'][0] + value < 0 or try_position == 'X':
                 raise IndexError
             player['position'][0] += value
@@ -137,7 +141,7 @@ def update_position(axis, value):
             print("You cannot go that way.")
     elif axis == "y":
         try:
-            try_position = _map.game_map[player['position'][2]][player['position'][1] - value][player['position'][0]]
+            try_position = get_room(y_offset=-value)
             if player['position'][1] - value < 0 or try_position == 'X':
                 raise IndexError
             player['position'][1] -= value
@@ -151,9 +155,11 @@ def update_map_display():
     '''
     global map_display
     map_display = [
-        [current_room(-1, -1), current_room(-1, 0), current_room(-1, +1)],
-        [current_room(0, -1), f"*{current_room()}*", current_room(0, +1)],
-        [current_room(+1, -1), current_room(+1, 0), current_room(+1, +1)]]
+        [get_room(-2, -2), get_room(-2, -1),    get_room(-2, 0),       get_room(-2, +1), get_room(-2, +2)],
+        [get_room(-1, -2), get_room(-1, -1),    get_room(-1, 0),       get_room(-1, +1), get_room(-1, +2)],
+        [get_room(+0, -2), get_room(+0, -1), f"*{get_room()}*\n(You)", get_room(+0, +1), get_room(+0, +2)],
+        [get_room(+1, -2), get_room(+1, -1),    get_room(+1, 0),       get_room(+1, +1), get_room(+1, +2)],
+        [get_room(+2, -2), get_room(+2, -1),    get_room(+2, 0),       get_room(+2, +1), get_room(+2, +2)]]
     return tabulate(map_display, tablefmt="rounded_grid").title()
 
 
@@ -162,7 +168,7 @@ def moving():
     print("You begin moving.")
     while moving:
         try:
-            if _map.rooms[player['position'][2]][current_room()]['connections']:
+            if _map.rooms[player['position'][2]][get_room()]['connections']:
                 menu['movement_menu']['enter'] = change_map
         except KeyError:
             try:
@@ -170,7 +176,7 @@ def moving():
             except Exception:
                 pass
         try:
-            if _map.rooms[player['position'][2]][current_room()]['shop']:
+            if _map.rooms[player['position'][2]][get_room()]['shop']:
                 menu['movement_menu']['shop'] = shopping
         except KeyError:
             try:
@@ -218,13 +224,16 @@ def print_location_description():
     ''' Tells the player the decription of the room
         they are currently in.'''
     try:
-        print(_map.rooms[player['position'][2]][current_room()]['description'])
+        print(_map.rooms[player['position'][2]][get_room()]['description'])
     except KeyError:
         pass
 
 
-def current_room(y_offset=0, x_offset=0):
-    return _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+def get_room(y_offset=0, x_offset=0):
+    try:
+        return _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+    except IndexError:
+        return 'X'
 
 
 # Save/Load -------------------------------------------------------------------
@@ -377,14 +386,18 @@ def flee_battle():
 
 def use_item():
     usable_items = []
-    print("Usable items:")
     for item in player['inventory'].contents:
         if item in list(consumables.keys()):
             usable_items.append(item)
             print(f" - {item.title()}")
+    if len(usable_items) <= 0:
+        print("You do not have any usable items!")
+        return display_menu('combat_menu')
+    print("Usable items:")
     while True:
         use_item = input("Choose an item to use: ").lower()
         if use_item in usable_items:
+            player['inventory'].contents.remove(use_item)
             choose_attack_target(consumables[use_item])
             break
 
@@ -510,11 +523,11 @@ def view_inventory():
 
 
 def fight_test():
-    combat(combat_encounters['aoe_test'])
+    combat(combat_encounters['fight_test'])
 
 
 def shopping():
-    current_shop = _map.rooms[player['position'][2]][current_room()]['shop'].lower()
+    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
     print(f"{current_shop.title()}:\n")
     for option in shops[current_shop]:
             print(f" - {option.capitalize()}  ---  (${shops[current_shop][option]})")
@@ -579,6 +592,8 @@ def display_menu(current_menu):
             print(game_title)
         if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
             print(update_map_display())
+        option_list = list(menu[current_menu].items())
+        print(option_list)
         for option in menu[current_menu]:
             print(" - " + option.capitalize())  # Prints and takes input for menu options
         choice = input("\nChoice: ").lower()
@@ -594,6 +609,11 @@ def display_menu(current_menu):
             os.system('cls' if os.name == 'nt' else 'clear')
             return menu[current_menu][choice]()
         else:
+            try:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                return option_list[int(choice) - 1][1]()
+            except Exception:
+                pass
             pass
 
 
