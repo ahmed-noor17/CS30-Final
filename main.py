@@ -23,19 +23,19 @@ game_title = '''
 |    -|   __|  |  |    -|   __|__   |__   |
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
-
+#name, level, xp, gold, max_hp, atk, acc, moves
 player = {
-	'character': _character.Character("if you see this it is a bug!", 100, 5, 95, ['slash', 'fireball']),
+	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 5, 95, ['slash', 'fireball']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {}
 }
 
 enemies = {
-	'goblin': ["goblin", 50, 5, 80, ['heal']],
-	'orc': ["orc", 100, 8, 80, ['slash']],
-    'blemmyae': ["blemmyae", 150, 10, 80, ['headbutt', 'bash']],
-    'manticore': ["manticore", 200, 5, 95, ['headbutt', 'fireball']]
+	'goblin': ["goblin", 1, 0, 0, 50, 5, 80, ['heal']],
+	'orc': ["orc", 1, 69, 69, 100, 8, 80, ['slash']],
+    'blemmyae': ["blemmyae", 1, 0, 0, 150, 10, 80, ['headbutt', 'bash']],
+    'manticore': ["manticore", 1, 0, 0, 200, 5, 95, ['headbutt', 'fireball']]
 
 }
 
@@ -59,6 +59,9 @@ data_to_save = {
     'text_speed': text_speed,
     'skip_introduction': None,
     'player_name': player['character'].name,
+    'player_level': player['character'].level,
+    'player_xp': player['character'].xp,
+    'player_gold': player['character'].gold,
     'player_max_hp': player['character'].max_hp,
     'player_hp': player['character'].hp,
     'player_atk': player['character'].atk,
@@ -225,7 +228,7 @@ def load_data():
                     data[1] = data[1].split(", ")
                 loaded_data[data[0]] = data[1]
         global player
-        player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
+        player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_level']), int(loaded_data['player_xp']), int(loaded_data['player_gold']), int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
         player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
         player['inventory'] = _inventory.Inventory(list(loaded_data['player_inventory']))
     except FileNotFoundError:
@@ -244,8 +247,12 @@ def enemy_turn():
 
 
 def combat(encounter_enemies):
+    gold_prize = 0
+    xp_prize = 0
     for enemy in encounter_enemies:
-        enemy_object = _character.Character(enemies[enemy][0], enemies[enemy][1], enemies[enemy][2], enemies[enemy][3], enemies[enemy][4])
+        enemy_object = _character.Character(enemies[enemy][0], enemies[enemy][1], enemies[enemy][2], enemies[enemy][3], enemies[enemy][4], enemies[enemy][5], enemies[enemy][6], enemies[enemy][7])
+        gold_prize += enemy_object.gold
+        xp_prize += enemy_object.xp
         enemy_count = 1
         while enemy_object.name in list(player['enemies'].keys()):
             enemy_count += 1
@@ -262,6 +269,10 @@ def combat(encounter_enemies):
         display_menu('combat_menu')
         if len(list(player['enemies'].keys())) <= 0:
             print("You won!")
+            print(f"You earned {xp_prize} EXP and {gold_prize}g")
+            player['character'].gold += gold_prize
+            player['character'].xp += xp_prize
+            input("Press any key to continue: ")
             fighting = False
             break
         enemy_turn()
@@ -410,13 +421,12 @@ def play():
 def view_character():
     print("Stats:")
     print(player['character'])
-    print(player['character'].hp)
-    return display_menu('game_menu')
+    #return display_menu('game_menu')
 
 
 def view_inventory():
     print(player['inventory'].contents)
-    return display_menu('game_menu')
+    #return display_menu('game_menu')
 
 
 def fight_test():

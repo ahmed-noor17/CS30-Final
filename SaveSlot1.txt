@@ -1,6 +1,9 @@
 text_speed::0.01
 skip_introduction::None
 player_name::john
+player_level::1
+player_xp::0
+player_gold::0
 player_max_hp::100
 player_hp::100
 player_atk::5
