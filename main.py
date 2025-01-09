@@ -24,7 +24,7 @@ game_title = '''
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
 player = {
-	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 5, 95, ['slash', 'fireball']),
+	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {}
@@ -32,10 +32,10 @@ player = {
 
 #name, level, xp, gold, max_hp, atk, acc, moves
 enemies = {
-	'goblin': ["goblin", 1, 20, 5, 50, 2, 80, ['slash']],
-	'orc': ["orc", 1, 35, 8, 70, 3, 80, ['slash']],
-    'blemmyae': ["blemmyae", 1, 0, 0, 120, 10, 80, ['headbutt', 'bash']],
-    'manticore': ["manticore", 1, 0, 0, 200, 5, 95, ['headbutt', 'fireball']]
+	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
+	'orc': ["orc", 1, 35, 8, 70, 3, 160, ['slash']],
+    'blemmyae': ["blemmyae", 1, 0, 0, 240, 10, 80, ['headbutt', 'bash']],
+    'manticore': ["manticore", 1, 0, 0, 400, 5, 95, ['headbutt', 'fireball']]
 
 }
 
@@ -250,13 +250,16 @@ def level_up():
     required_xp = level_formula()
     if player['character'].xp >= required_xp:
         player['character'].level += 1
+        player['character'].atk += 1
+        player['character'].max_hp += 10
+        player['character'].hp = player['character'].max_hp
         print(f"LEVEL UP! YOU ARE NOW LEVEL {player['character'].level}")
         required_xp = level_formula()
     print(f"EXP to next level up: {required_xp - player['character'].xp}")
 
 
 def level_formula():
-    return player['character'].level * 100
+    return (1/5) * player['character'].level**2 * 100 + 60
 
 
 def enemy_turn():
