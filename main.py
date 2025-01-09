@@ -23,7 +23,6 @@ game_title = '''
 |    -|   __|  |  |    -|   __|__   |__   |
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
-#name, level, xp, gold, max_hp, atk, acc, moves
 player = {
 	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 5, 95, ['slash', 'fireball']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
@@ -31,10 +30,11 @@ player = {
     'enemies': {}
 }
 
+#name, level, xp, gold, max_hp, atk, acc, moves
 enemies = {
-	'goblin': ["goblin", 1, 0, 0, 50, 5, 80, ['heal']],
-	'orc': ["orc", 1, 69, 69, 100, 8, 80, ['slash']],
-    'blemmyae': ["blemmyae", 1, 0, 0, 150, 10, 80, ['headbutt', 'bash']],
+	'goblin': ["goblin", 1, 20, 5, 50, 2, 80, ['slash']],
+	'orc': ["orc", 1, 35, 8, 70, 3, 80, ['slash']],
+    'blemmyae': ["blemmyae", 1, 0, 0, 120, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 0, 0, 200, 5, 95, ['headbutt', 'fireball']]
 
 }
@@ -242,7 +242,21 @@ def game_over():
     _print("You suddenly find yourself back at the beginning of the game wow you 'regressed' haha!")
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
+    player['character'].hp = player['character'].max_hp
     player['inventory'] = _inventory.Inventory([None])
+
+
+def level_up():
+    required_xp = level_formula()
+    if player['character'].xp >= required_xp:
+        player['character'].level += 1
+        print(f"LEVEL UP! YOU ARE NOW LEVEL {player['character'].level}")
+        required_xp = level_formula()
+    print(f"EXP to next level up: {required_xp - player['character'].xp}")
+
+
+def level_formula():
+    return player['character'].level * 100
 
 
 def enemy_turn():
@@ -275,10 +289,11 @@ def combat(encounter_enemies):
         print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")
         display_menu('combat_menu')
         if len(list(player['enemies'].keys())) <= 0:
-            print("You won!")
+            print("\nYou won!")
             print(f"You earned {xp_prize} EXP and {gold_prize}g")
             player['character'].gold += gold_prize
             player['character'].xp += xp_prize
+            level_up()
             input("Press any key to continue: ")
             fighting = False
             break
@@ -475,7 +490,7 @@ def display_menu(current_menu):
             print(game_title)
         if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
             print(update_map_display())
-        print("\nOptions:")  # Prints and takes input for menu options
+        #print("\nOptions:")  # Prints and takes input for menu options
         for option in menu[current_menu]:
             print(" - " + option.capitalize())
         choice = input("\nChoice: ").lower()
