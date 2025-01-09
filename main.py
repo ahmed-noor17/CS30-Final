@@ -163,6 +163,18 @@ def moving():
             try:
                 menu['movement_menu'].pop('enter')
             except Exception:
+                print("An error occured trying to remove 'enter'. Press ENTER to continue.")
+                input()
+                pass
+        try:
+            if _map.rooms[player['position'][2]][current_room()]['shop']:
+                menu['movement_menu']['shop'] = shopping
+        except KeyError:
+            try:
+                menu['movement_menu'].pop('shop')
+            except Exception:
+                print("An error occured trying to remove 'shop'. Press ENTER to continue.")
+                input()
                 pass
         print(update_map_display() + "\n")  # This is where the movement menu code starts
         for option in menu["movement_menu"]:
@@ -500,6 +512,18 @@ def fight_test():
     combat(['orc', 'goblin' , 'goblin' , 'goblin' , 'goblin' , 'goblin' , 'goblin'])
 
 
+def shopping():
+    return display_menu('shop_menu')
+
+
+def buy():
+    pass
+
+
+def sell():
+    pass
+
+
 def _quit():
     global playing_game
     print("Press ENTER to confirm exit.")
@@ -519,13 +543,23 @@ menu = {
     "game_menu": {
         "move": moving,
         "fight": fight_test,
+        "shop": shopping,
         "view character": view_character,
         "inventory": view_inventory,
         "save": save_data
     },
     "movement_menu": {"up": up, "down": down,
-          "left": left, "right": right},
-    "combat_menu": {"attack": attack_menu, "item": use_item, "run": flee_battle}
+        "left": left, "right": right
+    },
+    "combat_menu": {
+        "attack": attack_menu,
+        "item": use_item,
+        "run": flee_battle
+    },
+    "shop_menu": {
+        "buy": buy,
+        "sell": sell
+    }
 }
 
 
