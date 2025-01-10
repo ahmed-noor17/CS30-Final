@@ -40,7 +40,7 @@ enemies = {
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 2, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
 }
 
 combat_encounters = {
@@ -52,23 +52,33 @@ combat_encounters = {
 
 attacks = {
 	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
-    'bite': _attack.Attack(5, 100, 'bit {target}!', 'single enemy'),
+    'bite': _attack.Attack(4, 100, 'bit {target}!', 'single enemy'),
     'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
-	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
-    'incinerate': _attack.Attack(6, 95, 'scorched {target}!', 'all enemies'),
+    'gash': _attack.Attack(9, 100, 'lacerated {target}!', 'single enemy'),
     'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
+	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
+    'incinerate': _attack.Attack(8, 95, 'scorched {target}!', 'all enemies'),
+    'cursed fire': _attack.Attack(12, 96, 'casted cursed fire!', 'single enemy'),
     'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally'),
-    'cursed fire': _attack.Attack(15, 96, 'casted cursed fire!', 'single enemy'),
-    'lightning bolt': _attack.Attack(12, 99999, 'casted lightning bolt!', 'single enemy'),
+    'super heal': _attack.Attack(-15, 99999, 'healed {target}!', 'single ally'),
+    'lightning bolt': _attack.Attack(12, 99999, 'shocked {target}!', 'single enemy'),
+    'thunderstorm': _attack.Attack(7, 99999, 'shocked {target}!', 'all enemies'),
     'unholy diver': _attack.Attack(30, 75, 'unleashed havoc on {target}!', 'all enemies'),
+    'annihilation': _attack.Attack(900, 99999, 'annihilated {target}!', 'all enemies'),
     'freeze ray': _attack.Attack(8, 95, 'froze {target}!', 'single enemy'),
     'frost blast': _attack.Attack(5, 90, 'froze {target}!', 'all enemies'),
-    'magic missile': _attack.Attack(5, 95, 'launched a magic missile at {target}!', 'single enemy')
+    'magic missile': _attack.Attack(5, 95, 'launched a magic missile at {target}!', 'single enemy'),
+    'poison cloud': _attack.Attack(5, 100, 'poisoned {target}!', 'all enemies')
 }
 
 consumables = {
     'health potion': 'heal',
-    'inferno orb': 'incinerate'
+    'rejuvenation potion': 'super heal',
+    'inferno orb': 'incinerate',
+    'bottled lightning': 'lightning bolt',
+    'storm in a bottle': 'thunderstorm',
+    'magic icicle': 'freeze ray',
+    'happy birthday bomb': 'annihilation'
 }
 
 save_files = {
