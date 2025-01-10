@@ -1,21 +1,36 @@
 game_map = {
-    "house": [['---', '---', '---', '---', '---', '---'],
-        ['---', '---', "backyard", '---', '---', '---'],
-        ['---', "dining room", "back door", "lounge", '---', '---'],
-        ['---', "kitchen", "hallway", "stairwell", '---', '---'],
-        ['---', "living room", "foyer", "bedroom", '---', '---'],
-        ['---', "bathroom", "entrance hall", "laundry room", "garage", '---'],
-        ['---', '---', '---', '---', '---', '---']],
+    "house": {
+        "map": [['---', '---', '---', '---', '---', '---'],
+                ['---', '---', "backyard", '---', '---', '---'],
+                ['---', "dining room", "back door", "lounge", '---', '---'],
+                ['---', "kitchen", "hallway", "stairwell", '---', '---'],
+                ['---', "living room", "foyer", "bedroom", '---', '---'],
+                ['---', "bathroom", "entrance hall", "laundry room", "garage", '---'],
+                ['---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
 
-    "dungeon": [['---', '---', '---', '---', '---', '---', '---'],
-        ['---', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', '---'],
-        ['---', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', '---'],
-        ['---', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', '---'],
-        ['---', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', '---'],
-        ['---', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', '---'],
-        ['---', '---', '---', '---', '---', '---', '---']],
+    "dungeon": {
+        "map": [['---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', '---'],
+                ['---', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', '---'],
+                ['---', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', '---'],
+                ['---', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', '---'],
+                ['---', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', '---'],
+                ['---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
 
-    "ironwood": [['---', '---', '---', '---', '---', '---', '---', '---'],
+    "ironwood": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'black market', '', 'north entrance', '', '---', '---', '---'],
                 ['---', 'tavern', '', 'common area', '', 'well', 'sewer entrance', '---'],
                 ['---', '', 'common area', 'yggdrasil', 'common area', '', '---', '---'],
@@ -25,12 +40,25 @@ game_map = {
                 ['---', 'west entrance', '', '---', 'fountain', 'park', 'town hall', '---'],
                 ['---', '???', '---', 'barracks', 'house', 'south entrance', 'house', '---'],
                 ['---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": ['test_fight'],
+            "move_time": 0,
+        }
+    },
 
-    "tutorial": [['---', '---', '---'],
-            ['---', 'spirit gate', '---'],
-            ['---', '', '---'],
-            ['---', '', '---'],
-            ['---', '---', '---']]
+    "tutorial": {
+        "map": [['---', '---', '---'],
+                ['---', 'spirit gate', '---'],
+                ['---', '', '---'],
+                ['---', '', '---'],
+                ['---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    }
 }
 
 rooms = {

@@ -137,6 +137,7 @@ def update_position(axis, value):
             if player['position'][0] + value < 0 or try_position == '---':
                 raise IndexError
             player['position'][0] += value
+            random_encounter()
         except IndexError:
             print("You cannot go that way.")
     elif axis == "y":
@@ -145,6 +146,7 @@ def update_position(axis, value):
             if player['position'][1] - value < 0 or try_position == '---':
                 raise IndexError
             player['position'][1] -= value
+            random_encounter()
         except IndexError:
             print("You cannot go that way.")
 
@@ -231,7 +233,7 @@ def print_location_description():
 
 def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
-        room_name = _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+        room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
         return '---'
     padding = ' ' * (len(room_name)//2)  # Doesn't work
@@ -240,6 +242,13 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
             room_name = padding + room_name + padding
         room_name = room_name + "\n"
     return room_name
+
+
+def random_encounter():
+    roll = random.randint(1, 100)
+    if roll <= _map.game_map[player['position'][2]]['data']['random_encounter_chance']:
+        encounter = _map.game_map[player['position'][2]]['data']['encounters'][0]
+        combat(combat_encounters[encounter])
 
 
 # Save/Load -------------------------------------------------------------------
@@ -418,7 +427,7 @@ def use_attack(attack, attacker, target):
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
         attack_damage = attack.damage * attacker.atk
-        target.hp -= attack_damage
+        target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
         _print(f"\n{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
@@ -633,11 +642,16 @@ def display_menu(current_menu):
             return menu[current_menu][choice]()
         else:
             try:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                return option_list[int(choice) - 1][1]()
-            except KeyError:
+                if int(choice) <= num and int(choice) >= 1:  # Check if the number inputted is an option
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    return option_list[int(choice) - 1][1]()
+            except ValueError:
                 pass
             pass
+
+
+def clamp(value, min_value, max_value):
+    return max(min_value, min(value, max_value))
 
 
 def main():
