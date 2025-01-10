@@ -539,7 +539,9 @@ def setup():
 
 
 def _print(text: str, delay=0.025, newline=True):
-    try:  # Function prints text with a typing effect. 
+    ''' Function prints text with a typing effect.
+    '''
+    try:
         delay = text_speed  # Has to be done this way...
     except NameError:
         pass
@@ -613,39 +615,46 @@ def fight_test():
 def shopping():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
     print(f"Welcome to {current_shop.title()}!\n")
-    num = 1
-    for option in menu['shop_menu']:
-        print(f" {num}. {option.title()}")
-        num += 1
     while True:
+        num = 1
+        print(f"\n{current_shop.title()}:\n")
+        for option in menu['shop_menu']:
+            print(f" {num}. {option.title()}")
+            num += 1
+        print(f" {num}. Quit")
         choice = input("Choice: ").lower()
+        if choice == 'quit':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return
         if choice in menu['shop_menu']:
+            os.system('cls' if os.name == 'nt' else 'clear')
             menu['shop_menu'][choice]()
-            break
         else:
             try:
                 if int(choice) <= len(list(menu['shop_menu'].keys())) and int(choice) >= 1:
+                    os.system('cls' if os.name == 'nt' else 'clear')
                     menu['shop_menu'][list(menu['shop_menu'].items())[int(choice) - 1][0]]()
-                    break
             except ValueError:
                 pass
-    pass
 
 
 def buy():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
-    print(f"Purchasable items:\n")
-    num = 1
-    for option in shops[current_shop]:
+    while True:
+        print(f"Purchasable items:\n")
+        num = 1
+        for option in shops[current_shop]:
             print(f" {num}. {option.capitalize()}  ---  ({shops[current_shop][option]}g)")
             num += 1
-    while True:
-        item_choice = input("Buy: ").lower()
+        print(f" {num}. Quit")
+        print(f"\nYou have {player['character'].gold}g")
+        item_choice = input("\nBuy: ").lower()
         if item_choice == 'quit':
+            os.system('cls' if os.name == 'nt' else 'clear')
             return
-        if item_choice in shops[current_shop]:
+        elif item_choice in shops[current_shop]:
             player['inventory'].contents.append(item_choice)
-            break
+            os.system('cls' if os.name == 'nt' else 'clear')
         else:
             try:
                 item_choice = int(item_choice)
@@ -653,9 +662,13 @@ def buy():
                 continue
             if item_choice <= len(list(shops[current_shop].keys())) and item_choice >= 1:
                 item_choice = list(shops[current_shop].keys())[item_choice - 1]
+            if shops[current_shop][item_choice] <= player['character'].gold:
                 player['character'].gold -= shops[current_shop][item_choice]
                 player['inventory'].contents.append(item_choice)
-                return
+            else:
+                print("You don't have enough gold!")
+                input("Press ENTER to continue")
+            os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def sell():
