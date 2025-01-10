@@ -95,6 +95,7 @@ save_files = {
 }
 
 text_speed = 0.01
+map_cell_character_len = 20
 
 data_to_save = {
     'text_speed': text_speed,
@@ -244,9 +245,13 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
         room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
-        return '---'
-    if for_display and room_name != '---':
-        room_name = room_name + "\n"
+        return "///////////////\n///////////////\n///////////////"
+    padding = 'ㅤ' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
+    if for_display:
+        if room_name == "---":
+            room_name = "///////////////\n///////////////\n///////////////"
+        else:
+            room_name = "ㅤ\n" + padding + room_name + padding + "\nㅤ"
     return room_name
 
 
