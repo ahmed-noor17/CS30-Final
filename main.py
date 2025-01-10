@@ -37,6 +37,7 @@ player = {
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash']],
+    'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 0, 0, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 0, 0, 400, 5, 95, ['headbutt', 'fireball']]
 }
@@ -49,6 +50,7 @@ combat_encounters = {
 
 attacks = {
 	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
+    'bite': _attack.Attack(5, 100, 'bit {target}!', 'single enemy'),
     'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
 	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
     'incinerate': _attack.Attack(5, 95, 'scorched {target}!', 'all enemies'),
@@ -314,7 +316,7 @@ def enemy_turn():
         enemy_object = player['enemies'][enemy]
         _print(f"\n{enemy_object.name.title()} took a turn!")
         use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 
 def combat(encounter_enemies):
@@ -365,13 +367,22 @@ def combat(encounter_enemies):
 
 def attack_menu():
     print("Attacks:")
+    num = 1
     for attack in player['character'].moves:
-        print(f" - {attack.title()}")
+        print(f" {num}. {attack.capitalize()}")
+        num += 1
     while True:
         use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
             choose_attack_target(use_move)
             break
+        else:
+            try:
+                if int(use_move) <= len(player['character'].moves) and int(use_move) >= 1:
+                    choose_attack_target(player['character'].moves[int(use_move) - 1])
+                    break
+            except Exception:  # TODO: Figure out what exception this should be
+                pass
 
 
 def choose_attack_target(use_move):
@@ -386,12 +397,21 @@ def choose_attack_target(use_move):
                 if len(list(player['enemies'].keys())) <= 1:
                     target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
                 else:
+                    num = 1
                     for target_enemy in target_list:
-                        print(f" - {target_enemy.title()}")
+                        print(f" {num}. {target_enemy.title()}")
+                        num += 1
                     target = input("Choose a target: ").lower()
                 if target in list(player['enemies'].keys()):
                     use_attack(attacks[use_move], player['character'], player['enemies'][target])
                     break
+                else:
+                    try:
+                        if int(target) <= len(target_list) and int(target) >= 1:
+                            use_attack(attacks[use_move], player['character'], player['enemies'][target_list[int(target) - 1]])
+                            break
+                    except Exception:  # TODO: Figure out what exception this should be
+                        pass
             break
         elif 'all ' in attacks[use_move].target_type:
             for target_enemy in target_list:
@@ -529,7 +549,7 @@ def play():
             load_data()
             break
         elif chosen_save_file in '123':
-            current_save_file = list(save_files.items())[int(chosen_save_file)][1]
+            current_save_file = list(save_files.items())[int(chosen_save_file) - 1][1]
             load_data()
             break
     story()
