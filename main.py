@@ -134,7 +134,7 @@ def update_position(axis, value):
     if axis == "x":
         try:
             try_position = get_room(x_offset=value)
-            if player['position'][0] + value < 0 or try_position == 'X':
+            if player['position'][0] + value < 0 or try_position == '---':
                 raise IndexError
             player['position'][0] += value
         except IndexError:
@@ -142,7 +142,7 @@ def update_position(axis, value):
     elif axis == "y":
         try:
             try_position = get_room(y_offset=-value)
-            if player['position'][1] - value < 0 or try_position == 'X':
+            if player['position'][1] - value < 0 or try_position == '---':
                 raise IndexError
             player['position'][1] -= value
         except IndexError:
@@ -155,12 +155,12 @@ def update_map_display():
     '''
     global map_display
     map_display = [
-        [get_room(-2, -2), get_room(-2, -1),    get_room(-2, 0),       get_room(-2, +1), get_room(-2, +2)],
-        [get_room(-1, -2), get_room(-1, -1),    get_room(-1, 0),       get_room(-1, +1), get_room(-1, +2)],
-        [get_room(+0, -2), get_room(+0, -1), f"*{get_room()}*\n(You)", get_room(+0, +1), get_room(+0, +2)],
-        [get_room(+1, -2), get_room(+1, -1),    get_room(+1, 0),       get_room(+1, +1), get_room(+1, +2)],
-        [get_room(+2, -2), get_room(+2, -1),    get_room(+2, 0),       get_room(+2, +1), get_room(+2, +2)]]
-    return tabulate(map_display, tablefmt="rounded_grid").title()
+        [get_room(-2, -2, True), get_room(-2, -1, True),    get_room(-2, 0, True), get_room(-2, +1, True), get_room(-2, +2, True)],
+        [get_room(-1, -2, True), get_room(-1, -1, True),    get_room(-1, 0, True), get_room(-1, +1, True), get_room(-1, +2, True)],
+        [get_room(+0, -2, True), get_room(+0, -1, True), f"*{get_room()}*\n(You)", get_room(+0, +1, True), get_room(+0, +2, True)],
+        [get_room(+1, -2, True), get_room(+1, -1, True),    get_room(+1, 0, True), get_room(+1, +1, True), get_room(+1, +2, True)],
+        [get_room(+2, -2, True), get_room(+2, -1, True),    get_room(+2, 0, True), get_room(+2, +1, True), get_room(+2, +2, True)]]
+    return tabulate(map_display, tablefmt="rounded_grid", stralign='center', rowalign='center').title()
 
 
 def moving():
@@ -229,11 +229,17 @@ def print_location_description():
         pass
 
 
-def get_room(y_offset=0, x_offset=0):
+def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
-        return _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+        room_name = _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
-        return 'X'
+        return '---'
+    padding = ' ' * (len(room_name)//2)  # Doesn't work
+    if for_display and room_name != '---':
+        if len(room_name) <= 8:
+            room_name = padding + room_name + padding
+        room_name = room_name + "\n"
+    return room_name
 
 
 # Save/Load -------------------------------------------------------------------
@@ -317,7 +323,12 @@ def combat(encounter_enemies):
             else:
                 enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
-        print(f"You encountered a {enemy.title()}!")
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        if enemy[0] in vowels:
+            n = 'n'
+        else:
+            n = ''
+        print(f"You've encountered a{n} {enemy.title()}!")
 
     global fighting
     fighting = True
@@ -331,6 +342,7 @@ def combat(encounter_enemies):
             player['character'].xp += xp_prize
             level_up()
             input("Press any key to continue: ")
+            os.system('cls' if os.name == 'nt' else 'clear')
             fighting = False
             break
         enemy_turn()
@@ -523,7 +535,7 @@ def view_inventory():
 
 
 def fight_test():
-    combat(combat_encounters['fight_test'])
+    combat(combat_encounters['test_fight'])
 
 
 def shopping():
@@ -593,10 +605,15 @@ def display_menu(current_menu):
         if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
             print(update_map_display())
         option_list = list(menu[current_menu].items())
-        print(option_list)
+        num: int = 1
         for option in menu[current_menu]:
-            print(" - " + option.capitalize())  # Prints and takes input for menu options
+            print(f" {num}. {option.capitalize()}")
+            num += 1
         choice = input("\nChoice: ").lower()
+        try:
+            choice = int(choice)
+        except ValueError:
+            pass
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
             back = input("Would you like to quit to main menu? (Y/N) ").lower()
@@ -612,7 +629,7 @@ def display_menu(current_menu):
             try:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 return option_list[int(choice) - 1][1]()
-            except Exception:
+            except KeyError:
                 pass
             pass
 
