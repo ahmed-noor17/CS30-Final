@@ -41,8 +41,8 @@ game_map = {
                 ['---', '???', '---', 'barracks', 'house', 'south entrance', 'house', '---'],
                 ['---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
-            "random_encounter_chance": 0,
-            "encounters": ['test_fight'],
+            "random_encounter_chance": 100,
+            "encounters": ['the final battle'],
             "move_time": 0,
         }
     },

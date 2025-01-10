@@ -8,7 +8,7 @@ player_max_hp::100
 player_hp::100
 player_atk::10
 player_acc::95
-player_moves::slash, incinerate, heal
+player_moves::slash, incinerate, heal, unholy diver
 player_x_position::1
 player_y_position::3
 player_map::tutorial

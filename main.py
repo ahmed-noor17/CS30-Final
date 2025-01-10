@@ -40,7 +40,7 @@ enemies = {
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 20, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 2, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
 }
 
 combat_encounters = {
