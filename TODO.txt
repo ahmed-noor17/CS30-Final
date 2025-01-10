@@ -21,3 +21,5 @@
     -Dungeons
     -Enemies
     -Items
+-There's an issue where if you try to use an item when you have none, it doesn't print your health. Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.
+-I want to see enemy health bars when choosing my attack targets

@@ -427,10 +427,12 @@ def flee_battle():
 
 def use_item():
     usable_items = []
+    num = 1
     for item in player['inventory'].contents:
         if item in list(consumables.keys()):
             usable_items.append(item)
-            print(f" - {item.title()}")
+            print(f" {num}. {item.title()}")
+            num += 1
     if len(usable_items) <= 0:
         print("You do not have any usable items!")
         return display_menu('combat_menu')
@@ -441,6 +443,14 @@ def use_item():
             player['inventory'].contents.remove(use_item)
             choose_attack_target(consumables[use_item])
             break
+        else:
+            try:
+                if int(use_item) <= len(usable_items) and int(use_item) >= 1:
+                    player['inventory'].contents.remove(usable_items[int(use_item) - 1])
+                    choose_attack_target(consumables[usable_items[int(use_item) - 1]])
+                    break
+            except Exception:  # TODO: Figure out what exception this should be
+                pass
 
 
 def use_attack(attack, attacker, target):
@@ -565,8 +575,9 @@ def view_character():
 
 
 def view_inventory():
-    print(player['inventory'].contents)
-    #return display_menu('game_menu')
+    print("Inventory:")
+    for item in player['inventory'].contents:
+        print(f" - {item.capitalize()}")
 
 
 def fight_test():
