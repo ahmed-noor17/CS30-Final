@@ -37,23 +37,31 @@ player = {
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash']],
-    'blemmyae': ["blemmyae", 1, 0, 0, 240, 10, 80, ['headbutt', 'bash']],
-    'manticore': ["manticore", 1, 0, 0, 400, 5, 95, ['headbutt', 'fireball']]
+    'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
+    'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 20, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
 }
 
 combat_encounters = {
     'test_fight': ['goblin', 'goblin', 'orc'],
     'aoe_test': ['goblin', 'goblin', 'goblin', 'goblin', 'goblin', 'goblin'],
-    'hard_fight': ['manticore', 'orc', 'orc', 'goblin']
+    'hard_fight': ['manticore', 'orc', 'orc', 'goblin'],
+    'the final battle': ['the dark lord']
 }
 
 attacks = {
 	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
     'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
 	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
-    'incinerate': _attack.Attack(5, 95, 'scorched {target}!', 'all enemies'),
+    'incinerate': _attack.Attack(6, 95, 'scorched {target}!', 'all enemies'),
     'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
-    'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally')
+    'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally'),
+    'cursed fire': _attack.Attack(15, 96, 'casted cursed fire!', 'single enemy'),
+    'lightning bolt': _attack.Attack(12, 99999, 'casted lightning bolt!', 'single enemy'),
+    'unholy diver': _attack.Attack(30, 75, 'unleashed havoc on {target}!', 'all enemies'),
+    'freeze ray': _attack.Attack(8, 95, 'froze {target}!', 'single enemy'),
+    'frost blast': _attack.Attack(5, 90, 'froze {target}!', 'all enemies'),
+    'magic missile': _attack.Attack(5, 95, 'launched a magic missile at {target}!', 'single enemy')
 }
 
 consumables = {
