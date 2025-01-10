@@ -507,14 +507,20 @@ def story():
 
 
 def play():
+    global current_save_file
     while True:
         print("\nSave files:")
+        num = 1
         for save in list(save_files.keys()):
-            print(f" - {save.title()}")
+            print(f" {num}. {save.title()}")
+            num += 1
         chosen_save_file = input("Choose a save file: ").lower()
         if chosen_save_file in list(save_files.keys()):
-            global current_save_file
             current_save_file = save_files[chosen_save_file]
+            load_data()
+            break
+        elif chosen_save_file in '123':
+            current_save_file = list(save_files.items())[int(chosen_save_file)][1]
             load_data()
             break
     story()
