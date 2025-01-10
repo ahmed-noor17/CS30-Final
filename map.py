@@ -1,39 +1,64 @@
-map_file = 'map.txt'
-from tabulate import tabulate
-
 game_map = {
-    "house": [['X', 'X', 'X', 'X', 'X', 'X'],
-        ['X', 'X', "backyard", 'X', 'X', 'X'],
-        ['X', "dining room", "back door", "lounge", 'X', 'X'],
-        ['X', "kitchen", "hallway", "stairwell", 'X', 'X'],
-        ['X', "living room", "foyer", "bedroom", 'X', 'X'],
-        ['X', "bathroom", "entrance hall", "laundry room", "garage", 'X'],
-        ['X', 'X', 'X', 'X', 'X', 'X']],
+    "house": {
+        "map": [['---', '---', '---', '---', '---', '---'],
+                ['---', '---', "backyard", '---', '---', '---'],
+                ['---', "dining room", "back door", "lounge", '---', '---'],
+                ['---', "kitchen", "hallway", "stairwell", '---', '---'],
+                ['---', "living room", "foyer", "bedroom", '---', '---'],
+                ['---', "bathroom", "entrance hall", "laundry room", "garage", '---'],
+                ['---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
 
-    "dungeon": [['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-        ['X', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', 'X'],
-        ['X', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', 'X'],
-        ['X', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', 'X'],
-        ['X', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', 'X'],
-        ['X', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', 'X'],
-        ['X', 'X', 'X', 'X', 'X', 'X', 'X']],
+    "dungeon": {
+        "map": [['---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', '---'],
+                ['---', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', '---'],
+                ['---', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', '---'],
+                ['---', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', '---'],
+                ['---', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', '---'],
+                ['---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
 
-    "ironwood": [['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-                ['X', 'black market', '', 'north entrance', '', 'X', 'X'],
-                ['X', 'tavern', '', 'common area', '', 'well', 'sewer entrance', 'X'],
-                ['X', '', 'common area', 'yggdrasil', 'common area', '', 'X', 'X'],
-                ['X', 'house', 'market', 'market', 'stairs', '', 'X', 'X'],
-                ['X', 'house', 'market', 'X', '', 'X', 'X', 'X'],
-                ['X', 'house', 'house', 'X', 'house', '', 'house', 'X'],
-                ['X', 'west entrance', '', 'X', 'fountain', 'park', 'town hall', 'X'],
-                ['X', '???', 'X', 'barracks', 'house', 'south entrance', 'house', 'X'],
-                ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']],
+    "ironwood": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'black market', '', 'north entrance', '', '---', '---', '---'],
+                ['---', 'tavern', '', 'common area', '', 'well', 'sewer entrance', '---'],
+                ['---', '', 'common area', 'yggdrasil', 'common area', '', '---', '---'],
+                ['---', 'house', 'market', 'market', 'stairs', '', '---', '---'],
+                ['---', 'house', 'market', '---', '', '---', '---', '---'],
+                ['---', 'house', 'house', '---', 'house', '', 'house', '---'],
+                ['---', 'west entrance', '', '---', 'fountain', 'park', 'town hall', '---'],
+                ['---', '???', '---', 'barracks', 'house', 'south entrance', 'house', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": ['test_fight'],
+            "move_time": 0,
+        }
+    },
 
-    "tutorial": [['X', 'X', 'X'],
-            ['X', 'spirit gate', 'X'],
-            ['X', '', 'X'],
-            ['X', '', 'X'],
-            ['X', 'X', 'X']]
+    "tutorial": {
+        "map": [['---', '---', '---'],
+                ['---', 'spirit gate', '---'],
+                ['---', '', '---'],
+                ['---', '', '---'],
+                ['---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    }
 }
 
 rooms = {
@@ -94,28 +119,3 @@ rooms = {
         "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
         }
     }
-
-
-def write_map():
-    ''' Function will write map to a file.'''
-    try:
-        with open(map_file, 'w') as file:
-            file.write(tabulate(game_map, tablefmt="grid"))
-    except Exception:
-        print("Failure to write map.")
-    else:
-        print("You look at your map.")
-    finally:
-        read_map()
-
-
-def read_map():
-    try:
-        with open(map_file, 'r') as f:
-            map = f.read()
-    except Exception:
-        print("You could not read your map.")
-    else:
-        print(map)
-    finally:
-        print("This is the map.")

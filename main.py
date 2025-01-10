@@ -37,6 +37,7 @@ player = {
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash']],
+    'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
     'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 20, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
@@ -51,6 +52,7 @@ combat_encounters = {
 
 attacks = {
 	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
+    'bite': _attack.Attack(5, 100, 'bit {target}!', 'single enemy'),
     'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
 	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
     'incinerate': _attack.Attack(6, 95, 'scorched {target}!', 'all enemies'),
@@ -102,7 +104,11 @@ current_save_file = None
 move_options = {"w": "up",
                 "a": "left",
                 "s": "down",
-                "d": "right"}
+                "d": "right",
+                "north": "up",
+                "west": "left",
+                "south": "down",
+                "east": "right"}
 
 # Movement --------------------------------------------------------------------
 
@@ -129,7 +135,7 @@ def right():
 
 def change_map():
     print("Changing map...")
-    player['position'] = list(_map.rooms[player['position'][2]][current_room()]['connections'])
+    player['position'] = list(_map.rooms[player['position'][2]][get_room()]['connections'])
 
 
 def update_position(axis, value):
@@ -137,18 +143,20 @@ def update_position(axis, value):
         location is off the map or a negative number.'''
     if axis == "x":
         try:
-            try_position = _map.game_map[player['position'][2]][player['position'][1]][player['position'][0] + value]
-            if player['position'][0] + value < 0 or try_position == 'X':
+            try_position = get_room(x_offset=value)
+            if player['position'][0] + value < 0 or try_position == '---':
                 raise IndexError
             player['position'][0] += value
+            random_encounter()
         except IndexError:
             print("You cannot go that way.")
     elif axis == "y":
         try:
-            try_position = _map.game_map[player['position'][2]][player['position'][1] - value][player['position'][0]]
-            if player['position'][1] - value < 0 or try_position == 'X':
+            try_position = get_room(y_offset=-value)
+            if player['position'][1] - value < 0 or try_position == '---':
                 raise IndexError
             player['position'][1] -= value
+            random_encounter()
         except IndexError:
             print("You cannot go that way.")
 
@@ -159,10 +167,12 @@ def update_map_display():
     '''
     global map_display
     map_display = [
-        [current_room(-1, -1), current_room(-1, 0), current_room(-1, +1)],
-        [current_room(0, -1), f"*{current_room()}*", current_room(0, +1)],
-        [current_room(+1, -1), current_room(+1, 0), current_room(+1, +1)]]
-    return tabulate(map_display, tablefmt="rounded_grid").title()
+        [get_room(-2, -2, True), get_room(-2, -1, True),    get_room(-2, 0, True), get_room(-2, +1, True), get_room(-2, +2, True)],
+        [get_room(-1, -2, True), get_room(-1, -1, True),    get_room(-1, 0, True), get_room(-1, +1, True), get_room(-1, +2, True)],
+        [get_room(+0, -2, True), get_room(+0, -1, True), f"*{get_room()}*\n(You)", get_room(+0, +1, True), get_room(+0, +2, True)],
+        [get_room(+1, -2, True), get_room(+1, -1, True),    get_room(+1, 0, True), get_room(+1, +1, True), get_room(+1, +2, True)],
+        [get_room(+2, -2, True), get_room(+2, -1, True),    get_room(+2, 0, True), get_room(+2, +1, True), get_room(+2, +2, True)]]
+    return tabulate(map_display, tablefmt="rounded_grid", stralign='center', rowalign='center').title()
 
 
 def moving():
@@ -170,7 +180,7 @@ def moving():
     print("You begin moving.")
     while moving:
         try:
-            if _map.rooms[player['position'][2]][current_room()]['connections']:
+            if _map.rooms[player['position'][2]][get_room()]['connections']:
                 menu['movement_menu']['enter'] = change_map
         except KeyError:
             try:
@@ -178,7 +188,7 @@ def moving():
             except Exception:
                 pass
         try:
-            if _map.rooms[player['position'][2]][current_room()]['shop']:
+            if _map.rooms[player['position'][2]][get_room()]['shop']:
                 menu['movement_menu']['shop'] = shopping
         except KeyError:
             try:
@@ -226,13 +236,29 @@ def print_location_description():
     ''' Tells the player the decription of the room
         they are currently in.'''
     try:
-        print(_map.rooms[player['position'][2]][current_room()]['description'])
+        print(_map.rooms[player['position'][2]][get_room()]['description'])
     except KeyError:
         pass
 
 
-def current_room(y_offset=0, x_offset=0):
-    return _map.game_map[player['position'][2]][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+def get_room(y_offset=0, x_offset=0, for_display=False):
+    try:
+        room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+    except IndexError:
+        return '---'
+    padding = ' ' * (len(room_name)//2)  # Doesn't work
+    if for_display and room_name != '---':
+        if len(room_name) <= 8:
+            room_name = padding + room_name + padding
+        room_name = room_name + "\n"
+    return room_name
+
+
+def random_encounter():
+    roll = random.randint(1, 100)
+    if roll <= _map.game_map[player['position'][2]]['data']['random_encounter_chance']:
+        encounter = _map.game_map[player['position'][2]]['data']['encounters'][0]
+        combat(combat_encounters[encounter])
 
 
 # Save/Load -------------------------------------------------------------------
@@ -298,7 +324,7 @@ def enemy_turn():
         enemy_object = player['enemies'][enemy]
         _print(f"\n{enemy_object.name.title()} took a turn!")
         use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 
 def combat(encounter_enemies):
@@ -316,7 +342,12 @@ def combat(encounter_enemies):
             else:
                 enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
-        print(f"You encountered a {enemy.title()}!")
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        if enemy[0] in vowels:
+            n = 'n'
+        else:
+            n = ''
+        print(f"You've encountered a{n} {enemy.title()}!")
 
     global fighting
     fighting = True
@@ -330,6 +361,7 @@ def combat(encounter_enemies):
             player['character'].xp += xp_prize
             level_up()
             input("Press any key to continue: ")
+            os.system('cls' if os.name == 'nt' else 'clear')
             fighting = False
             break
         enemy_turn()
@@ -343,13 +375,22 @@ def combat(encounter_enemies):
 
 def attack_menu():
     print("Attacks:")
+    num = 1
     for attack in player['character'].moves:
-        print(f" - {attack.title()}")
+        print(f" {num}. {attack.capitalize()}")
+        num += 1
     while True:
         use_move = input("Choose a move: ").lower()
         if use_move in player['character'].moves and use_move in list(attacks.keys()):
             choose_attack_target(use_move)
             break
+        else:
+            try:
+                if int(use_move) <= len(player['character'].moves) and int(use_move) >= 1:
+                    choose_attack_target(player['character'].moves[int(use_move) - 1])
+                    break
+            except Exception:  # TODO: Figure out what exception this should be
+                pass
 
 
 def choose_attack_target(use_move):
@@ -364,12 +405,21 @@ def choose_attack_target(use_move):
                 if len(list(player['enemies'].keys())) <= 1:
                     target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
                 else:
+                    num = 1
                     for target_enemy in target_list:
-                        print(f" - {target_enemy.title()}")
+                        print(f" {num}. {target_enemy.title()}")
+                        num += 1
                     target = input("Choose a target: ").lower()
                 if target in list(player['enemies'].keys()):
                     use_attack(attacks[use_move], player['character'], player['enemies'][target])
                     break
+                else:
+                    try:
+                        if int(target) <= len(target_list) and int(target) >= 1:
+                            use_attack(attacks[use_move], player['character'], player['enemies'][target_list[int(target) - 1]])
+                            break
+                    except Exception:  # TODO: Figure out what exception this should be
+                        pass
             break
         elif 'all ' in attacks[use_move].target_type:
             for target_enemy in target_list:
@@ -385,23 +435,37 @@ def flee_battle():
 
 def use_item():
     usable_items = []
-    print("Usable items:")
+    num = 1
     for item in player['inventory'].contents:
         if item in list(consumables.keys()):
             usable_items.append(item)
-            print(f" - {item.title()}")
+            print(f" {num}. {item.title()}")
+            num += 1
+    if len(usable_items) <= 0:
+        print("You do not have any usable items!")
+        return display_menu('combat_menu')
+    print("Usable items:")
     while True:
         use_item = input("Choose an item to use: ").lower()
         if use_item in usable_items:
+            player['inventory'].contents.remove(use_item)
             choose_attack_target(consumables[use_item])
             break
+        else:
+            try:
+                if int(use_item) <= len(usable_items) and int(use_item) >= 1:
+                    player['inventory'].contents.remove(usable_items[int(use_item) - 1])
+                    choose_attack_target(consumables[usable_items[int(use_item) - 1]])
+                    break
+            except Exception:  # TODO: Figure out what exception this should be
+                pass
 
 
 def use_attack(attack, attacker, target):
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
         attack_damage = attack.damage * attacker.atk
-        target.hp -= attack_damage
+        target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
         _print(f"\n{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
@@ -490,14 +554,20 @@ def story():
 
 
 def play():
+    global current_save_file
     while True:
         print("\nSave files:")
+        num = 1
         for save in list(save_files.keys()):
-            print(f" - {save.title()}")
+            print(f" {num}. {save.title()}")
+            num += 1
         chosen_save_file = input("Choose a save file: ").lower()
         if chosen_save_file in list(save_files.keys()):
-            global current_save_file
             current_save_file = save_files[chosen_save_file]
+            load_data()
+            break
+        elif chosen_save_file in '123':
+            current_save_file = list(save_files.items())[int(chosen_save_file) - 1][1]
             load_data()
             break
     story()
@@ -513,16 +583,17 @@ def view_character():
 
 
 def view_inventory():
-    print(player['inventory'].contents)
-    #return display_menu('game_menu')
+    print("Inventory:")
+    for item in player['inventory'].contents:
+        print(f" - {item.capitalize()}")
 
 
 def fight_test():
-    combat(combat_encounters['aoe_test'])
+    combat(combat_encounters['test_fight'])
 
 
 def shopping():
-    current_shop = _map.rooms[player['position'][2]][current_room()]['shop'].lower()
+    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
     print(f"{current_shop.title()}:\n")
     for option in shops[current_shop]:
             print(f" - {option.capitalize()}  ---  (${shops[current_shop][option]})")
@@ -587,9 +658,16 @@ def display_menu(current_menu):
             print(game_title)
         if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
             print(update_map_display())
+        option_list = list(menu[current_menu].items())
+        num: int = 1
         for option in menu[current_menu]:
-            print(" - " + option.capitalize())  # Prints and takes input for menu options
+            print(f" {num}. {option.capitalize()}")
+            num += 1
         choice = input("\nChoice: ").lower()
+        try:
+            choice = int(choice)
+        except ValueError:
+            pass
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
             back = input("Would you like to quit to main menu? (Y/N) ").lower()
@@ -602,7 +680,17 @@ def display_menu(current_menu):
             os.system('cls' if os.name == 'nt' else 'clear')
             return menu[current_menu][choice]()
         else:
+            try:
+                if int(choice) <= num and int(choice) >= 1:  # Check if the number inputted is an option
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    return option_list[int(choice) - 1][1]()
+            except ValueError:
+                pass
             pass
+
+
+def clamp(value, min_value, max_value):
+    return max(min_value, min(value, max_value))
 
 
 def main():
