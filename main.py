@@ -36,17 +36,24 @@ player = {
 #name, level, xp, gold, max_hp, atk, acc, moves
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
-	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash']],
+	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
+    'skeleton': ["skeleton", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
+    'imp': ["imp", 1, 50, 10, 90, 5, 90, ['slash', 'fireball']],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 1000, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
 }
 
 combat_encounters = {
     'test_fight': ['goblin', 'goblin', 'orc'],
-    'aoe_test': ['goblin', 'goblin', 'goblin', 'goblin', 'goblin', 'goblin'],
-    'hard_fight': ['manticore', 'orc', 'orc', 'goblin'],
+    'goblin patrol': ['goblin', 'goblin'],
+    'elite patrol': ['goblin', 'orc'],
+    'dungeon1': ['spider'],
+    'dungeon2': ['spider', 'skeleton'],
+    'dungeon3': ['skeleton', 'skeleton'],
+    'dungeon4': ['skeleton', 'imp', 'spider'],
+    'dungeon5': ['orc', 'imp', 'imp'],
     'the final battle': ['the dark lord']
 }
 
@@ -57,7 +64,7 @@ attacks = {
     'gash': _attack.Attack(9, 100, 'lacerated {target}!', 'single enemy'),
     'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
 	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
-    'incinerate': _attack.Attack(8, 95, 'scorched {target}!', 'all enemies'),
+    'incinerate': _attack.Attack(7, 95, 'scorched {target}!', 'all enemies'),
     'cursed fire': _attack.Attack(12, 96, 'casted cursed fire!', 'single enemy'),
     'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally'),
     'super heal': _attack.Attack(-15, 99999, 'healed {target}!', 'single ally'),
@@ -267,7 +274,8 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
 def random_encounter():
     roll = random.randint(1, 100)
     if roll <= _map.game_map[player['position'][2]]['data']['random_encounter_chance']:
-        encounter = _map.game_map[player['position'][2]]['data']['encounters'][0]
+        map_encounters = _map.game_map[player['position'][2]]['data']['encounters']
+        encounter = map_encounters[random.randint(0, len(map_encounters) - 1)]
         combat(combat_encounters[encounter])
 
 
@@ -387,7 +395,7 @@ def attack_menu():
     print("Attacks:")
     num = 1
     for attack in player['character'].moves:
-        print(f" {num}. {attack.capitalize()}")
+        print(f" {num}. {attack.capitalize()} --- (DMG: {attacks[attack].damage * player['character'].atk} ACC: {attacks[attack].acc}%)")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
@@ -417,7 +425,7 @@ def choose_attack_target(use_move):
                 else:
                     num = 1
                     for target_enemy in target_list:
-                        print(f" {num}. {target_enemy.title()}")
+                        print(f" {num}. {target_enemy.title()} --- (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
                         num += 1
                     target = input("Choose a target: ").lower()
                 if target in list(player['enemies'].keys()):
@@ -595,7 +603,7 @@ def view_character():
 def view_inventory():
     print("Inventory:")
     for item in player['inventory'].contents:
-        print(f" - {item.capitalize()}")
+        print(f" - {item.title()}")
 
 
 def fight_test():

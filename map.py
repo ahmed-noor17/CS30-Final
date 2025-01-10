@@ -23,8 +23,8 @@ game_map = {
                 ['---', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', '---'],
                 ['---', '---', '---', '---', '---', '---', '---']],
         "data": {
-            "random_encounter_chance": 0,
-            "encounters": [],
+            "random_encounter_chance": 50,
+            "encounters": ['dungeon1', 'dungeon2', 'dungeon3', 'dungeon4', 'dungeon5'],
             "move_time": 0,
         }
     },
@@ -41,7 +41,7 @@ game_map = {
                 ['---', '???', '---', 'barracks', 'house', 'south entrance', 'house', '---'],
                 ['---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
-            "random_encounter_chance": 100,
+            "random_encounter_chance": 0,
             "encounters": ['the final battle'],
             "move_time": 0,
         }
