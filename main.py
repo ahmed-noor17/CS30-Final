@@ -586,19 +586,55 @@ def fight_test():
 
 def shopping():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
-    print(f"{current_shop.title()}:\n")
-    for option in shops[current_shop]:
-            print(f" - {option.capitalize()}  ---  (${shops[current_shop][option]})")
-    input()
+    print(f"Welcome to {current_shop.title()}!\n")
+    num = 1
+    for option in menu['shop_menu']:
+        print(f" {num}. {option.title()}")
+        num += 1
+    while True:
+        choice = input("Choice: ").lower()
+        if choice in menu['shop_menu']:
+            menu['shop_menu'][choice]()
+            break
+        else:
+            try:
+                if int(choice) <= len(list(menu['shop_menu'].keys())) and int(choice) >= 1:
+                    menu['shop_menu'][list(menu['shop_menu'].items())[int(choice) - 1][0]]()
+                    break
+            except ValueError:
+                pass
     pass
 
 
 def buy():
-    pass
+    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
+    print(f"Purchasable items:\n")
+    num = 1
+    for option in shops[current_shop]:
+            print(f" {num}. {option.capitalize()}  ---  ({shops[current_shop][option]}g)")
+            num += 1
+    while True:
+        item_choice = input("Buy: ").lower()
+        if item_choice == 'quit':
+            return
+        if item_choice in shops[current_shop]:
+            player['inventory'].contents.append(item_choice)
+            break
+        else:
+            try:
+                item_choice = int(item_choice)
+            except ValueError:
+                continue
+            if item_choice <= len(list(shops[current_shop].keys())) and item_choice >= 1:
+                item_choice = list(shops[current_shop].keys())[item_choice - 1]
+                player['character'].gold -= shops[current_shop][item_choice]
+                player['inventory'].contents.append(item_choice)
+                return
 
 
 def sell():
-    pass
+    print("I don't want to buy your items!")
+    return
 
 
 def _quit():
@@ -612,9 +648,11 @@ def _quit():
         return display_menu('main_menu')
 
 
-shops = {"dan's thingamabobs": {"health potion": 4,
-                                "steel sword": 56,
-                                "inferno orb": 112}}
+shops = {"dan's thingamabobs": {"health potion": 8,
+                                "magic icicle": 10,
+                                "inferno orb": 20,
+                                "bottled lightning": 25,
+                                "happy birthday bomb" : 72356}}
 
 
 menu = {
