@@ -565,12 +565,18 @@ def _print(text: str, delay=0.025, newline=True):
 
 
 def story():
+    global text_speed
     os.system('cls' if os.name == 'nt' else 'clear')
     try:
+        old_text_speed = text_speed
+        text_speed = 0.025
         with open(story_file, 'r') as f:
             file_list = f.readlines()
             for line in file_list:
-                _print(line)
+                _print(line, delay=0.2)
+                time.sleep(1)
+        text_speed = old_text_speed
+        player['character'].name = input("Enter player name: ")
     except FileNotFoundError:
         print("ERROR: Could not find the story text file!")
 
