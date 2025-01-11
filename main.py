@@ -37,6 +37,7 @@ player = {
 #name, level, xp, gold, max_hp, atk, acc, moves
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
+    'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
     'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
     'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 5, 85, ['slash', 'arrow', 'arrow']],
@@ -49,38 +50,47 @@ enemies = {
 }
 
 combat_encounters = {
-    'test_fight': ['goblin', 'goblin', 'orc'],
+    'test_fight': ['punching bag'],
     'goblin': ['goblin'],
     'goblin patrol': ['goblin', 'goblin'],
     'elite patrol': ['goblin', 'orc'],
     'dungeon1': ['spider'],
     'dungeon2': ['spider', 'skeleton warrior'],
     'dungeon3': ['skeleton warrior', 'skeleton warrior'],
-    'dungeon4': ['skeleton warrior warrior', 'imp', 'spider'],
+    'dungeon4': ['skeleton warrior', 'imp', 'spider'],
     'dungeon5': ['orc', 'imp', 'imp'],
     'the final battle': ['the dark lord']
 }
 
 attacks = {
-	'slash': _attack.Attack(5, 100, 'slashed {target}!', 'single enemy'),
-    'bite': _attack.Attack(4, 100, 'bit {target}!', 'single enemy'),
-    'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
-    'gash': _attack.Attack(9, 100, 'lacerated {target}!', 'single enemy'),
-    'arrow': _attack.Attack(8, 90, 'shot {target} with an arrow!', 'single enemy'),
-    'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
-	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
-    'incinerate': _attack.Attack(7, 95, 'scorched {target}!', 'all enemies'),
-    'cursed fire': _attack.Attack(12, 96, 'casted cursed fire!', 'single enemy'),
-    'heal': _attack.Attack(-5, 99999, 'healed {target}!', 'single ally'),
-    'super heal': _attack.Attack(-15, 99999, 'healed {target}!', 'single ally'),
-    'lightning bolt': _attack.Attack(12, 99999, 'shocked {target}!', 'single enemy'),
-    'thunderstorm': _attack.Attack(7, 99999, 'shocked {target}!', 'all enemies'),
-    'unholy diver': _attack.Attack(30, 75, 'unleashed havoc on {target}!', 'all enemies'),
-    'annihilation': _attack.Attack(900, 99999, 'annihilated {target}!', 'all enemies'),
-    'freeze ray': _attack.Attack(8, 95, 'froze {target}!', 'single enemy'),
-    'frost blast': _attack.Attack(5, 90, 'froze {target}!', 'all enemies'),
-    'magic missile': _attack.Attack(5, 95, 'launched a magic missile at {target}!', 'single enemy'),
-    'poison cloud': _attack.Attack(5, 100, 'poisoned {target}!', 'all enemies')
+	'slash': _attack.Attack(5, 100, '{attacker} slashed {target}!', 'single enemy'),
+    'bite': _attack.Attack(4, 100, '{attacker} bit {target}!', 'single enemy'),
+    'bash': _attack.Attack(7, 80, '{attacker} bashed {target}!', 'single enemy'),
+    'gash': _attack.Attack(9, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1),
+    'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemies', 'bleed', 3),
+    'arrow': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'single enemy'),
+    'headbutt': _attack.Attack(10, 90, '{attacker} bashed {target} with their head!', 'single enemy'),
+	'fireball': _attack.Attack(10, 95, '{attacker} casted fireball!', 'single enemy'),
+    'incinerate': _attack.Attack(7, 95, '{attacker} scorched {target}!', 'all enemies'),
+    'cursed fire': _attack.Attack(12, 96, '{attacker} casted cursed fire!', 'single enemy'),
+    'heal': _attack.Attack(-5, 99999, '{attacker} healed {target}!', 'single ally'),
+    'super heal': _attack.Attack(-15, 99999, '{attacker} healed {target}!', 'single ally'),
+    'lightning bolt': _attack.Attack(12, 99999, '{attacker} shocked {target}!', 'single enemy'),
+    'thunderstorm': _attack.Attack(7, 99999, '{attacker} shocked {target}!', 'all enemies'),
+    'unholy diver': _attack.Attack(30, 75, '{attacker} unleashed havoc on {target}!', 'all enemies'),
+    'annihilation': _attack.Attack(900, 99999, '{attacker} annihilated {target}!', 'all enemies'),
+    'freeze ray': _attack.Attack(8, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 1),
+    'frost blast': _attack.Attack(5, 90, '{attacker} froze {target}!', 'all enemies', 'freeze', 1),
+    'deep freeze': _attack.Attack(9, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 2),
+    'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy'),
+    'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2),
+
+    # Damage over time status effects
+    # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
+    # to get stunlocked by an enemy freeze blasting you over and over?
+    'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy'),
+    'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
+    'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy')
 }
 
 consumables = {
@@ -90,6 +100,7 @@ consumables = {
     'bottled lightning': 'lightning bolt',
     'storm in a bottle': 'thunderstorm',
     'magic icicle': 'freeze ray',
+    'poison bomb': 'poison cloud',
     'happy birthday bomb': 'annihilation'
 }
 
@@ -99,13 +110,15 @@ save_files = {
     'file 3': 'SaveSlot3.txt'
 }
 
-text_speed = 0.01
+debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
+
+text_speed = 0.005
 map_cell_character_len = 20
 hours_remaining = 72.0
 
 data_to_save = {
     'text_speed': text_speed,
-    'skip_introduction': None,
+    'skip_introduction': False,
     'player_name': player['character'].name,
     'player_level': player['character'].level,
     'player_xp': player['character'].xp,
@@ -340,8 +353,13 @@ def level_formula():
 def enemy_turn():
     for enemy in list(player['enemies'].keys()):
         enemy_object = player['enemies'][enemy]
-        _print(f"\n{enemy_object.name.title()} took a turn!")
-        use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
+        if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
+            _print(f"\n{enemy_object.name.title()} took a turn!")
+            use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
+        for debuff in list(dict.fromkeys(enemy_object.debuffs)):
+            if enemy_object.hp > 0:
+                enemy_object.debuffs.remove(debuff)
+                use_attack(attacks[debuff], debuff_char, enemy_object)
         time.sleep(0.1)
 
 
@@ -389,6 +407,10 @@ def combat(encounter_enemies):
             game_over()
             break
     player['enemies'].clear()
+
+
+def check_for_battle_victory():
+    pass
 
 
 def attack_menu():
@@ -484,9 +506,13 @@ def use_attack(attack, attacker, target):
     if random.randint(0, 100) <= attack_accuracy:
         attack_damage = attack.damage * attacker.atk
         target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
-        _print(f"\n{attacker.name.title()} {attack.use_text.replace('{target}', target.name.title())}")
+        _print(f"\n{attack.use_text.replace('{target}', target.name.title()).replace('{attacker}', attacker.name.title())}")
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
+        if not attack.debuff == None:
+            for i in range(attack.debuff_stack_amount):
+                target.debuffs.append(attack.debuff)
+            _print(f"{target.name.title()} is now suffering from {attack.debuff}!")
         if target.hp <= 0:
             print(f"Defeated {target.name.title()}!")
             if target.name != player['character'].name:
@@ -572,6 +598,7 @@ def story():
             confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
             if "y" in confirm:
                 break
+        data_to_save['skip_introduction'] = True
     except FileNotFoundError:
         print("ERROR: Could not find the story text file!")
 
@@ -593,7 +620,8 @@ def play():
             current_save_file = list(save_files.items())[int(chosen_save_file) - 1][1]
             load_data()
             break
-    story()
+    if not loaded_data['skip_introduction'] == 'True':
+        story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:
         x = display_menu('game_menu')
@@ -614,7 +642,7 @@ def view_inventory():
 
 
 def fight_test():
-    combat(combat_encounters['test_fight'])
+    combat(combat_encounters['dungeon5'])
 
 
 def shopping():
