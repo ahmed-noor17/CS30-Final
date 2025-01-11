@@ -89,7 +89,7 @@ attacks = {
     # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
     # to get stunlocked by an enemy freeze blasting you over and over?
     'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy'),
-    'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
+    'poison': _attack.Attack(4000, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
     'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy')
 }
 
@@ -388,29 +388,34 @@ def combat(encounter_enemies):
     global fighting
     fighting = True
     while fighting:
-        print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")
+        print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")  # TODO: It would be nice if this printed every time combat menu did. Also it would be nice to see enemy info as well
         display_menu('combat_menu')
-        if len(list(player['enemies'].keys())) <= 0:
-            print("\nYou won!")
-            print(f"You earned {xp_prize} EXP and {gold_prize}g")
-            player['character'].gold += gold_prize
-            player['character'].xp += xp_prize
-            level_up()
-            input("Press any key to continue: ")
-            os.system('cls' if os.name == 'nt' else 'clear')
-            fighting = False
+        if check_for_battle_victory(xp_prize, gold_prize):  # This function returns true if the battle is over
             break
         enemy_turn()
-        if player['character'].hp <= 0:
-            print("You lost!")
-            fighting = False
-            game_over()
+        if check_for_battle_victory(xp_prize, gold_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
             break
     player['enemies'].clear()
 
 
-def check_for_battle_victory():
-    pass
+def check_for_battle_victory(xp_prize, gold_prize):
+    global fighting
+    if len(list(player['enemies'].keys())) <= 0:
+        print("\nYou won!")
+        print(f"You earned {xp_prize} EXP and {gold_prize}g")
+        player['character'].gold += gold_prize
+        player['character'].xp += xp_prize
+        level_up()
+        input("Press any key to continue: ")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        fighting = False
+        return True
+
+    if player['character'].hp <= 0:
+        print("You lost!")
+        fighting = False
+        game_over()
+        return True
 
 
 def attack_menu():
