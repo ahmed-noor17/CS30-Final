@@ -18,3 +18,5 @@
     -Dungeons
 -There's an issue where if you try to use an item when you have none, it doesn't print your health. Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.
 -URGENT: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight. I only got this to happen when I left my name blank, so maybe that has something to do with it???
+-Credits menu
+-Talking to shopkeepers

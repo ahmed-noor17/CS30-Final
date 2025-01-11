@@ -25,6 +25,18 @@ game_title = '''
 |    -|   __|  |  |    -|   __|__   |__   |
 |__|__|_____|_____|__|__|_____|_____|_____|\n'''
 
+player_turn_text = '''
+ _____ __    _____ __ __ _____ _____    _____ _____ _____ _____ _ 
+|  _  |  |  |  _  |  |  |   __| __  |  |_   _|  |  | __  |   | |_|
+|   __|  |__|     |_   _|   __|    -|    | | |  |  |    -| | | |_ 
+|__|  |_____|__|__| |_| |_____|__|__|    |_| |_____|__|__|_|___|_|\n'''
+
+enemy_turn_text = '''
+ _____ _____ _____ _____ __ __    _____ _____ _____ _____ _       
+|   __|   | |   __|     |  |  |  |_   _|  |  | __  |   | |_|      
+|   __| | | |   __| | | |_   _|    | | |  |  |    -| | | |_       
+|_____|_|___|_____|_|_|_| |_|      |_| |_____|__|__|_|___|_|\n'''
+
 story_file = 'opening.txt'
 
 player = {
@@ -216,6 +228,7 @@ def moving():
     moving = True
     print("You begin moving.")
     while moving:
+        os.system('cls' if os.name == 'nt' else 'clear')
         temp_opt_list = []
         try:
             if _map.rooms[player['position'][2]][get_room()]['connections']:
@@ -364,7 +377,7 @@ def enemy_turn():
             _print(f"\n{enemy_object.name.title()} took a turn!")
             use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
         for debuff in list(dict.fromkeys(enemy_object.debuffs)):
-            if enemy_object.hp > 0:
+            if enemy_object.hp > 0 and not check_for_battle_victory():  # Enemies do not take DOT damage if they are already dead or if they killed the player
                 enemy_object.debuffs.remove(debuff)
                 use_attack(attacks[debuff], debuff_char, enemy_object)
         time.sleep(0.1)
@@ -390,22 +403,25 @@ def combat(encounter_enemies):
             n = 'n'
         else:
             n = ''
-        print(f"You've encountered a{n} {enemy.title()}!")
+        _print(f"You've encountered a{n} {enemy.title()}!")
+    time.sleep(1)
 
     global fighting
     fighting = True
     while fighting:
         print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")  # TODO: It would be nice if this printed every time combat menu did. Also it would be nice to see enemy info as well
+        print(player_turn_text)
         display_menu('combat_menu')
         if check_for_battle_victory(xp_prize, gold_prize):  # This function returns true if the battle is over
             break
+        print(enemy_turn_text)
         enemy_turn()
         if check_for_battle_victory(xp_prize, gold_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
             break
     player['enemies'].clear()
 
 
-def check_for_battle_victory(xp_prize, gold_prize):
+def check_for_battle_victory(xp_prize=0, gold_prize=0):
     global fighting
     if len(list(player['enemies'].keys())) <= 0:
         print("\nYou won!")
@@ -429,7 +445,7 @@ def attack_menu():
     print("Attacks:")
     num = 1
     for attack in player['character'].moves:
-        print(f" {num}. {attack.capitalize()} --- (DMG: {attacks[attack].damage * player['character'].atk} ACC: {attacks[attack].acc * player['character'].acc / 100}%)")
+        print(f" {num}. {attack.capitalize()}   ---   (DMG: {attacks[attack].damage * player['character'].atk} ACC: {attacks[attack].acc * player['character'].acc / 100}%)")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
@@ -459,7 +475,7 @@ def choose_attack_target(use_move):
                 else:
                     num = 1
                     for target_enemy in target_list:
-                        print(f" {num}. {target_enemy.title()} --- (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
+                        print(f" {num}. {target_enemy.title()}   ---   (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
                         num += 1
                     target = input("Choose a target: ").lower()
                 if target in list(player['enemies'].keys()):
@@ -482,7 +498,7 @@ def choose_attack_target(use_move):
 def flee_battle():
     global fighting
     fighting = False
-    print(f"{player['character'].name.title()} is attempting to flee!")
+    _print(f"{player['character'].name.title()} is attempting to flee!")
 
 
 def use_item():
@@ -530,7 +546,7 @@ def use_attack(attack, attacker, target):
             if target.name != player['character'].name:
                 player['enemies'].pop(target.name)
     else:
-        print(f"{target.name.title()} evaded the attack!")
+        print(f"\n{target.name.title()} evaded the attack!")
 
 
 # Base Functions --------------------------------------------------------------
@@ -842,7 +858,7 @@ def display_menu(current_menu):
             os.system('cls' if os.name == 'nt' else 'clear')
             return menu[current_menu][choice]()
         else:
-            pass
+            os.system('cls' if os.name == 'nt' else 'clear')
 
 
 
