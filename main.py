@@ -549,9 +549,13 @@ def story():
         with open(story_file, 'r') as f:
             file_list = f.readlines()
             for line in file_list:
-                _print(line, delay=0.025)
-                time.sleep(1)
-        player['character'].name = input("Enter player name: ")
+                _print(line, delay=0.02)
+                input()
+        while True:
+            player['character'].name = input("Enter player name: ")
+            confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
+            if "y" in confirm:
+                break
     except FileNotFoundError:
         print("ERROR: Could not find the story text file!")
 
