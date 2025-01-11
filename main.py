@@ -216,9 +216,11 @@ def moving():
     moving = True
     print("You begin moving.")
     while moving:
+        temp_opt_list = []
         try:
             if _map.rooms[player['position'][2]][get_room()]['connections']:
                 menu['movement_menu']['enter'] = change_map
+            temp_opt_list.append('enter')
         except KeyError:
             try:
                 menu['movement_menu'].pop('enter')
@@ -227,6 +229,7 @@ def moving():
         try:
             if _map.rooms[player['position'][2]][get_room()]['shop']:
                 menu['movement_menu']['shop'] = shopping
+            temp_opt_list.append('shop')
         except KeyError:
             try:
                 menu['movement_menu'].pop('shop')
@@ -237,6 +240,10 @@ def moving():
         except KeyError:
             pass
         print(update_map_display())  # This is where the movement menu code starts
+        if temp_opt_list != []:
+            print("\nOptions:\n")
+        for option in temp_opt_list:
+            print(f" - {option.title()}")
         choice = input("\nChoice: ").lower()
         if choice == "stop":
             moving = False
@@ -701,6 +708,7 @@ def buy():
             try:
                 item_choice = int(item_choice)
             except ValueError:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 continue
             if 1 <= item_choice <= len(list(shops[current_shop].keys())):
                 item_choice = list(shops[current_shop].keys())[item_choice - 1]
@@ -774,21 +782,26 @@ def display_menu(current_menu):
             print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         print()
         option_list = list(menu[current_menu].items())
-        num: int = 1
+        num = 1
         for option in menu[current_menu]:
             print(f" {num}. {option.capitalize()}")
             num += 1
+        if current_menu != 'main_menu' and current_menu != 'combat_menu':
+            print(f" {num}. Quit")
         choice = input("\nChoice: ").lower()
-        try:
-            choice = int(choice)
-        except ValueError:
-            print("display_menu caused an error!")
-            pass
-        os.system('cls' if os.name == 'nt' else 'clear')
-        if choice == "quit" and current_menu != "main_menu":
-            back = input("Would you like to quit to main menu? (Y/N) ").lower()
+        if choice not in menu[current_menu]:
+            try:
+                choice = int(choice)
+                if 1 <= choice < num:  # Check if the number inputted is an option
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    return option_list[choice - 1][1]()
+                elif choice == num:
+                    choice = 'quit'
+            except ValueError:
+                pass
+        if choice == "quit" and current_menu != "main_menu"  and current_menu != "combat_menu":
             os.system('cls' if os.name == 'nt' else 'clear')
-            if "n" in back:
+            if "n" in input("Would you like to quit to main menu? (Y/N) ").lower():
                 break
             else:
                 current_menu = 'main_menu'
@@ -796,14 +809,8 @@ def display_menu(current_menu):
             os.system('cls' if os.name == 'nt' else 'clear')
             return menu[current_menu][choice]()
         else:
-            try:
-                if int(choice) <= num and int(choice) >= 1:  # Check if the number inputted is an option
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    return option_list[int(choice) - 1][1]()
-            except ValueError:
-                print("display_menu caused an error!")
-                pass
             pass
+
 
 
 def clamp(value, min_value, max_value):
