@@ -1,5 +1,5 @@
 class Character:
-    def __init__(self, name, level, xp, gold, max_hp, atk, acc, moves):
+    def __init__(self, name, level, xp, gold, max_hp, atk, acc, moves, defence=0):
         self.name = name
         self.level = level
         self.xp = xp
@@ -10,6 +10,7 @@ class Character:
         self.acc = acc
         self.moves = moves
         self.debuffs = []
+        self.defence = defence
     
     def __str__(self):
-        return f"NAME: {self.name.title()}\nHP: {self.hp}/{self.max_hp}\nLEVEL: {self.level}\nGOLD: {self.gold}\nATK: {self.atk}\nACC: {self.acc}\n"
+        return f"NAME: {self.name.title()}\nHP: {self.hp}/{self.max_hp}\nLEVEL: {self.level}\nGOLD: {self.gold}\nATK: {self.atk}\nDEF: {self.defence}\nACC: {self.acc}\n"

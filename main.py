@@ -38,7 +38,14 @@ enemy_turn_text = '''
 |   __| | | |   __| | | |_   _|    | | |  |  |    -| | | |_       
 |_____|_|___|_____|_|_|_| |_|      |_| |_____|__|__|_|___|_|\n'''
 
+game_over_text = '''
+ _____ _____ _____ _____    _____ _____ _____ _____ 
+|   __|  _  |     |   __|  |     |  |  |   __| __  |
+|  |  |     | | | |   __|  |  |  |  |  |   __|    -|
+|_____|__|__|_|_|_|_____|  |_____|\___/|_____|__|__|\n'''
+
 story_file = 'opening.txt'
+death_file = 'death.txt'
 
 player = {
 	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
@@ -336,7 +343,8 @@ def load_data():
 
 
 def game_over():
-    _print("You suddenly find yourself back at the beginning of the game wow you 'regressed' haha!")
+    print(game_over_text)
+    show_story_text(death_file)
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
     player['character'].hp = player['character'].max_hp
@@ -394,7 +402,7 @@ def combat(encounter_enemies):
         else:
             n = ''
         _print(f"You've encountered a{n} {enemy.title()}!")
-    time.sleep(1)
+    time.sleep(0.5)
 
     global fighting
     fighting = True
@@ -523,7 +531,8 @@ def use_item():
 def use_attack(attack, attacker, target):
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
-        attack_damage = attack.damage * attacker.atk
+        defence_modifier = 1 - (target.defence / (target.defence + 50))
+        attack_damage = int(attack.damage * attacker.atk * defence_modifier)
         target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
         _print(f"\n{attack.use_text.replace('{target}', target.name.title()).replace('{attacker}', attacker.name.title())}")
         _print(f"Dealt {attack_damage} damage!")
@@ -606,18 +615,23 @@ def _print(text: str, delay=text_speed, newline=True):
 def story():
     global text_speed
     os.system('cls' if os.name == 'nt' else 'clear')
+    show_story_text(story_file)
+    while True:
+        player['character'].name = input("Enter player name: ")
+        confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
+        if "y" in confirm:
+            break
+    data_to_save['skip_introduction'] = True
+    
+
+def show_story_text(file):
     try:
-        with open(story_file, 'r') as f:
-            file_list = f.readlines()
-            for line in file_list:
-                _print(line, delay=0.002)
-                input()
-        while True:
-            player['character'].name = input("Enter player name: ")
-            confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
-            if "y" in confirm:
-                break
-        data_to_save['skip_introduction'] = True
+            with open(file, 'r') as f:
+                print("Press ENTER to continue")
+                file_list = f.readlines()
+                for line in file_list:
+                    _print(line, delay=0.002)
+                    input()
     except FileNotFoundError:
         print("ERROR: Could not find the story text file!")
 
