@@ -337,7 +337,7 @@ def game_over():
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
     player['character'].hp = player['character'].max_hp
-    player['inventory'] = _inventory.Inventory([None])
+    player['inventory'] = _inventory.Inventory([])
 
 
 def level_up():
@@ -649,6 +649,9 @@ def view_character():
 
 def view_inventory():
     print("Inventory:")
+    if player['inventory'].contents == []:
+        print("There is nothing in your bag.\n")
+        return
     for item in player['inventory'].contents:
         print(f" - {item.title()}")
 
