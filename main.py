@@ -728,8 +728,36 @@ def buy():
 
 
 def sell():
-    _print("I don't want to buy your items!")
-    return
+    while True:
+        print("Your sellable items:\n")
+        num = 1
+        for option in player['inventory'].contents:
+            print(f" {num}. {option.capitalize()}  ---  (50g)")  # TODO: set item value
+            num += 1
+        print(f" {num}. Quit")
+        print(f"\nYou have {player['character'].gold}g")
+        item_choice = input("\nSell: ").lower()
+        if item_choice == 'quit':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return
+        elif item_choice in player['inventory'].contents:
+            pass
+        else:
+            try:
+                item_choice = int(item_choice)
+            except ValueError:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                continue
+            if 1 <= item_choice <= len((player['inventory'].contents)):
+                item_choice = player['inventory'].contents[item_choice - 1]
+            elif item_choice == len(player['inventory'].contents) + 1:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                return
+        player['inventory'].contents.remove(item_choice)
+        player['character'].gold += 50  # need item value
+        _print(f"\nYou sold {item_choice}")
+        input("Press ENTER to continue")
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def _quit():
@@ -803,10 +831,12 @@ def display_menu(current_menu):
             except ValueError:
                 pass
         if choice == "quit" and current_menu != "main_menu"  and current_menu != "combat_menu":
-            os.system('cls' if os.name == 'nt' else 'clear')
-            if "n" in input("Would you like to quit to main menu? (Y/N) ").lower():
+            print("\nWould you like to quit to main menu?")
+            if "n" in input("Any unsaved progress will be lost! (Y/N)").lower():
+                os.system('cls' if os.name == 'nt' else 'clear')
                 break
             else:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 current_menu = 'main_menu'
         elif choice in menu[current_menu]:
             os.system('cls' if os.name == 'nt' else 'clear')
