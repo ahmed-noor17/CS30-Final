@@ -236,11 +236,21 @@ def moving():
             try:
                 if choice in menu['movement_menu']:
                     menu['movement_menu'][choice]()
+                    expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
                 elif choice in move_options.keys():
                     menu['movement_menu'][move_options[choice]]()
+                    expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
             except KeyError:
                 print("That is not a direction.")
                 continue
+
+
+def expend_time(time_cost):
+    global hours_remaining
+    hours_remaining -= time_cost
+    print(f"{math.ceil(hours_remaining)} hours left until destruction...")
+    if hours_remaining <= 0:
+        game_over()
 
 
 def get_room(y_offset=0, x_offset=0, for_display=False):
@@ -381,7 +391,7 @@ def attack_menu():
     print("Attacks:")
     num = 1
     for attack in player['character'].moves:
-        print(f" {num}. {attack.capitalize()} --- (DMG: {attacks[attack].damage * player['character'].atk} ACC: {attacks[attack].acc}%)")
+        print(f" {num}. {attack.capitalize()} --- (DMG: {attacks[attack].damage * player['character'].atk} ACC: {attacks[attack].acc * player['character'].acc / 100}%)")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
@@ -551,7 +561,7 @@ def story():
         with open(story_file, 'r') as f:
             file_list = f.readlines()
             for line in file_list:
-                _print(line, delay=0.02)
+                _print(line, delay=0.002)
                 input()
         while True:
             player['character'].name = input("Enter player name: ")
@@ -735,6 +745,7 @@ def display_menu(current_menu):
         try:
             choice = int(choice)
         except ValueError:
+            print("display_menu caused an error!")
             pass
         os.system('cls' if os.name == 'nt' else 'clear')
         if choice == "quit" and current_menu != "main_menu":
@@ -753,6 +764,7 @@ def display_menu(current_menu):
                     os.system('cls' if os.name == 'nt' else 'clear')
                     return option_list[int(choice) - 1][1]()
             except ValueError:
+                print("display_menu caused an error!")
                 pass
             pass
 

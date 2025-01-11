@@ -42,7 +42,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 0,
-            "encounters": ['the final battle'],
+            "encounters": [],
             "move_time": 0,
         }
     },
