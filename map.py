@@ -58,6 +58,31 @@ game_map = {
             "encounters": [],
             "move_time": 0,
         }
+    },
+
+    "world": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'the old woods', '', '', '', '---', '', '---', '---'],
+                ['---', '', '', 'ironwood', '', '', '', '---', '---'],
+                ['---', '', '', '', '', '', '', '', '---'],
+                ['---', '', '', '', 'mount megalos', '', '', '', '---'],
+                ['---', 'city of thieves', '', '', '', '', '', '', '---'],
+                ['---', '', '', '', '', '', '', '', '---'],
+                ['---', '---', '', '', '', '', 'riverfell', '', '---'],
+                ['---', '---', '', '', '', '', '', '', '---'],
+                ['---', '', '', 'ancient monument', '', '', '', 'great lake', '---'],
+                ['---', '', '', '', '', '', '', '', '---'],
+                ['---', '', '', '', '', '', '', '', '---'],
+                ['---', '', 'the wastes', '', '', '', '', '', '---'],
+                ['---', '---', '---', '---', '---', '', '---', '---', '---'],
+                ['---', '---', '---', '---', '---', '', '---', '---', '---'],
+                ['---', '---', '---', '---', '---', '', '', 'tower of doom', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 4,
+            "encounters": ['goblin', 'goblin patrol', 'elite patrol'],
+            "move_time": 0.5,
+        }
     }
 }
 
@@ -98,7 +123,7 @@ rooms = {
         "summoning room": {"description": "There's an ominous summoning circle in the middle of the room with candles surrounding it."}},
     'ironwood': {
         "black market": {"description": "this should be the description"},
-        "north entrance": {"description": "this should be the description"},
+        "north entrance": {"description": "this should be the description", "connections": [3, 2, "world"]},
         "tavern": {"description": "this should be the description"},
         "common area": {"description": "this should be the description"},
         "yggdrasil": {"description": "The oldest tree in town."},
@@ -107,10 +132,10 @@ rooms = {
         "house": {"description": "this should be the description"},
         "market": {"description": "this should be the description", "shop": "Dan's Thingamabobs"},
         "stairs": {"description": "this should be the description"},
-        "west entrance": {"description": "this should be the description"},
+        "west entrance": {"description": "this should be the description", "connections": [3, 2, "world"]},
         "fountain": {"description": "this should be the description"},
         "park": {"description": "this should be the description"},
-        "south entrance": {"description": "this should be the description"},
+        "south entrance": {"description": "this should be the description", "connections": [3, 2, "world"]},
         "restaurant": {"description": "this should be the description"},
         "barracks": {"description": "this should be the description"},
         "townhall": {"description": "this should be the description"},

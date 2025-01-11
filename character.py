@@ -9,6 +9,7 @@ class Character:
         self.atk = atk
         self.acc = acc
         self.moves = moves
+        self.debuffs = []
     
     def __str__(self):
-        return f"NAME: {self.name.title()}\nHP: {self.hp}/{self.max_hp}\nLEVEL: {self.level}\nGOLD: {self.gold}\nATK: {self.atk}\nACC: {self.acc}"
+        return f"NAME: {self.name.title()}\nHP: {self.hp}/{self.max_hp}\nLEVEL: {self.level}\nGOLD: {self.gold}\nATK: {self.atk}\nACC: {self.acc}\n"

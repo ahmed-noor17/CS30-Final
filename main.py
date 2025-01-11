@@ -38,8 +38,10 @@ player = {
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
-    'skeleton': ["skeleton", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
-    'imp': ["imp", 1, 50, 10, 90, 5, 90, ['slash', 'fireball']],
+    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
+    'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 5, 85, ['slash', 'arrow', 'arrow']],
+    'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'freeze ray', 'magic missile']],
+    'imp': ["imp", 1, 50, 10, 90, 5, 90, ['slash', 'fireball', 'magic missile']],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
@@ -48,12 +50,13 @@ enemies = {
 
 combat_encounters = {
     'test_fight': ['goblin', 'goblin', 'orc'],
+    'goblin': ['goblin'],
     'goblin patrol': ['goblin', 'goblin'],
     'elite patrol': ['goblin', 'orc'],
     'dungeon1': ['spider'],
-    'dungeon2': ['spider', 'skeleton'],
-    'dungeon3': ['skeleton', 'skeleton'],
-    'dungeon4': ['skeleton', 'imp', 'spider'],
+    'dungeon2': ['spider', 'skeleton warrior'],
+    'dungeon3': ['skeleton warrior', 'skeleton warrior'],
+    'dungeon4': ['skeleton warrior warrior', 'imp', 'spider'],
     'dungeon5': ['orc', 'imp', 'imp'],
     'the final battle': ['the dark lord']
 }
@@ -63,6 +66,7 @@ attacks = {
     'bite': _attack.Attack(4, 100, 'bit {target}!', 'single enemy'),
     'bash': _attack.Attack(7, 80, 'bashed {target}!', 'single enemy'),
     'gash': _attack.Attack(9, 100, 'lacerated {target}!', 'single enemy'),
+    'arrow': _attack.Attack(8, 90, 'shot {target} with an arrow!', 'single enemy'),
     'headbutt': _attack.Attack(10, 90, 'bashed {target} with their head!', 'single enemy'),
 	'fireball': _attack.Attack(10, 95, 'casted fireball!', 'single enemy'),
     'incinerate': _attack.Attack(7, 95, 'scorched {target}!', 'all enemies'),
@@ -257,11 +261,11 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
         room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
-        return "///////////////\n///////////////\n///////////////"
+        return "/////////////////////\n/////////////////////\n/////////////////////"
     padding = 'ㅤ' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
     if for_display:
         if room_name == "---":
-            room_name = "///////////////\n///////////////\n///////////////"
+            room_name = "/////////////////////\n/////////////////////\n/////////////////////"
         else:
             room_name = "ㅤ\n" + padding + room_name + padding + "\nㅤ"
     return room_name
@@ -600,7 +604,7 @@ def play():
 def view_character():
     print(f"Time remaining: {hours_remaining} hours\n")
     print("Stats:")
-    print(player['character'] + "\n")
+    print(player['character'])
 
 
 def view_inventory():
