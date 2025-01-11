@@ -725,7 +725,7 @@ def buy():
         print(f"Purchasable items:\n")
         num = 1
         for option in shops[current_shop]:
-            print(f" {num}. {option.capitalize()}  ---  ({shops[current_shop][option]}g)")
+            print(f" {num}. {option.capitalize()}  ---  ({_item.item["consumable"][option]["value"]}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
@@ -741,13 +741,13 @@ def buy():
             except ValueError:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 continue
-            if 1 <= item_choice <= len(list(shops[current_shop].keys())):
-                item_choice = list(shops[current_shop].keys())[item_choice - 1]
-            elif item_choice == len(list(shops[current_shop].keys())) + 1:  # Quit option number
+            if 1 <= item_choice <= len(shops[current_shop]):
+                item_choice = shops[current_shop][item_choice - 1]
+            elif item_choice == len(shops[current_shop]) + 1:  # Quit option number
                 os.system('cls' if os.name == 'nt' else 'clear')
                 return
-        if shops[current_shop][item_choice] <= player['character'].gold:
-            player['character'].gold -= shops[current_shop][item_choice]
+        if _item.item["consumable"][item_choice]["value"] <= player['character'].gold:
+            player['character'].gold -= _item.item["consumable"][item_choice]["value"]
             player['inventory'].contents.append(item_choice)
         else:
             _print("\nYou don't have enough gold!")
@@ -805,11 +805,14 @@ def credits_menu():
     print("Regress Development Team:\n - Aiden Dielschneider (Developer)\n - Ahmed Noor (Developer)\n - Damian Knourek (Credit pending)")
 
 
-shops = {"dan's thingamabobs": {"health potion": 8,
-                                "magic icicle": 10,
-                                "inferno orb": 20,
-                                "bottled lightning": 25,
-                                "happy birthday bomb" : 72356}}
+shops = {
+    "dan's thingamabobs": [
+        "health potion",
+        "magic icicle",
+        "inferno scroll",
+        "bottled lightning",
+        "birthday bomb"]
+}
 
 
 menu = {
