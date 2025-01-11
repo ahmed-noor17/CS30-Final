@@ -16,6 +16,7 @@ import inventory as _inventory
 import character as _character
 import attack as _attack
 from tabulate import tabulate
+import item_data as _item
 playing_game = True
 fighting = False
 
@@ -103,17 +104,6 @@ attacks = {
     'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy'),
     'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
     'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy')
-}
-
-consumables = {
-    'health potion': 'heal',
-    'rejuvenation potion': 'super heal',
-    'inferno orb': 'incinerate',
-    'bottled lightning': 'lightning bolt',
-    'storm in a bottle': 'thunderstorm',
-    'magic icicle': 'freeze ray',
-    'poison bomb': 'poison cloud',
-    'happy birthday bomb': 'annihilation'
 }
 
 save_files = {
@@ -504,29 +494,30 @@ def flee_battle():
 def use_item():
     usable_items = []
     num = 1
+    print("Usable items:\n")
     for item in player['inventory'].contents:
-        if item in list(consumables.keys()):
+        if item in list(_item.item['consumable'].keys()):
             usable_items.append(item)
             print(f" {num}. {item.title()}")
             num += 1
     if len(usable_items) <= 0:
         print("You do not have any usable items!")
         return display_menu('combat_menu')
-    print("Usable items:")
     while True:
         use_item = input("Choose an item to use: ").lower()
+        if use_item not in usable_items:
+            try:
+                use_item = int(use_item)
+                if 1 <= use_item <= len(usable_items):
+                    use_item = usable_items[use_item - 1]
+            except ValueError:
+                pass
         if use_item in usable_items:
             player['inventory'].contents.remove(use_item)
-            choose_attack_target(consumables[use_item])
+            choose_attack_target(_item.item['consumable'][use_item]['cast'])
             break
         else:
-            try:
-                if int(use_item) <= len(usable_items) and int(use_item) >= 1:
-                    player['inventory'].contents.remove(usable_items[int(use_item) - 1])
-                    choose_attack_target(consumables[usable_items[int(use_item) - 1]])
-                    break
-            except Exception:  # TODO: Figure out what exception this should be
-                pass
+            pass
 
 
 def use_attack(attack, attacker, target):
