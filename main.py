@@ -522,13 +522,9 @@ def setup():
     return None
 
 
-def _print(text: str, delay=0.025, newline=True):
+def _print(text: str, delay=text_speed, newline=True):
     ''' Function prints text with a typing effect.
     '''
-    try:
-        delay = text_speed  # Has to be done this way...
-    except NameError:
-        pass
     punctuation = ['.', '!', '?']
     if delay != 0.0:
         for char in text:
@@ -550,14 +546,11 @@ def story():
     global text_speed
     os.system('cls' if os.name == 'nt' else 'clear')
     try:
-        old_text_speed = text_speed
-        text_speed = 0.025
         with open(story_file, 'r') as f:
             file_list = f.readlines()
             for line in file_list:
-                _print(line, delay=0.2)
+                _print(line, delay=0.025)
                 time.sleep(1)
-        text_speed = old_text_speed
         player['character'].name = input("Enter player name: ")
     except FileNotFoundError:
         print("ERROR: Could not find the story text file!")
