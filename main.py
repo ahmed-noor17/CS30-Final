@@ -665,11 +665,13 @@ def view_character():
 
 def view_inventory():
     print("Inventory:")
+
     if player['inventory'].contents == []:
         print("There is nothing in your bag.\n")
         return
-    for item in player['inventory'].contents:
-        print(f" - {item.title()}")
+    for item in list(dict.fromkeys(player['inventory'].contents)):
+        print(f" - {item.title()} (x{player['inventory'].contents.count(item)})")
+        
 
 
 def fight_test():
