@@ -10,6 +10,7 @@
 import os
 import time
 import random
+import math
 import map as _map
 import inventory as _inventory
 import character as _character
@@ -96,6 +97,7 @@ save_files = {
 
 text_speed = 0.01
 map_cell_character_len = 20
+hours_remaining = 72.0
 
 data_to_save = {
     'text_speed': text_speed,
@@ -586,8 +588,9 @@ def play():
 
 
 def view_character():
+    print(f"Time remaining: {hours_remaining} hours\n")
     print("Stats:")
-    print(player['character'])
+    print(player['character'] + "\n")
 
 
 def view_inventory():
@@ -697,7 +700,7 @@ menu = {
     "game_menu": {
         "move": moving,
         "fight": fight_test,
-        "view character": view_character,
+        "status": view_character,
         "inventory": view_inventory,
         "save": save_data
     },
@@ -720,6 +723,8 @@ def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
             print(game_title)
+        elif current_menu == 'game_menu':
+            print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         print()
         option_list = list(menu[current_menu].items())
         num: int = 1
