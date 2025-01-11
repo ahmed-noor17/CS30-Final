@@ -1,22 +1,21 @@
 -Shop menu  (Ahmed)
-    -Option appears when at location
-    -Buy/Sell option
-        -Function needing argument for specified items
-    -Item database
-        -Key/Consumable/Equipment/Misc
+    -Make use of item database
 -World Map  (Ahmed)
--Local Map
-    -In world map and dungeons
--Equipment and defense systems
+-Equipment and defense systems  (Aiden)
     -Possibly requires combat rebalances
--Item locked map tiles (e.g needing a key to pass through a door)
+-Progression locked exploration
+-Interactable map tiles (get items around map)
 -Mana system
--Time system
--Death and revival mechanics
--MORE CONTENT!!!!!!!
-    -Towns
-    -Dungeons
--There's an issue where if you try to use an item when you have none, it doesn't print your health. Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.
--URGENT: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight. I only got this to happen when I left my name blank, so maybe that has something to do with it???
+-Time system*
 -Credits menu
--Talking to shopkeepers
+-MORE CONTENT!!!!!!!
+    -Towns  (and descriptions)
+    -Items  (and descriptions)
+    -Dungeons
+    -Dialogue  (right-justification?)
+    -Ending (completion)
+
+-ISSUE: There's an issue where if you try to use an item when you have none, it doesn't print your health.
+        Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.
+-URGENT: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight.
+         I only got this to happen when I left my name blank, so maybe that has something to do with it???

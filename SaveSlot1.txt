@@ -1,6 +1,6 @@
 text_speed::0.01
 skip_introduction::True
-player_name::Testman
+player_name::Hero
 player_level::1
 player_xp::0
 player_gold::100
