@@ -213,28 +213,22 @@ def moving():
                 menu['movement_menu'].pop('shop')
             except Exception:
                 pass
-        print(update_map_display() + "\n")  # This is where the movement menu code starts
-        for option in menu["movement_menu"]:
-            print(" - " + option.capitalize())
-        print(" - Stop")
+        try:
+            print(_map.rooms[player['position'][2]][get_room()]['description'])
+        except KeyError:
+            pass
+        print(update_map_display())  # This is where the movement menu code starts
         choice = input("\nChoice: ").lower()
         if choice == "stop":
-            if "n" in input("Would you like to stop moving? (Y/N) ").lower():
-                os.system('cls' if os.name == 'nt' else 'clear')
-                print("You did not move.")
-                print_location_description()
-                pass
-            else:
-                moving = False
-                os.system('cls' if os.name == 'nt' else 'clear')
-                return
-        elif choice == "quit":
-            back = input("Would you like to quit to main menu? (Y/N) ").lower()
+            moving = False
             os.system('cls' if os.name == 'nt' else 'clear')
-            if "n" in back:
+            return
+        elif choice == "quit":
+            if "n" in input("Would you like to quit to main menu? (Y/N) ").lower():
                 break
             else:
-                return
+                os.system('cls' if os.name == 'nt' else 'clear')
+                return "quit"
         elif choice in menu['movement_menu'] or choice in move_options.keys():
             os.system('cls' if os.name == 'nt' else 'clear')
             try:
@@ -243,20 +237,8 @@ def moving():
                 elif choice in move_options.keys():
                     menu['movement_menu'][move_options[choice]]()
             except KeyError:
-                print("That is not a direction")
-                pass
-            print_location_description()
-        else:
-            pass
-
-
-def print_location_description():
-    ''' Tells the player the decription of the room
-        they are currently in.'''
-    try:
-        print(_map.rooms[player['position'][2]][get_room()]['description'])
-    except KeyError:
-        pass
+                print("That is not a direction.")
+                continue
 
 
 def get_room(y_offset=0, x_offset=0, for_display=False):
@@ -601,13 +583,14 @@ def play():
     story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:
-        display_menu('game_menu')
+        x = display_menu('game_menu')
+        if x == 'quit':
+            return
 
 
 def view_character():
     print("Stats:")
     print(player['character'])
-    #return display_menu('game_menu')
 
 
 def view_inventory():
@@ -622,15 +605,15 @@ def fight_test():
 
 def shopping():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
-    print(f"Welcome to {current_shop.title()}!\n")
+    print(f"Welcome to {current_shop.upper()}!\n")
     while True:
         num = 1
-        print(f"\n{current_shop.title()}:\n")
+        print(f"\n{current_shop.upper()}:\n")
         for option in menu['shop_menu']:
             print(f" {num}. {option.title()}")
             num += 1
         print(f" {num}. Quit")
-        choice = input("Choice: ").lower()
+        choice = input("\nChoice: ").lower()
         if choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             return
@@ -638,12 +621,17 @@ def shopping():
             os.system('cls' if os.name == 'nt' else 'clear')
             menu['shop_menu'][choice]()
         else:
+            os.system('cls' if os.name == 'nt' else 'clear')
             try:
-                if int(choice) <= len(list(menu['shop_menu'].keys())) and int(choice) >= 1:
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    menu['shop_menu'][list(menu['shop_menu'].items())[int(choice) - 1][0]]()
+                choice = int(choice)
             except ValueError:
-                pass
+                continue
+            if 1 <= choice <= len(list(menu['shop_menu'].keys())):
+                menu['shop_menu'][list(menu['shop_menu'].items())[int(choice) - 1][0]]()
+            elif choice == len(list(menu['shop_menu'].keys())) + 1:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                return
+        
 
 
 def buy():
@@ -661,26 +649,28 @@ def buy():
             os.system('cls' if os.name == 'nt' else 'clear')
             return
         elif item_choice in shops[current_shop]:
-            player['inventory'].contents.append(item_choice)
-            os.system('cls' if os.name == 'nt' else 'clear')
+            pass
         else:
             try:
                 item_choice = int(item_choice)
             except ValueError:
                 continue
-            if item_choice <= len(list(shops[current_shop].keys())) and item_choice >= 1:
+            if 1 <= item_choice <= len(list(shops[current_shop].keys())):
                 item_choice = list(shops[current_shop].keys())[item_choice - 1]
-            if shops[current_shop][item_choice] <= player['character'].gold:
-                player['character'].gold -= shops[current_shop][item_choice]
-                player['inventory'].contents.append(item_choice)
-            else:
-                print("You don't have enough gold!")
-                input("Press ENTER to continue")
-            os.system('cls' if os.name == 'nt' else 'clear')
+            elif item_choice == len(list(shops[current_shop].keys())) + 1:  # Quit option number
+                os.system('cls' if os.name == 'nt' else 'clear')
+                return
+        if shops[current_shop][item_choice] <= player['character'].gold:
+            player['character'].gold -= shops[current_shop][item_choice]
+            player['inventory'].contents.append(item_choice)
+        else:
+            _print("\nYou don't have enough gold!")
+            input("Press ENTER to continue")
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def sell():
-    print("I don't want to buy your items!")
+    _print("I don't want to buy your items!")
     return
 
 
@@ -733,8 +723,7 @@ def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
             print(game_title)
-        if current_menu == 'movement_menu':  # Movement menu is handled elsewhere
-            print(update_map_display())
+        print()
         option_list = list(menu[current_menu].items())
         num: int = 1
         for option in menu[current_menu]:
