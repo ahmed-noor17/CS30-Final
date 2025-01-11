@@ -44,6 +44,12 @@ game_over_text = '''
 |  |  |     | | | |   __|  |  |  |  |  |   __|    -|
 |_____|__|__|_|_|_|_____|  |_____|\___/|_____|__|__|\n'''
 
+credit_text = '''
+ _____ _____ _____ ____  _____ _____ _____ _ 
+|     | __  |   __|    \|     |_   _|   __|_|
+|   --|    -|   __|  |  |-   -| | | |__   |_ 
+|_____|__|__|_____|____/|_____| |_| |_____|_|'''
+
 story_file = 'opening.txt'
 death_file = 'death.txt'
 
@@ -710,8 +716,7 @@ def shopping():
                 menu['shop_menu'][list(menu['shop_menu'].items())[int(choice) - 1][0]]()
             elif choice == len(list(menu['shop_menu'].keys())) + 1:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                return
-        
+                return    
 
 
 def buy():
@@ -792,6 +797,12 @@ def _quit():
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
         return display_menu('main_menu')
+    
+
+def credits_menu():
+    print(credit_text)
+    print("Created as a final project for Ms. Lynn's CS 30 class 2024-2025.\n")
+    print("Regress Development Team:\n - Aiden Dielschneider (Developer)\n - Ahmed Noor (Developer)\n - Damian Knourek (Credit pending)")
 
 
 shops = {"dan's thingamabobs": {"health potion": 8,
@@ -804,6 +815,7 @@ shops = {"dan's thingamabobs": {"health potion": 8,
 menu = {
     "main_menu": {
         "play": play,
+        "credits": credits_menu,
         "quit": _quit
     },
     "game_menu": {
@@ -866,7 +878,6 @@ def display_menu(current_menu):
             return menu[current_menu][choice]()
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
-
 
 
 def clamp(value, min_value, max_value):
