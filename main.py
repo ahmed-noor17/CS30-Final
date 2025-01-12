@@ -258,7 +258,7 @@ def moving():
             print(_map.rooms[player['position'][2]][get_room()]['description'])
         except KeyError:
             pass
-        print(update_map_display(5, 5))  # This is where the movement menu code starts
+        print(update_map_display(_map.game_map[player['position'][2]]['data']['visibility'], _map.game_map[player['position'][2]]['data']['visibility']))  # This is where the movement menu code starts
         if temp_opt_list != []:
             print("\nOptions:\n")
         for option in temp_opt_list:
@@ -353,11 +353,13 @@ def load_data():
 
 def game_over():
     global fighting
+    global hours_remaining
     time.sleep(2)
     os.system('cls' if os.name == 'nt' else 'clear')
     _print(game_over_text, delay=0.1, print_by_line=True)
     time.sleep(1.5)
     show_story_text(death_file)
+    hours_remaining = 72
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
     player['character'].hp = player['character'].max_hp

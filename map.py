@@ -11,6 +11,7 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
+            "visibility": 5
         }
     },
 
@@ -26,6 +27,7 @@ game_map = {
             "random_encounter_chance": 50,
             "encounters": ['dungeon1', 'dungeon2', 'dungeon3', 'dungeon4', 'dungeon5'],
             "move_time": 0,
+            "visibility": 5
         }
     },
 
@@ -44,6 +46,7 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
+            "visibility": 5
         }
     },
 
@@ -57,6 +60,7 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
+            "visibility": 5
         }
     },
 
@@ -82,6 +86,7 @@ game_map = {
             "random_encounter_chance": 3,
             "encounters": ['goblin', 'goblin patrol', 'elite patrol'],
             "move_time": 0.5,
+            "visibility": 7
         }
     },
 
@@ -117,6 +122,7 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
+            "visibility": 5
         }
     },
 
@@ -142,6 +148,7 @@ game_map = {
         "random_encounter_chance": 0,
         "encounters": [],
         "move_time": 0,
+        "visibility": 5
         }
     }
 
