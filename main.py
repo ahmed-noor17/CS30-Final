@@ -21,10 +21,12 @@ playing_game = True
 fighting = False
 
 game_title = '''
- _____ _____ _____ _____ _____ _____ _____
-| __  |   __|   __| __  |   __|   __|   __|
-|    -|   __|  |  |    -|   __|__   |__   |
-|__|__|_____|_____|__|__|_____|_____|_____|\n'''
+  _____  ______ _____ _____  ______  _____ _____  
+ |  __ \|  ____/ ____|  __ \|  ____|/ ____/ ____| 
+ | |__) | |__ | |  __| |__) | |__  | (___| (___   
+ |  _  /|  __|| | |_ |  _  /|  __|  \___ \ ___ \  
+ | | \ \| |___| |__| | | \ \| |____ ____) |___) | 
+ |_|  \_\______\_____|_|  \_\______|_____/_____/\n'''
 
 player_turn_text = '''
  _____ __    _____ __ __ _____ _____    _____ _____ _____ _____ _ 
@@ -46,8 +48,8 @@ game_over_text = '''
 
 credit_text = '''
  _____ _____ _____ ____  _____ _____ _____ _ 
-|     | __  |   __|    \|     |_   _|   __|_|
-|   --|    -|   __|  |  |-   -| | | |__   |_ 
+|   __| __  |   __|    \|_   _|_   _|   __|_|
+|  |__|    -|   __|  |  |_| |_  | | |__   |_ 
 |_____|__|__|_____|____/|_____| |_| |_____|_|'''
 
 story_file = 'opening.txt'
@@ -213,17 +215,17 @@ def update_position(axis, value):
             print("You cannot go that way.")
 
 
-def update_map_display():
+def update_map_display(width: int, height: int):
     ''' Creates and updates a separate map that displays your location
         and the surrounding areas that you can move to.
+        IMPORTANT: both arguments MUST be uneven and positive.
     '''
-    global map_display
-    map_display = [
-        [get_room(-2, -2, True), get_room(-2, -1, True),    get_room(-2, 0, True), get_room(-2, +1, True), get_room(-2, +2, True)],
-        [get_room(-1, -2, True), get_room(-1, -1, True),    get_room(-1, 0, True), get_room(-1, +1, True), get_room(-1, +2, True)],
-        [get_room(+0, -2, True), get_room(+0, -1, True), f"*{get_room()}*\n(You)", get_room(+0, +1, True), get_room(+0, +2, True)],
-        [get_room(+1, -2, True), get_room(+1, -1, True),    get_room(+1, 0, True), get_room(+1, +1, True), get_room(+1, +2, True)],
-        [get_room(+2, -2, True), get_room(+2, -1, True),    get_room(+2, 0, True), get_room(+2, +1, True), get_room(+2, +2, True)]]
+    map_display = []
+    for h in range(height):
+        map_display.append([])
+        for w in range(width):
+            map_display[h].append(get_room(h-(height//2), w-(width//2), True))
+    map_display[height//2][width//2] = f"{get_room()}\n(You)"
     return tabulate(map_display, tablefmt="rounded_grid", stralign='center', rowalign='center').title()
 
 
@@ -256,7 +258,7 @@ def moving():
             print(_map.rooms[player['position'][2]][get_room()]['description'])
         except KeyError:
             pass
-        print(update_map_display())  # This is where the movement menu code starts
+        print(update_map_display(5, 5))  # This is where the movement menu code starts
         if temp_opt_list != []:
             print("\nOptions:\n")
         for option in temp_opt_list:
@@ -328,6 +330,7 @@ def save_data():
     except Exception:
         print("An error occurred while saving data.")
 
+
 def load_data():
     try:
         with open(current_save_file, 'r') as f:
@@ -350,8 +353,10 @@ def load_data():
 
 def game_over():
     global fighting
+    time.sleep(2)
+    os.system('cls' if os.name == 'nt' else 'clear')
     _print(game_over_text, delay=0.1, print_by_line=True)
-    time.sleep(1)
+    time.sleep(1.5)
     show_story_text(death_file)
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
@@ -639,7 +644,7 @@ def story():
         if "y" in confirm:
             break
     data_to_save['skip_introduction'] = True
-    
+
 
 def show_story_text(file):
     try:
@@ -687,7 +692,6 @@ def view_character():
 
 def view_inventory():
     print("Inventory:")
-
     if player['inventory'].contents == []:
         print("There is nothing in your bag.\n")
         return
@@ -857,7 +861,7 @@ menu = {
 def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
-            print(game_title)
+            _print(game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
             print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         print()
@@ -865,6 +869,7 @@ def display_menu(current_menu):
         num = 1
         for option in menu[current_menu]:
             print(f" {num}. {option.capitalize()}")
+            time.sleep(0.05)
             num += 1
         if current_menu != 'main_menu' and current_menu != 'combat_menu':
             print(f" {num}. Quit")
