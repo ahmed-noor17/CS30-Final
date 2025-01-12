@@ -127,7 +127,7 @@ save_files = {
 
 debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
 
-text_speed = 0.005
+text_speed = 0.01
 map_cell_character_len = 20
 hours_remaining = 72.0
 
@@ -349,12 +349,16 @@ def load_data():
 
 
 def game_over():
-    print(game_over_text)
+    global fighting
+    _print(game_over_text, delay=0.1, print_by_line=True)
+    time.sleep(1)
     show_story_text(death_file)
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
     player['character'].hp = player['character'].max_hp
     player['inventory'] = _inventory.Inventory([])
+    player['enemies'].clear()
+    fighting = False
 
 
 def level_up():
@@ -376,6 +380,8 @@ def level_formula():
 
 def enemy_turn():
     for enemy in list(player['enemies'].keys()):
+        if not fighting:
+            break
         enemy_object = player['enemies'][enemy]
         if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
             _print(f"\n{enemy_object.name.title()} took a turn!")
@@ -414,19 +420,26 @@ def combat(encounter_enemies):
     fighting = True
     while fighting:
         print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")  # TODO: It would be nice if this printed every time combat menu did. Also it would be nice to see enemy info as well
-        print(player_turn_text)
+        _print(player_turn_text, delay=0.04, print_by_line=True)
         display_menu('combat_menu')
         if check_for_battle_victory(xp_prize, gold_prize):  # This function returns true if the battle is over
-            break
-        print(enemy_turn_text)
+            return
+        _print(enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
-        if check_for_battle_victory(xp_prize, gold_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
+        if not fighting:  # If the player dies, the enemies disappear, so break before the game "detects" that we've "won"
             break
+        if check_for_battle_victory(xp_prize, gold_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
+            return
     player['enemies'].clear()
 
 
 def check_for_battle_victory(xp_prize=0, gold_prize=0):
     global fighting
+    if player['character'].hp <= 0:
+        print("You lost!")
+        fighting = False
+        game_over()
+        return True
     if len(list(player['enemies'].keys())) <= 0:
         print("\nYou won!")
         print(f"You earned {xp_prize} EXP and {gold_prize}g")
@@ -437,12 +450,8 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0):
         os.system('cls' if os.name == 'nt' else 'clear')
         fighting = False
         return True
-
-    if player['character'].hp <= 0:
-        print("You lost!")
-        fighting = False
-        game_over()
-        return True
+    else:
+        return False
 
 
 def attack_menu():
@@ -598,13 +607,15 @@ def setup():
     return None
 
 
-def _print(text: str, delay=text_speed, newline=True):
+def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
     ''' Function prints text with a typing effect.
     '''
     punctuation = ['.', '!', '?']
     if delay != 0.0:
+        if print_by_line:
+            text = text.splitlines()
         for char in text:
-            print(char, end='', flush=True)
+            print(char + '\n' * print_by_line, end='', flush=True)
             time.sleep(delay)
             if char == ' ':
                 time.sleep(delay)
