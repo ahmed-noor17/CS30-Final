@@ -232,6 +232,7 @@ def moving():
     print("You begin moving.")
     while moving:
         os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         temp_opt_list = []
         try:
             if _map.rooms[player['position'][2]][get_room()]['connections']:
@@ -288,7 +289,6 @@ def moving():
 def expend_time(time_cost):
     global hours_remaining
     hours_remaining -= time_cost
-    print(f"{math.ceil(hours_remaining)} hours left until destruction...")
     if hours_remaining <= 0:
         game_over()
 
@@ -725,7 +725,7 @@ def buy():
         print(f"Purchasable items:\n")
         num = 1
         for option in shops[current_shop]:
-            print(f" {num}. {option.capitalize()}  ---  ({_item.item["consumable"][option]["value"]}g)")
+            print(f" {num}. {option.capitalize()}  ---  ({_item.item['consumable'][option]['value']}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
