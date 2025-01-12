@@ -86,7 +86,7 @@ combat_encounters = {
     'dungeon2': ['spider', 'skeleton warrior'],
     'dungeon3': ['skeleton warrior', 'skeleton warrior'],
     'dungeon4': ['skeleton warrior', 'imp', 'spider'],
-    'dungeon5': ['orc', 'imp', 'imp'],
+    'dungeon5': ['orc', 'imp'],
     'the final battle': ['the dark lord']
 }
 
@@ -413,19 +413,17 @@ def combat(encounter_enemies):
             else:
                 enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
-        vowels = ['a', 'e', 'i', 'o', 'u']
-        if enemy[0] in vowels:
-            n = 'n'
-        else:
-            n = ''
+        n = 'n' if enemy[0] in ['a', 'e', 'i', 'o', 'u'] else ''
         _print(f"You've encountered a{n} {enemy.title()}!")
     time.sleep(0.5)
 
     global fighting
     fighting = True
     while fighting:
-        print(f"\nHP: {player['character'].hp}/{player['character'].max_hp}")  # TODO: It would be nice if this printed every time combat menu did. Also it would be nice to see enemy info as well
         _print(player_turn_text, delay=0.04, print_by_line=True)
+        for target_enemy in list(player['enemies'].keys()):
+            print(f" > {target_enemy.title()}   ---   (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
+        print(f"\nYour HP: {player['character'].hp}/{player['character'].max_hp}")
         display_menu('combat_menu')
         if check_for_battle_victory(xp_prize, gold_prize):  # This function returns true if the battle is over
             return
@@ -667,12 +665,13 @@ def play():
             print(f" {num}. {save.title()}")
             num += 1
         chosen_save_file = input("Choose a save file: ").lower()
+        try:
+            if 1 <= int(chosen_save_file) < num:
+                chosen_save_file = list(save_files.keys())[int(chosen_save_file) - 1]
+        except ValueError:
+            pass
         if chosen_save_file in list(save_files.keys()):
             current_save_file = save_files[chosen_save_file]
-            load_data()
-            break
-        elif chosen_save_file in '123':
-            current_save_file = list(save_files.items())[int(chosen_save_file) - 1][1]
             load_data()
             break
     if not loaded_data['skip_introduction'] == 'True':
@@ -715,23 +714,25 @@ def shopping():
             num += 1
         print(f" {num}. Quit")
         choice = input("\nChoice: ").lower()
+        try:
+            choice = int(choice)
+            if 1 <= choice < num:
+                choice = list(menu['shop_menu'].keys())[choice - 1]
+            elif choice == num:
+                choice = 'quit'
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                continue
+        except ValueError:
+            pass   
         if choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             return
-        if choice in menu['shop_menu']:
+        elif choice in menu['shop_menu']:
             os.system('cls' if os.name == 'nt' else 'clear')
             menu['shop_menu'][choice]()
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
-            try:
-                choice = int(choice)
-            except ValueError:
-                continue
-            if 1 <= choice <= len(list(menu['shop_menu'].keys())):
-                menu['shop_menu'][list(menu['shop_menu'].items())[int(choice) - 1][0]]()
-            elif choice == len(list(menu['shop_menu'].keys())) + 1:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                return    
 
 
 def buy():
@@ -745,22 +746,24 @@ def buy():
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
         item_choice = input("\nBuy: ").lower()
+        try:
+            item_choice = int(item_choice)
+            if 1 <= item_choice < num:
+                item_choice = shops[current_shop][item_choice - 1]
+            elif item_choice == num:
+                item_choice = 'quit'
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                continue
+        except ValueError:
+            pass
         if item_choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             return
         elif item_choice in shops[current_shop]:
             pass
         else:
-            try:
-                item_choice = int(item_choice)
-            except ValueError:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                continue
-            if 1 <= item_choice <= len(shops[current_shop]):
-                item_choice = shops[current_shop][item_choice - 1]
-            elif item_choice == len(shops[current_shop]) + 1:  # Quit option number
-                os.system('cls' if os.name == 'nt' else 'clear')
-                return
+            continue
         if _item.item["consumable"][item_choice]["value"] <= player['character'].gold:
             player['character'].gold -= _item.item["consumable"][item_choice]["value"]
             player['inventory'].contents.append(item_choice)
@@ -780,22 +783,23 @@ def sell():
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
         item_choice = input("\nSell: ").lower()
+        try:
+            item_choice = int(item_choice)
+            if 1 <= item_choice < num:
+                item_choice = player['inventory'].contents[item_choice - 1]
+            elif item_choice == num:
+                item_choice = 'quit'
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                continue
+        except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            continue
         if item_choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             return
         elif item_choice in player['inventory'].contents:
             pass
-        else:
-            try:
-                item_choice = int(item_choice)
-            except ValueError:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                continue
-            if 1 <= item_choice <= len((player['inventory'].contents)):
-                item_choice = player['inventory'].contents[item_choice - 1]
-            elif item_choice == len(player['inventory'].contents) + 1:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                return
         player['inventory'].contents.remove(item_choice)
         player['character'].gold += 50  # need item value
         _print(f"\nYou sold {item_choice}")
@@ -865,7 +869,7 @@ def display_menu(current_menu):
         elif current_menu == 'game_menu':
             print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         print()
-        option_list = list(menu[current_menu].items())
+        option_list = list(menu[current_menu].keys())
         num = 1
         for option in menu[current_menu]:
             print(f" {num}. {option.capitalize()}")
@@ -874,16 +878,18 @@ def display_menu(current_menu):
         if current_menu != 'main_menu' and current_menu != 'combat_menu':
             print(f" {num}. Quit")
         choice = input("\nChoice: ").lower()
-        if choice not in menu[current_menu]:
-            try:
-                choice = int(choice)
-                if 1 <= choice < num:  # Check if the number inputted is an option
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    return option_list[choice - 1][1]()
-                elif choice == num:
-                    choice = 'quit'
-            except ValueError:
-                pass
+        try:
+            choice = int(choice)
+            if 1 <= choice < num:  # Check if the number inputted is an option
+                os.system('cls' if os.name == 'nt' else 'clear')
+                choice = option_list[choice - 1]
+            elif choice == num and current_menu != 'main_menu':
+                choice = 'quit'
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                continue
+        except ValueError:
+            pass
         if choice == "quit" and current_menu != "main_menu"  and current_menu != "combat_menu":
             print("\nWould you like to quit to main menu?")
             if "n" in input("Any unsaved progress will be lost! (Y/N)").lower():
