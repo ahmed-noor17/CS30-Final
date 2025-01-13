@@ -14,44 +14,14 @@ import math
 import DATA.map_data as _map
 import OBJECTS.inventory as _inventory
 import OBJECTS.character as _character
-import OBJECTS.attack as _attack
 import OBJECTS.equipment as _equipment
-from tabulate import tabulate
 import DATA.item_data as _item
+import DATA.combat_data as _combat
+import TEXT.title_text as _title
+from tabulate import tabulate
+
 playing_game = True
 fighting = False
-
-game_title = '''
- _____  ______ _____ _____  ______  _____ _____  
-|  __ \|  ____/ ____|  __ \|  ____|/ ____/ ____| 
-| |__) | |__ | |  __| |__) | |__  | (___| (___   
-|  _  /|  __|| | |_ |  _  /|  __|  \___ \ ___ \  
-| | \ \| |___| |__| | | \ \| |____ ____) |___) | 
-|_|  \_\______\_____|_|  \_\______|_____/_____/\n'''
-
-player_turn_text = '''
- _____ __    _____ __ __ _____ _____    _____ _____ _____ _____ _ 
-|  _  |  |  |  _  |  |  |   __| __  |  |_   _|  |  | __  |   | |_|
-|   __|  |__|     |_   _|   __|    -|    | | |  |  |    -| | | |_ 
-|__|  |_____|__|__| |_| |_____|__|__|    |_| |_____|__|__|_|___|_|\n'''
-
-enemy_turn_text = '''
- _____ _____ _____ _____ __ __    _____ _____ _____ _____ _       
-|   __|   | |   __|     |  |  |  |_   _|  |  | __  |   | |_|      
-|   __| | | |   __| | | |_   _|    | | |  |  |    -| | | |_       
-|_____|_|___|_____|_|_|_| |_|      |_| |_____|__|__|_|___|_|\n'''
-
-game_over_text = '''
- _____ _____ _____ _____    _____ _____ _____ _____ 
-|   __|  _  |     |   __|  |     |  |  |   __| __  |
-|  |  |     | | | |   __|  |  |  |  |  |   __|    -|
-|_____|__|__|_|_|_|_____|  |_____|\___/|_____|__|__|\n'''
-
-credit_text = '''
- _____ _____ _____ ____  _____ _____ _____ _ 
-|   __| __  |   __|    \|_   _|_   _|   __|_|
-|  |__|    -|   __|  |  |_| |_  | | |__   |_ 
-|_____|__|__|_____|____/|_____| |_| |_____|_|\n'''
 
 story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
 death_file = os.getcwd() + '/TEXT/STORY/death.txt'
@@ -62,65 +32,6 @@ player = {
 	'inventory': _inventory.Inventory([None]),
     'enemies': {},
     'equipment': []
-}
-
-#name, level, xp, gold, max_hp, atk, acc, moves
-enemies = {
-	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
-    'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
-	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
-    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
-    'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 5, 85, ['slash', 'arrow', 'arrow']],
-    'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'freeze ray', 'magic missile']],
-    'imp': ["imp", 1, 50, 10, 90, 5, 90, ['slash', 'fireball', 'magic missile']],
-    'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
-    'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
-    'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
-}
-
-combat_encounters = {
-    'test_fight': ['punching bag'],
-    'goblin': ['goblin'],
-    'goblin patrol': ['goblin', 'goblin'],
-    'elite patrol': ['goblin', 'orc'],
-    'dungeon1': ['spider'],
-    'dungeon2': ['spider', 'skeleton warrior'],
-    'dungeon3': ['skeleton warrior', 'skeleton warrior'],
-    'dungeon4': ['skeleton warrior', 'imp', 'spider'],
-    'dungeon5': ['orc', 'imp'],
-    'the final battle': ['the dark lord']
-}
-
-attacks = {
-	'slash': _attack.Attack(5, 100, '{attacker} slashed {target}!', 'single enemy'),
-    'bite': _attack.Attack(4, 100, '{attacker} bit {target}!', 'single enemy'),
-    'bash': _attack.Attack(7, 80, '{attacker} bashed {target}!', 'single enemy'),
-    'gash': _attack.Attack(9, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1),
-    'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemies', 'bleed', 3),
-    'arrow': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'single enemy'),
-    'headbutt': _attack.Attack(10, 90, '{attacker} bashed {target} with their head!', 'single enemy'),
-	'fireball': _attack.Attack(10, 95, '{attacker} casted fireball!', 'single enemy'),
-    'incinerate': _attack.Attack(7, 95, '{attacker} scorched {target}!', 'all enemies'),
-    'cursed fire': _attack.Attack(12, 96, '{attacker} casted cursed fire!', 'single enemy'),
-    'heal': _attack.Attack(-5, 99999, '{attacker} healed {target}!', 'single ally'),
-    'super heal': _attack.Attack(-15, 99999, '{attacker} healed {target}!', 'single ally'),
-    'lightning bolt': _attack.Attack(12, 99999, '{attacker} shocked {target}!', 'single enemy'),
-    'thunderstorm': _attack.Attack(7, 99999, '{attacker} shocked {target}!', 'all enemies'),
-    'unholy diver': _attack.Attack(30, 75, '{attacker} unleashed havoc on {target}!', 'all enemies'),
-    'annihilation': _attack.Attack(900, 99999, '{attacker} annihilated {target}!', 'all enemies'),
-    'freeze ray': _attack.Attack(8, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 1),
-    'frost blast': _attack.Attack(5, 90, '{attacker} froze {target}!', 'all enemies', 'freeze', 1),
-    'deep freeze': _attack.Attack(9, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 2),
-    'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy'),
-    'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2),
-
-    # Damage over time status effects
-    # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
-    # to get stunlocked by an enemy freeze blasting you over and over?
-    'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy'),
-    'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
-    'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy')
 }
 
 save_files = {
@@ -316,7 +227,7 @@ def random_encounter():
     if roll <= _map.game_map[player['position'][2]]['data']['random_encounter_chance']:
         map_encounters = _map.game_map[player['position'][2]]['data']['encounters']
         encounter = map_encounters[random.randint(0, len(map_encounters) - 1)]
-        combat(combat_encounters[encounter])
+        combat(_combat.combat_encounters[encounter])
 
 
 # Save/Load -------------------------------------------------------------------
@@ -358,7 +269,7 @@ def game_over():
     global hours_remaining
     time.sleep(2)
     os.system('cls' if os.name == 'nt' else 'clear')
-    _print(game_over_text, delay=0.1, print_by_line=True)
+    _print(_title.game_over_text, delay=0.1, print_by_line=True)
     time.sleep(1.5)
     show_story_text(death_file)
     hours_remaining = 72
@@ -394,11 +305,11 @@ def enemy_turn():
         enemy_object = player['enemies'][enemy]
         if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
             _print(f"\n{enemy_object.name.title()} took a turn!")
-            use_attack(attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
+            use_attack(_combat.attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
         for debuff in list(dict.fromkeys(enemy_object.debuffs)):
             if enemy_object.hp > 0 and not check_for_battle_victory():  # Enemies do not take DOT damage if they are already dead or if they killed the player
                 enemy_object.debuffs.remove(debuff)
-                use_attack(attacks[debuff], debuff_char, enemy_object)
+                use_attack(_combat.attacks[debuff], debuff_char, enemy_object)
         time.sleep(0.1)
 
 
@@ -406,7 +317,7 @@ def combat(encounter_enemies):
     gold_prize = 0
     xp_prize = 0
     for enemy in encounter_enemies:
-        enemy_object = _character.Character(enemies[enemy][0], enemies[enemy][1], enemies[enemy][2], enemies[enemy][3], enemies[enemy][4], enemies[enemy][5], enemies[enemy][6], enemies[enemy][7])
+        enemy_object = _character.Character(_combat.enemies[enemy][0], _combat.enemies[enemy][1], _combat.enemies[enemy][2], _combat.enemies[enemy][3], _combat.enemies[enemy][4], _combat.enemies[enemy][5], _combat.enemies[enemy][6], _combat.enemies[enemy][7])
         gold_prize += enemy_object.gold
         xp_prize += enemy_object.xp
         enemy_count = 1
@@ -424,14 +335,14 @@ def combat(encounter_enemies):
     global fighting
     fighting = True
     while fighting:
-        _print(player_turn_text, delay=0.04, print_by_line=True)
+        _print(_title.player_turn_text, delay=0.04, print_by_line=True)
         for target_enemy in list(player['enemies'].keys()):
             print(f" > {target_enemy.title()}   ---   (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
         print(f"\nYour HP: {player['character'].hp}/{player['character'].max_hp}")
         display_menu('combat_menu')
         if check_for_battle_victory(xp_prize, gold_prize):  # This function returns true if the battle is over
             return
-        _print(enemy_turn_text, delay=0.04, print_by_line=True)
+        _print(_title.enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
         if not fighting:  # If the player dies, the enemies disappear, so break before the game "detects" that we've "won"
             break
@@ -465,11 +376,11 @@ def attack_menu():
     print("Attacks:")
     num = 1
     for attack in player['character'].moves:
-        print(f" {num}. {attack.capitalize()}   ---   (DMG: {attacks[attack].damage * player['character'].atk} ACC: {attacks[attack].acc * player['character'].acc / 100}%)")
+        print(f" {num}. {attack.capitalize()}   ---   (DMG: {_combat.attacks[attack].damage * player['character'].atk} ACC: {_combat.attacks[attack].acc * player['character'].acc / 100}%)")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
-        if use_move in player['character'].moves and use_move in list(attacks.keys()):
+        if use_move in player['character'].moves and use_move in list(_combat.attacks.keys()):
             choose_attack_target(use_move)
             break
         else:
@@ -483,12 +394,12 @@ def attack_menu():
 
 def choose_attack_target(use_move):
     while True:
-        if 'ally' in attacks[use_move].target_type:
-            use_attack(attacks[use_move], player['character'], player['character'])
+        if 'ally' in _combat.attacks[use_move].target_type:
+            use_attack(_combat.attacks[use_move], player['character'], player['character'])
             break
         else:
             target_list = list(player['enemies'].keys())
-        if 'single' in attacks[use_move].target_type:          
+        if 'single' in _combat.attacks[use_move].target_type:          
             while True:
                 if len(list(player['enemies'].keys())) <= 1:
                     target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
@@ -499,19 +410,19 @@ def choose_attack_target(use_move):
                         num += 1
                     target = input("Choose a target: ").lower()
                 if target in list(player['enemies'].keys()):
-                    use_attack(attacks[use_move], player['character'], player['enemies'][target])
+                    use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target])
                     break
                 else:
                     try:
                         if int(target) <= len(target_list) and int(target) >= 1:
-                            use_attack(attacks[use_move], player['character'], player['enemies'][target_list[int(target) - 1]])
+                            use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target_list[int(target) - 1]])
                             break
                     except Exception:  # TODO: Figure out what exception this should be
                         pass
             break
-        elif 'all ' in attacks[use_move].target_type:
+        elif 'all ' in _combat.attacks[use_move].target_type:
             for target_enemy in target_list:
-                use_attack(attacks[use_move], player['character'], player['enemies'][target_enemy])
+                use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target_enemy])
             break
 
 
@@ -528,20 +439,21 @@ def use_item():
     for item in player['inventory'].contents:
         if item in list(_item.item['consumable'].keys()):
             usable_items.append(item)
-            print(f" {num}. {item.title()}")
-            num += 1
+    unique_usable_items = list(set(usable_items))
+    for item in unique_usable_items:
+        print(f" {num}. {item.title()} (x{usable_items.count(item)})")
+        num += 1
     if len(usable_items) <= 0:
         print("You do not have any usable items!")
         return display_menu('combat_menu')
     while True:
         use_item = input("Choose an item to use: ").lower()
-        if use_item not in usable_items:
-            try:
-                use_item = int(use_item)
-                if 1 <= use_item <= len(usable_items):
-                    use_item = usable_items[use_item - 1]
-            except ValueError:
-                pass
+        try:
+            use_item = int(use_item)
+            if 1 <= use_item <= num:
+                use_item = unique_usable_items[use_item - 1]
+        except ValueError:
+            pass
         if use_item in usable_items:
             player['inventory'].contents.remove(use_item)
             choose_attack_target(_item.item['consumable'][use_item]['cast'])
@@ -704,7 +616,7 @@ def view_inventory():
 
 
 def fight_test():
-    combat(combat_encounters['dungeon5'])
+    combat(_combat.combat_encounters['dungeon5'])
 
 
 def shopping():
@@ -845,7 +757,7 @@ def _quit():
     
 
 def credits_menu():
-    print(credit_text)
+    print(_title.credit_text)
     print("Created as a final project for Ms. Lynn's CS 30 class 2024-2025.\n")
     print("Regress Development Team:\n - Aiden Dielschneider (Developer)\n - Ahmed Noor (Developer)\n - Damian Knourek (Credit pending)")
 
@@ -896,7 +808,7 @@ menu = {
 def display_menu(current_menu):
     while True:
         if current_menu == 'main_menu':
-            _print(game_title, delay=0.08, print_by_line=True)
+            _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
             print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         print()
