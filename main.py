@@ -31,7 +31,12 @@ player = {
 	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
     'enemies': {},
-    'equipment': []
+    'equipment': {
+        "head": None,
+        "torso": None,
+        "weapon": None,
+        "accessory": None
+    }
 }
 
 save_files = {
@@ -373,20 +378,26 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0):
 
 
 def attack_menu():
+    equipment_moves = []
+    for equipment in list(player['equipment'].items()):
+        if not equipment[1] == None:  # I know this seems kinda bad but the alternative was a whole try/except thing that I didn't feel like doing
+            if not _item.item['equipment'][equipment[1]]['move'] == None:
+                equipment_moves.append(_item.item['equipment'][equipment[1]]['move'])
+    player_moves = player['character'].moves + equipment_moves
     print("Attacks:")
     num = 1
-    for attack in player['character'].moves:
+    for attack in player_moves:
         print(f" {num}. {attack.capitalize()}   ---   (DMG: {_combat.attacks[attack].damage * player['character'].atk} ACC: {_combat.attacks[attack].acc * player['character'].acc / 100}%)")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
-        if use_move in player['character'].moves and use_move in list(_combat.attacks.keys()):
+        if use_move in player_moves and use_move in list(_combat.attacks.keys()):
             choose_attack_target(use_move)
             break
         else:
             try:
-                if int(use_move) <= len(player['character'].moves) and int(use_move) >= 1:
-                    choose_attack_target(player['character'].moves[int(use_move) - 1])
+                if int(use_move) <= len(player_moves) and int(use_move) >= 1:
+                    choose_attack_target(player_moves[int(use_move) - 1])
                     break
             except Exception:  # TODO: Figure out what exception this should be
                 pass
@@ -736,20 +747,46 @@ def check_sellable_category(option):
 
 
 def equipment():
+    print(f"Current equipment:\nHEAD: {player['equipment']['head']}\nTORSO: {player['equipment']['torso']}\nWEAPON: {player['equipment']['weapon']}\nACCESSORY: {player['equipment']['accessory']}")  # The equipment isn't .title()'d because it is NoneType idk how to fix this
     display_menu('equipment_menu')
 
 
 def equip_item():
     equipable_items = []
-    print("Equipable items:")
     for item in player['inventory'].contents:
         if item in list(_item.item['equipment'].keys()):
             equipable_items.append(item)
-            print(f" - {item}")
-    if len(equipable_items) > 0:
-        print("You have equipable items!")
-    else:
-        print("You do not have any equipable items!")
+    if len(equipable_items) <= 0:
+        print("You have no equipable items!")
+        return
+    print("Equipable items:")
+    num = 1
+    for item in equipable_items:
+        print(f" {num}. {item.capitalize()}   ---   (DEF: {_item.item['equipment'][item]['defence']} MOVE: {_item.item['equipment'][item]['move']})")
+        num += 1
+    while True:
+        item_to_equip = input("Choose an item to equip: ").lower()
+        try:
+            if int(item_to_equip) <= len(equipable_items) and int(item_to_equip) >= 1:
+                item_to_equip = equipable_items[int(item_to_equip) - 1]
+        except Exception:  # TODO: Figure out what exception this should be
+            pass
+        if item_to_equip in list(_item.item['equipment'].keys()) and item_to_equip in list(_item.item['equipment'].keys()):
+            item_slot = player['equipment'][_item.item['equipment'][item_to_equip]['slot']]
+            if item_slot == None:
+                player['inventory'].contents.remove(item_to_equip)
+                player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
+                break
+            else:
+                # Player already has something equipped in this slot
+                confirm = input(f"You already have {item_slot} equipped! Replace it? (Y/N) ").lower()
+                if "y" in confirm:
+                    player['inventory'].contents.append(item_slot)
+                    player['inventory'].contents.remove(item_to_equip)
+                    player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
+                    break
+                else:
+                    break
 
 
 def unequip_item():

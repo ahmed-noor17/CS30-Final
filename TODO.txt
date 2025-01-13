@@ -24,6 +24,8 @@ Things to work on:
         -Dungeons
         -Dialogue  (right-justification?)
         -Ending (completion)
+    -Don't read inputs while sleeping
+    -Save equipment to save file!
 
 Things we could implement:
     -Talking to shopkeepers

@@ -52,7 +52,15 @@ item = {
         "iron sword": {
             "description": "The pride of an amateur smith.",
             "slot": "weapon",
-            "value": 50}
+            "defence": 0,
+            "move": 'gash',
+            "value": 50},
+        "red ring": {
+            "description": "A ring embued with magic. Boosts MP.",
+            "slot": "accessory",
+            "defence": 0,
+            "move": 'fireball',
+            "value": 30}
     },
     "miscellaneous": {
         "silver ring": {

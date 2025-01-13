@@ -12,4 +12,4 @@ player_moves::slash, bash, deep freeze, hemorrhage, poison cloud
 player_x_position::1
 player_y_position::3
 player_map::tutorial
-player_inventory::health potion, health potion, iron sword, silver ring
+player_inventory::health potion, health potion, iron sword, red ring, red ring
