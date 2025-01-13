@@ -59,7 +59,8 @@ player = {
 	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([None]),
-    'enemies': {}
+    'enemies': {},
+    'equipment': []
 }
 
 #name, level, xp, gold, max_hp, atk, acc, moves
@@ -708,7 +709,8 @@ def fight_test():
 def shopping():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
     print(f"Welcome to {current_shop.upper()}!\n")
-    while True:
+    display_menu('shop_menu')
+    '''while True:
         num = 1
         print(f"\n{current_shop.upper()}:\n")
         for option in menu['shop_menu']:
@@ -734,7 +736,7 @@ def shopping():
             os.system('cls' if os.name == 'nt' else 'clear')
             menu['shop_menu'][choice]()
         else:
-            os.system('cls' if os.name == 'nt' else 'clear')
+            os.system('cls' if os.name == 'nt' else 'clear')'''
 
 
 def buy():
@@ -809,6 +811,27 @@ def sell():
         os.system('cls' if os.name == 'nt' else 'clear')
 
 
+def equipment():
+    display_menu('equipment_menu')
+
+
+def equip_item():
+    equipable_items = []
+    print("Equipable items:")
+    for item in player['inventory'].contents:
+        if item in list(_item.item['equipment'].keys()):
+            equipable_items.append(item)
+            print(f" - {item}")
+    if len(equipable_items) > 0:
+        print("You have equipable items!")
+    else:
+        print("You do not have any equipable items!")
+
+
+def unequip_item():
+    pass
+
+
 def _quit():
     global playing_game
     print("Press ENTER to confirm exit.")
@@ -847,7 +870,12 @@ menu = {
         "fight": fight_test,
         "status": view_character,
         "inventory": view_inventory,
+        "equipment": equipment,
         "save": save_data
+    },
+    "equipment_menu": {
+        "equip": equip_item,
+        "unequip": unequip_item
     },
     "movement_menu": {"up": up, "down": down,
         "left": left, "right": right
