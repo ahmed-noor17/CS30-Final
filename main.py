@@ -695,7 +695,7 @@ def sell():
         print("Your sellable items:\n")
         num = 1
         for option in player['inventory'].contents:
-            print(f" {num}. {option.capitalize()}  ---  (50g)")  # TODO: set item value
+            print(f" {num}. {option.capitalize()}  ---  ({_item.item[check_sellable_category(option)][option]['value'] * 7 // 10}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
@@ -718,10 +718,21 @@ def sell():
         elif item_choice in player['inventory'].contents:
             pass
         player['inventory'].contents.remove(item_choice)
-        player['character'].gold += 50  # need item value
+        player['character'].gold += _item.item[check_sellable_category(item_choice)][item_choice]['value'] * 7 // 10
         _print(f"\nYou sold {item_choice}")
         input("Press ENTER to continue")
         os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def check_sellable_category(option):
+    sellable_categories = list(dict.fromkeys(_item.item))[1:]
+    for category in sellable_categories:
+        try:
+            _item.item[category][option]
+        except KeyError:
+            pass
+        else:
+            return category
 
 
 def equipment():
