@@ -175,6 +175,7 @@ def moving():
         except KeyError:
             pass
         print(update_map_display(_map.game_map[player['position'][2]]['data']['visibility'], _map.game_map[player['position'][2]]['data']['visibility']))  # This is where the movement menu code starts
+        print("Move with WASD, type 'stop' to stop.")
         if temp_opt_list != []:
             print("\nOptions:\n")
         num = 1
@@ -263,6 +264,7 @@ def save_data():
         'player_level': player['character'].level,
         'player_xp': player['character'].xp,
         'player_gold': player['character'].gold,
+        'player_hp': player['character'].hp,
         'player_max_hp': player['character'].max_hp,
         'player_hp': player['character'].hp,
         'player_atk': player['character'].atk,
@@ -296,6 +298,7 @@ def load_data():
                 loaded_data[data[0]] = data[1]
         global player
         player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_level']), int(loaded_data['player_xp']), int(loaded_data['player_gold']), int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
+        player['character'].hp = int(loaded_data['player_hp'])
         player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
 
         if isinstance(loaded_data['player_inventory'], str):
@@ -347,14 +350,12 @@ def level_formula():
 
 def enemy_turn():
     for enemy in list(player['enemies'].keys()):
-        if not fighting:
-            break
         enemy_object = player['enemies'][enemy]
         if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
             _print(f"\n{enemy_object.name.title()} took a turn!")
             use_attack(_combat.attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
         for debuff in list(dict.fromkeys(enemy_object.debuffs)):
-            if enemy_object.hp > 0 and not check_for_battle_victory():  # Enemies do not take DOT damage if they are already dead or if they killed the player
+            if enemy_object.hp > 0 and not player['character'].hp <= 0:  # Enemies do not take DOT damage if they are already dead or if they killed the player
                 enemy_object.debuffs.remove(debuff)
                 use_attack(_combat.attacks[debuff], debuff_char, enemy_object)
         time.sleep(0.1)
@@ -392,8 +393,6 @@ def combat(encounter_enemies):
             return
         _print(_title.enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
-        if not fighting:  # If the player dies, the enemies disappear, so break before the game "detects" that we've "won"
-            break
         if check_for_battle_victory(xp_prize, gold_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
             return
     player['enemies'].clear()
@@ -406,7 +405,7 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0):
         fighting = False
         game_over()
         return True
-    if len(list(player['enemies'].keys())) <= 0:
+    elif len(list(player['enemies'].keys())) <= 0:
         print("\nYou won!")
         print(f"You earned {xp_prize} EXP and {gold_prize}g")
         player['character'].gold += gold_prize

@@ -12,11 +12,7 @@ BEFORE HANDING IN:
     -Do a full game run
 
 Things to work on:
-    -Movement controls explanation (URGENT)
-    -Add battles to map tile (URGENT)
     -World Map  (Ahmed & Aiden, WIP)
-    -Equipment and defense systems  (Aiden, WIP)
-        -Possibly requires combat rebalances
     -Progression locked exploration
     -Interactable map tiles (get items around map)
     -Mana system  (Possibly...)
