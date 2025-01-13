@@ -15,6 +15,7 @@ import DATA.map_data as _map
 import OBJECTS.inventory as _inventory
 import OBJECTS.character as _character
 import OBJECTS.attack as _attack
+import OBJECTS.equipment as _equipment
 from tabulate import tabulate
 import DATA.item_data as _item
 playing_game = True

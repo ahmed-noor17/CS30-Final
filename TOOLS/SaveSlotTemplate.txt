@@ -1,0 +1,15 @@
+text_speed::0.01
+skip_introduction::True
+player_name::Hero
+player_level::1
+player_xp::0
+player_gold::100
+player_max_hp::100
+player_hp::100
+player_atk::10
+player_acc::95
+player_moves::slash, bash
+player_x_position::1
+player_y_position::3
+player_map::tutorial
+player_inventory::inferno scroll, health potion
