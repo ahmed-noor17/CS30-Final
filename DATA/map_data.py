@@ -208,6 +208,9 @@ rooms = {
         "barracks": {"description": "Houses guards and soldiers in training."},
         "townhall": {"description": "Where Lord Svallen works tirelessly for the people of Ironwood."},
         "???": {"description": "???"}},
+    "world": {
+        "ironwood" : {"description": "Ironwood", "connections": [3, 1, 'ironwood'], "fight": "elite patrol"}
+    },
     "tutorial": {
         "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
         }

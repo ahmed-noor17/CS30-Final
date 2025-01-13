@@ -132,6 +132,10 @@ def update_map_display(width: int, height: int):
     return tabulate(map_display, tablefmt="rounded_grid", stralign='center', rowalign='center').title()
 
 
+def map_encounter():
+    combat(_combat.combat_encounters[_map.rooms[player['position'][2]][get_room()]['fight']])
+
+
 def moving():
     moving = True
     print("You begin moving.")
@@ -158,15 +162,35 @@ def moving():
             except Exception:
                 pass
         try:
+            if _map.rooms[player['position'][2]][get_room()]['fight']:
+                menu['movement_menu']['fight'] = map_encounter
+            temp_opt_list.append('fight')
+        except KeyError:
+            try:
+                menu['movement_menu'].pop('fight')
+            except Exception:
+                pass
+        try:
             print(_map.rooms[player['position'][2]][get_room()]['description'])
         except KeyError:
             pass
         print(update_map_display(_map.game_map[player['position'][2]]['data']['visibility'], _map.game_map[player['position'][2]]['data']['visibility']))  # This is where the movement menu code starts
         if temp_opt_list != []:
             print("\nOptions:\n")
+        num = 1
         for option in temp_opt_list:
-            print(f" - {option.title()}")
+            print(f" {num}. {option.title()}")
+            num += 1
         choice = input("\nChoice: ").lower()
+        try:
+            choice = int(choice)
+        except ValueError:
+            pass
+        else:
+            try:
+                choice = list(menu['movement_menu'].keys())[choice + 3]
+            except IndexError:
+                pass
         if choice == "stop":
             moving = False
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -181,14 +205,19 @@ def moving():
             os.system('cls' if os.name == 'nt' else 'clear')
             try:
                 if choice in menu['movement_menu']:
-                    menu['movement_menu'][choice]()
-                    expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
+                    menu['movement_menu'][choice]
                 elif choice in move_options.keys():
-                    menu['movement_menu'][move_options[choice]]()
-                    expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
+                    menu['movement_menu'][move_options[choice]]
             except KeyError:
-                print("That is not a direction.")
                 continue
+            if choice == 'shop' or choice == 'fight':
+                return menu['movement_menu'][choice]()
+            if choice in menu['movement_menu']:
+                expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
+                menu['movement_menu'][choice]()
+            elif choice in move_options.keys():
+                expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
+                menu['movement_menu'][move_options[choice]]()
 
 
 def expend_time(time_cost):
@@ -202,7 +231,7 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
         room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
-        return "/////////////////////\n/////////////////////\n/////////////////////"
+        return "////////////////\n" * 3
     padding = '­' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
     if for_display:
         if room_name == "---":
@@ -863,9 +892,11 @@ menu = {
         "equip": equip_item,
         "unequip": unequip_item
     },
-    "movement_menu": {"up": up, "down": down,
-        "left": left, "right": right
-    },
+    "movement_menu": {
+        "up": up,
+        "down": down,
+        "left": left,
+        "right": right},
     "combat_menu": {
         "attack": attack_menu,
         "item": use_item,

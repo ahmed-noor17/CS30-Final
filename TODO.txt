@@ -2,6 +2,7 @@
         Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.  -Aiden
 -ISSUE: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight.
          I only got this to happen when I left my name blank, so maybe that has something to do with it???  -Aiden
+ISSUE: Save gold not working
 
 BEFORE HANDING IN:
     -Check to make sure the credits are updated
@@ -11,6 +12,8 @@ BEFORE HANDING IN:
     -Do a full game run
 
 Things to work on:
+    -Movement controls explanation (URGENT)
+    -Add battles to map tile (URGENT)
     -World Map  (Ahmed & Aiden, WIP)
     -Equipment and defense systems  (Aiden, WIP)
         -Possibly requires combat rebalances
