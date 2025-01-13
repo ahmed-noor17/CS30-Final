@@ -1,12 +1,15 @@
-text_speed::0.025
-skip_introduction::None
-player_name::john
+text_speed::0.01
+skip_introduction::False
+player_name::Hero
+player_level::1
+player_xp::0
+player_gold::100
 player_max_hp::100
 player_hp::100
 player_atk::10
 player_acc::95
-player_moves::slash, fireball
+player_moves::slash, bash, hemorrhage
 player_x_position::1
-player_y_position::4
+player_y_position::3
 player_map::tutorial
-player_inventory::<inventory.Inventory object at 0x000001BF1BA8EA50>
+player_inventory::health potion, health potion, iron sword, red ring

@@ -86,7 +86,7 @@ game_map = {
             "random_encounter_chance": 3,
             "encounters": ['goblin', 'goblin patrol', 'elite patrol'],
             "move_time": 0.5,
-            "visibility": 7
+            "visibility": 5
         }
     },
 

@@ -48,7 +48,7 @@ save_files = {
 debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
 
 text_speed = 0.01
-map_cell_character_len = 20
+map_cell_character_len = 25
 hours_remaining = 72.0
 
 data_to_save = {
@@ -218,12 +218,12 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
         room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
         return "/////////////////////\n/////////////////////\n/////////////////////"
-    padding = 'ㅤ' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
+    padding = '­' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
     if for_display:
         if room_name == "---":
             room_name = "/////////////////////\n/////////////////////\n/////////////////////"
         else:
-            room_name = "ㅤ\n" + padding + room_name + padding + "\nㅤ"
+            room_name = "­\n" + padding + room_name + padding + "\n­"
     return room_name
 
 
