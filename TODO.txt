@@ -2,7 +2,6 @@
         Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.  -Aiden
 -ISSUE: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight.
          I only got this to happen when I left my name blank, so maybe that has something to do with it???  -Aiden
-ISSUE: Save gold not working
 
 BEFORE HANDING IN:
     -Check to make sure the credits are updated
@@ -12,9 +11,6 @@ BEFORE HANDING IN:
     -Do a full game run
 
 Things to work on:
-    -World Map  (Ahmed & Aiden, WIP)
-    -Progression locked exploration
-    -Interactable map tiles (get items around map)
     -Mana system  (Possibly...)
     -Time system*  (Aiden, WIP)
     -MORE CONTENT!!!!!!!
@@ -24,9 +20,10 @@ Things to work on:
         -Dialogue  (right-justification?)
         -Ending (completion)
     -Don't read inputs while sleeping
-    -Save equipment to save file!
 
 Things we could implement:
     -Talking to shopkeepers
     -Sound effects in combat
     -Music
+    -Progression locked exploration
+    -Interactable map tiles (get items around map)

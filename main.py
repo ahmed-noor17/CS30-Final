@@ -273,6 +273,10 @@ def save_data():
         'player_x_position': player['position'][0],
         'player_y_position': player['position'][1],
         'player_map': player['position'][2],
+        'player_head': player['equipment']['head'],
+        'player_torso': player['equipment']['torso'],
+        'player_weapon': player['equipment']['weapon'],
+        'player_accessory': player['equipment']['accessory']
     }
     if player['inventory'].contents != None:
         data_to_save['player_inventory'] = player['inventory'].contents
@@ -300,7 +304,10 @@ def load_data():
         player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_level']), int(loaded_data['player_xp']), int(loaded_data['player_gold']), int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
         player['character'].hp = int(loaded_data['player_hp'])
         player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
-
+        player['equipment']['head'] = loaded_data['player_head']
+        player['equipment']['torso'] = loaded_data['player_torso']
+        player['equipment']['weapon'] = loaded_data['player_weapon']
+        player['equipment']['accessory'] = loaded_data['player_accessory']
         if isinstance(loaded_data['player_inventory'], str):
             player['inventory'] = _inventory.Inventory([])
             player['inventory'].contents.append(loaded_data['player_inventory'])
@@ -800,8 +807,12 @@ def check_sellable_category(option):
 
 
 def equipment():
-    print(f"Current equipment:\nHEAD: {player['equipment']['head']}\nTORSO: {player['equipment']['torso']}\nWEAPON: {player['equipment']['weapon']}\nACCESSORY: {player['equipment']['accessory']}")  # The equipment isn't .title()'d because it is NoneType idk how to fix this
+    print(player_equipment())
     display_menu('equipment_menu')
+
+
+def player_equipment():
+    return f"Current equipment:\nHEAD: {player['equipment']['head']}\nTORSO: {player['equipment']['torso']}\nWEAPON: {player['equipment']['weapon']}\nACCESSORY: {player['equipment']['accessory']}"  # The equipment isn't .title()'d because it is NoneType idk how to fix this
 
 
 def equip_item():
@@ -829,7 +840,6 @@ def equip_item():
             if item_slot == None:
                 player['inventory'].contents.remove(item_to_equip)
                 player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
-                break
             else:
                 # Player already has something equipped in this slot
                 confirm = input(f"You already have {item_slot} equipped! Replace it? (Y/N) ").lower()
@@ -837,13 +847,13 @@ def equip_item():
                     player['inventory'].contents.append(item_slot)
                     player['inventory'].contents.remove(item_to_equip)
                     player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
-                    break
                 else:
-                    break
-
-
-def unequip_item():
-    pass
+                    pass
+        confirm = input("Would you like to continue equipping? (Y/N) ").lower()
+        if 'y' in confirm:
+            return equip_item()
+        else:
+            break
 
 
 def _quit():
@@ -889,7 +899,6 @@ menu = {
     },
     "equipment_menu": {
         "equip": equip_item,
-        "unequip": unequip_item
     },
     "movement_menu": {
         "up": up,
@@ -937,13 +946,17 @@ def display_menu(current_menu):
         except ValueError:
             pass
         if choice == "quit" and current_menu != "main_menu"  and current_menu != "combat_menu":
-            print("\nWould you like to quit to main menu?")
-            if "n" in input("Any unsaved progress will be lost! (Y/N)").lower():
-                os.system('cls' if os.name == 'nt' else 'clear')
-                break
+            if current_menu == "game_menu":
+                print("\nWould you like to quit to main menu?")
+                if "y" in input("Any unsaved progress will be lost! (Y/N)").lower():
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    current_menu = 'main_menu'              
+                else:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    break
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                current_menu = 'main_menu'
+                return
         elif choice in menu[current_menu]:
             os.system('cls' if os.name == 'nt' else 'clear')
             return menu[current_menu][choice]()
