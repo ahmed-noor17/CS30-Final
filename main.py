@@ -48,7 +48,7 @@ save_files = {
 debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
 
 text_speed = 0.01
-map_cell_character_len = 20
+map_cell_character_len = 15
 hours_remaining = 72.0
 
 data_to_save = {
@@ -217,13 +217,13 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
         room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
     except IndexError:
-        return "/////////////////////\n/////////////////////\n/////////////////////"
-    padding = 'ㅤ' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
+        return "////////////////\n"*3
+    padding = ' ' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
     if for_display:
         if room_name == "---":
-            room_name = "/////////////////////\n/////////////////////\n/////////////////////"
+            room_name = "////////////////\n"*3
         else:
-            room_name = "ㅤ\n" + padding + room_name + padding + "\nㅤ"
+            room_name = " \n" + padding + room_name + padding + "\n "
     return room_name
 
 
@@ -319,6 +319,7 @@ def enemy_turn():
 
 
 def combat(encounter_enemies):
+    calculate_player_defence()
     gold_prize = 0
     xp_prize = 0
     for enemy in encounter_enemies:
@@ -435,6 +436,14 @@ def choose_attack_target(use_move):
             for target_enemy in target_list:
                 use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target_enemy])
             break
+
+
+def calculate_player_defence():
+    player['character'].defence = 0
+    if player['equipment']['head'] != None:
+        player['character'].defence += _item.item['equipment'][player['equipment']['head']]['defence']
+    if player['equipment']['torso'] != None:
+        player['character'].defence += _item.item['equipment'][player['equipment']['torso']]['defence']
 
 
 def flee_battle():
@@ -611,6 +620,7 @@ def play():
 
 
 def view_character():
+    calculate_player_defence()
     print(f"Time remaining: {hours_remaining} hours\n")
     print("Stats:")
     print(player['character'])

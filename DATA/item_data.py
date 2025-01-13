@@ -60,6 +60,18 @@ item = {
             "slot": "accessory",
             "defence": 0,
             "move": 'fireball',
+            "value": 30},
+        "iron chestplate": {
+            "description": "A ring embued with magic. Boosts MP.",
+            "slot": "torso",
+            "defence": 3,
+            "move": None,
+            "value": 30},
+        "iron helmet": {
+            "description": "A ring embued with magic. Boosts MP.",
+            "slot": "head",
+            "defence": 2,
+            "move": None,
             "value": 30}
     },
     "miscellaneous": {
