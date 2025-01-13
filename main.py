@@ -22,6 +22,7 @@ from tabulate import tabulate
 
 playing_game = True
 fighting = False
+skip_introduction = "False"
 
 story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
 death_file = os.getcwd() + '/TEXT/STORY/death.txt'
@@ -29,7 +30,7 @@ death_file = os.getcwd() + '/TEXT/STORY/death.txt'
 player = {
 	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
-	'inventory': _inventory.Inventory([None]),
+	'inventory': _inventory.Inventory([]),
     'enemies': {},
     'equipment': {
         "head": None,
@@ -51,25 +52,9 @@ text_speed = 0.01
 map_cell_character_len = 25
 hours_remaining = 72.0
 
-data_to_save = {
-    'text_speed': text_speed,
-    'skip_introduction': False,
-    'player_name': player['character'].name,
-    'player_level': player['character'].level,
-    'player_xp': player['character'].xp,
-    'player_gold': player['character'].gold,
-    'player_max_hp': player['character'].max_hp,
-    'player_hp': player['character'].hp,
-    'player_atk': player['character'].atk,
-    'player_acc': player['character'].acc,
-    'player_moves': player['character'].moves,
-    'player_x_position': player['position'][0],
-    'player_y_position': player['position'][1],
-    'player_map': player['position'][2],
-    'player_inventory': player['inventory'].contents
-}
+data_to_save = {}
 
-loaded_data = data_to_save.copy()
+loaded_data = {}
 
 current_save_file = None
 
@@ -240,6 +225,27 @@ def random_encounter():
 
 def save_data():
     ''' Writes data to save file.'''
+    global data_to_save
+    global skip_introduction
+    data_to_save = {
+        'text_speed': text_speed,
+        'skip_introduction': skip_introduction,
+        'player_name': player['character'].name,
+        'player_level': player['character'].level,
+        'player_xp': player['character'].xp,
+        'player_gold': player['character'].gold,
+        'player_max_hp': player['character'].max_hp,
+        'player_hp': player['character'].hp,
+        'player_atk': player['character'].atk,
+        'player_acc': player['character'].acc,
+        'player_moves': player['character'].moves,
+        'player_x_position': player['position'][0],
+        'player_y_position': player['position'][1],
+        'player_map': player['position'][2],
+    }
+    if player['inventory'].contents != None:
+        data_to_save['player_inventory'] = player['inventory'].contents
+
     try:
         with open(current_save_file, 'w') as f:
             for data in list(data_to_save.keys()):
@@ -250,6 +256,7 @@ def save_data():
 
 
 def load_data():
+    global skip_introduction
     try:
         with open(current_save_file, 'r') as f:
             file_list = f.readlines()
@@ -261,7 +268,13 @@ def load_data():
         global player
         player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_level']), int(loaded_data['player_xp']), int(loaded_data['player_gold']), int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
         player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
-        player['inventory'] = _inventory.Inventory(list(loaded_data['player_inventory']))
+
+        if isinstance(loaded_data['player_inventory'], str):
+            player['inventory'] = _inventory.Inventory([])
+            player['inventory'].contents.append(loaded_data['player_inventory'])
+        else:
+            player['inventory'] = _inventory.Inventory(loaded_data['player_inventory'])
+        skip_introduction = loaded_data['skip_introduction']
     except FileNotFoundError:
         print("File does not exist.")
 
@@ -570,6 +583,7 @@ def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
 
 def story():
     global text_speed
+    global skip_introduction
     os.system('cls' if os.name == 'nt' else 'clear')
     show_story_text(story_intro_file)
     while True:
@@ -577,7 +591,7 @@ def story():
         confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
         if "y" in confirm:
             break
-    data_to_save['skip_introduction'] = True
+    skip_introduction = "True"
 
 
 def show_story_text(file):
@@ -594,6 +608,7 @@ def show_story_text(file):
 
 def play():
     global current_save_file
+    global skip_introduction
     while True:
         print("\nSave files:")
         num = 1
@@ -610,7 +625,7 @@ def play():
             current_save_file = save_files[chosen_save_file]
             load_data()
             break
-    if not loaded_data['skip_introduction'] == 'True':
+    if skip_introduction != "True":
         story()
     os.system('cls' if os.name == 'nt' else 'clear')
     while playing_game:

@@ -1,15 +1,15 @@
 text_speed::0.01
 skip_introduction::True
-player_name::Hero
+player_name::Nedia
 player_level::1
 player_xp::0
-player_gold::100
+player_gold::0
 player_max_hp::100
 player_hp::100
 player_atk::10
 player_acc::95
-player_moves::slash, bash, deep freeze, hemorrhage, poison cloud
-player_x_position::1
-player_y_position::3
-player_map::tutorial
-player_inventory::health potion, health potion, iron sword, red ring, red ring, iron chestplate, iron helmet
+player_moves::slash, fireball
+player_x_position::3
+player_y_position::2
+player_map::ironwood
+player_inventory::iron chestplate
