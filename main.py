@@ -11,22 +11,22 @@ import os
 import time
 import random
 import math
-import map as _map
-import inventory as _inventory
-import character as _character
-import attack as _attack
+import DATA.map_data as _map
+import OBJECTS.inventory as _inventory
+import OBJECTS.character as _character
+import OBJECTS.attack as _attack
 from tabulate import tabulate
-import item_data as _item
+import DATA.item_data as _item
 playing_game = True
 fighting = False
 
 game_title = '''
-  _____  ______ _____ _____  ______  _____ _____  
- |  __ \|  ____/ ____|  __ \|  ____|/ ____/ ____| 
- | |__) | |__ | |  __| |__) | |__  | (___| (___   
- |  _  /|  __|| | |_ |  _  /|  __|  \___ \ ___ \  
- | | \ \| |___| |__| | | \ \| |____ ____) |___) | 
- |_|  \_\______\_____|_|  \_\______|_____/_____/\n'''
+ _____  ______ _____ _____  ______  _____ _____  
+|  __ \|  ____/ ____|  __ \|  ____|/ ____/ ____| 
+| |__) | |__ | |  __| |__) | |__  | (___| (___   
+|  _  /|  __|| | |_ |  _  /|  __|  \___ \ ___ \  
+| | \ \| |___| |__| | | \ \| |____ ____) |___) | 
+|_|  \_\______\_____|_|  \_\______|_____/_____/\n'''
 
 player_turn_text = '''
  _____ __    _____ __ __ _____ _____    _____ _____ _____ _____ _ 
@@ -50,10 +50,10 @@ credit_text = '''
  _____ _____ _____ ____  _____ _____ _____ _ 
 |   __| __  |   __|    \|_   _|_   _|   __|_|
 |  |__|    -|   __|  |  |_| |_  | | |__   |_ 
-|_____|__|__|_____|____/|_____| |_| |_____|_|'''
+|_____|__|__|_____|____/|_____| |_| |_____|_|\n'''
 
-story_file = 'opening.txt'
-death_file = 'death.txt'
+story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
+death_file = os.getcwd() + '/TEXT/STORY/death.txt'
 
 player = {
 	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
@@ -123,9 +123,9 @@ attacks = {
 }
 
 save_files = {
-	'file 1': 'SaveSlot1.txt',
-    'file 2': 'SaveSlot2.txt',
-    'file 3': 'SaveSlot3.txt'
+	'file 1': os.getcwd() + '/SAVE_DATA/SaveSlot1.txt',
+    'file 2': os.getcwd() + '/SAVE_DATA/SaveSlot2.txt',
+    'file 3': os.getcwd() + '/SAVE_DATA/SaveSlot3.txt'
 }
 
 debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
@@ -638,7 +638,7 @@ def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
 def story():
     global text_speed
     os.system('cls' if os.name == 'nt' else 'clear')
-    show_story_text(story_file)
+    show_story_text(story_intro_file)
     while True:
         player['character'].name = input("Enter player name: ")
         confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
@@ -649,12 +649,12 @@ def story():
 
 def show_story_text(file):
     try:
-            with open(file, 'r') as f:
-                print("Press ENTER to continue")
-                file_list = f.readlines()
-                for line in file_list:
-                    _print(line, delay=0.002)
-                    input()
+        with open(file, 'r') as f:
+            print("Press ENTER to continue")
+            file_list = f.readlines()
+            for line in file_list:
+                _print(line, delay=0.002)
+                input()
     except FileNotFoundError:
         print("ERROR: Could not find the story text file!")
 
