@@ -13,6 +13,8 @@ BEFORE HANDING IN:
 Things to work on:
     -Mana system  (Possibly...)
     -Time system*  (Aiden, WIP)
+    -Talking to shopkeepers  (Aiden, WIP)
+    -Sound effects in combat (Ahmed)
     -MORE CONTENT!!!!!!!
         -Towns  (and descriptions)
         -Items  (and descriptions)
@@ -20,10 +22,14 @@ Things to work on:
         -Dialogue  (right-justification?)
         -Ending (completion)
     -Don't read inputs while sleeping
+    -Shop overhaul
+        -Buying feedback
+        -Returns to shopping menu
+        -Shop specific wares
+    -Boss defeat memory
+    -More details when using attack
 
 Things we could implement:
-    -Talking to shopkeepers
-    -Sound effects in combat
     -Music
     -Progression locked exploration
     -Interactable map tiles (get items around map)
