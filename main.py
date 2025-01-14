@@ -724,9 +724,6 @@ def fight_test():
 
 
 def shopping():
-    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
-    print(f"Welcome to {current_shop.upper()}!\n")
-    print(shops[current_shop]['intro'])
     display_menu('shop_menu')
 
 
@@ -736,7 +733,7 @@ def buy():
         print(f"Purchasable items:\n")
         num = 1
         for option in shops[current_shop]['wares']:
-            print(f" {num}. {option.capitalize()}  ---  ({_item.item['consumable'][option]['value']}g)")
+            print(f" {num}. {option.title()}  ---  ({_item.item[check_sellable_category(option)][option]['value']}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
@@ -754,17 +751,26 @@ def buy():
             pass
         if item_choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
-            return
+            return display_menu('shop_menu')
         elif item_choice in shops[current_shop]['wares']:
             pass
         else:
             continue
-        if _item.item["consumable"][item_choice]["value"] <= player['character'].gold:
-            player['character'].gold -= _item.item["consumable"][item_choice]["value"]
+        item_price = _item.item[check_sellable_category(item_choice)][item_choice]["value"]
+        _print(f"\nITEM: {item_choice.title()}\nPRICE: {item_price}\n{_item.item[check_sellable_category(item_choice)][item_choice]['description'].capitalize()}\n")
+        if 'n' in input("Would you like to buy this item? (Y/N)"):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            continue
+        if item_price <= player['character'].gold:
+            player['character'].gold -= item_price
             player['inventory'].contents.append(item_choice)
         else:
             _print("\nYou don't have enough gold!")
             input("Press ENTER to continue")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            continue
+        _print(f"\nYou bought {item_choice.title()}.")
+        input("Press ENTER to continue")
         os.system('cls' if os.name == 'nt' else 'clear')
 
 
@@ -773,7 +779,7 @@ def sell():
         print("Your sellable items:\n")
         num = 1
         for option in player['inventory'].contents:
-            print(f" {num}. {option.capitalize()}  ---  ({_item.item[check_sellable_category(option)][option]['value'] * 7 // 10}g)")
+            print(f" {num}. {option.title()}  ---  ({_item.item[check_sellable_category(option)][option]['value'] * 7 // 10}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
@@ -792,12 +798,16 @@ def sell():
             continue
         if item_choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
-            return
+            return display_menu('shop_menu')
         elif item_choice in player['inventory'].contents:
             pass
+        item_price = _item.item[check_sellable_category(item_choice)][item_choice]['value'] * 7 // 10
+        if 'n' in input(f"Would you like to sell {item_choice.title()}? (Y/N)"):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            continue
         player['inventory'].contents.remove(item_choice)
-        player['character'].gold += _item.item[check_sellable_category(item_choice)][item_choice]['value'] * 7 // 10
-        _print(f"\nYou sold {item_choice.capitalize()}.")
+        player['character'].gold += item_price
+        _print(f"\nYou sold {item_choice.title()}.")
         input("Press ENTER to continue")
         os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -825,7 +835,7 @@ def equipment():
 
 
 def player_equipment():
-    return f"Current equipment:\nHEAD: {player['equipment']['head']}\nTORSO: {player['equipment']['torso']}\nWEAPON: {player['equipment']['weapon']}\nACCESSORY: {player['equipment']['accessory']}"  # The equipment isn't .title()'d because it is NoneType idk how to fix this
+    return f"Current equipment:\nHEAD: {player['equipment']['head'].title()}\nTORSO: {player['equipment']['torso'].title()}\nWEAPON: {player['equipment']['weapon'].title()}\nACCESSORY: {player['equipment']['accessory'].title()}"  # The equipment isn't .title()'d because it is NoneType idk how to fix this
 
 
 def equip_item():
@@ -905,11 +915,10 @@ shops = {
     "black market": {
         "intro": 'Men hiding behind leaves stare at you.',
         "wares":
-            ["health potion",
-            "magic icicle",
-            "inferno scroll",
+            ["poison bomb",
+            "iron sword",
             "bottled lightning",
-            "birthday bomb"],
+            "cursed flame orb"],
         "dialogue":
             ["Are you looking to buy... or sell..?",
             "No questions. Just business.",
@@ -973,6 +982,10 @@ def display_menu(current_menu):
             _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
             print(f"{math.ceil(hours_remaining)} hours left until destruction...")
+        elif current_menu == 'shop_menu':
+            current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
+            print(f"Welcome to {current_shop.title()}.")
+            print(shops[current_shop]['intro'])
         print()
         option_list = list(menu[current_menu].keys())
         num = 1

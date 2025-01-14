@@ -40,7 +40,7 @@ attacks = {
     'headbutt': _attack.Attack(10, 90, '{attacker} bashed {target} with their head!', 'single enemy', sound='hit'),
 	'fireball': _attack.Attack(10, 95, '{attacker} casted fireball!', 'single enemy', sound='fire'),
     'incinerate': _attack.Attack(7, 95, '{attacker} scorched {target}!', 'all enemies', sound='fire'),
-    'cursed fire': _attack.Attack(12, 96, '{attacker} casted cursed fire!', 'single enemy', sound='curse'),
+    'cursed flame': _attack.Attack(12, 96, '{attacker} casted cursed flame!', 'single enemy', sound='curse'),
     'heal': _attack.Attack(-5, 99999, '{attacker} healed {target}!', 'single ally'),
     'super heal': _attack.Attack(-15, 99999, '{attacker} healed {target}!', 'single ally'),
     'lightning bolt': _attack.Attack(12, 99999, '{attacker} shocked {target}!', 'single enemy', sound='electric'),

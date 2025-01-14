@@ -3,6 +3,8 @@
 -ISSUE: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight.
          I only got this to happen when I left my name blank, so maybe that has something to do with it???  -Aiden
 
+URGENT: Make a numbered list display menu function.
+
 BEFORE HANDING IN:
     -Check to make sure the credits are updated
     -Make sure CHANGELOG.md is updated
@@ -12,22 +14,17 @@ BEFORE HANDING IN:
 
 Things to work on:
     -Mana system  (Possibly...)
-    -Time system*  (Aiden, WIP)
-    -Talking to shopkeepers  (Aiden, WIP)
-    -Sound effects in combat (Ahmed)
+    -Time system*  (Works, but should be tweaked later)
+    -Sound effects in combat (Ahmed, WIP)
+    -Don't read inputs while sleeping
+    -Boss defeat memory
+    -More details when using attack
     -MORE CONTENT!!!!!!!
         -Towns  (and descriptions)
         -Items  (and descriptions)
         -Dungeons
         -Dialogue  (right-justification?)
         -Ending (completion)
-    -Don't read inputs while sleeping
-    -Shop overhaul
-        -Buying feedback
-        -Returns to shopping menu
-        -Shop specific wares
-    -Boss defeat memory
-    -More details when using attack
 
 Things we could implement:
     -Music
