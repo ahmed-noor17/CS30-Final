@@ -89,7 +89,24 @@ game_map = {
             "visibility": 5
         }
     },
-
+    "mount megalos": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'to the peak', '   ', '---', 'hot spring', '---', '---', 'hermit of\nthe mountain', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', 'big shiny rock', '   ', 'statue of megalos', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '---', '   ', '   ', '   ', '   ', 'enormous fossil', '---'],
+                ['---', '---', 'enormous fossil', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '---', '   ', '---'],
+                ['---', 'cave entrance', '   ', '---', 'mountain gate', '   ', '---', '   ', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+            "visibility": 5
+        }
+    },
     "the old woods": {
         "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'tumor of the forest', '   ', '   ', '   ', '---', '---', '---'],
@@ -210,7 +227,8 @@ rooms = {
         "???": {"description": "???"}},
     "world": {
         "ironwood" : {"description": "ironwood", "connections": [3, 1, 'ironwood']},
-        "the old woods" : {"description": "an ancient curse echoes...", "connections": [2, 25, 'the old woods']}
+        "the old woods" : {"description": "an ancient curse echoes...", "connections": [2, 25, 'the old woods']},
+        "mount megalos" : {"description": "the foot of an impossibly tall mountain.", "connections": [4, 8, 'mount megalos']}
     },
     "tutorial": {
         "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},

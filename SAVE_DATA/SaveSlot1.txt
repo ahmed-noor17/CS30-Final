@@ -1,9 +1,9 @@
 text_speed::0.01
-skip_introduction::True
+skip_introduction::False
 player_name::Nedia
 player_level::1
 player_xp::0
-player_gold::92
+player_gold::100
 player_hp::100
 player_max_hp::100
 player_atk::10
