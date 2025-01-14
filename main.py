@@ -554,7 +554,7 @@ def use_attack(attack, attacker, target):
 
 
 # Base Functions --------------------------------------------------------------
-def play_sound(sound: str, fade_out_ms=0.0):
+def play_sound(sound: str, volume=1.0, fade_out_ms=0):
     sfx = {
         'blood': [os.getcwd() + '/SOUND/blood-splat-6295.mp3'],
         'sword_hit': [os.getcwd() + '/SOUND/sword-sound-effect-1-234987.mp3',
@@ -566,10 +566,10 @@ def play_sound(sound: str, fade_out_ms=0.0):
         'miss': [os.getcwd() + '/SOUND/woosh-230554.mp3'],
         'fire': [os.getcwd() + '/SOUND/fireball-whoosh-2-179126.mp3']
     }
-    sound = sfx[sound][random.randint(0, len(sfx[sound]))]
+    sound = sfx[sound][random.randint(0, len(sfx[sound])-1)]
     sound_effect = mixer.Sound(sound)
-    sound_effect.play()
-    sound_effect.fadeout(fade_out_ms)
+    sound_effect.set_volume(volume)
+    sound_effect.play(fade_ms=fade_out_ms)
     return
 
 
