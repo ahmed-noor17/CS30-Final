@@ -25,7 +25,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 50,
-            "encounters": ['dungeon1', 'dungeon2', 'dungeon3', 'dungeon4', 'dungeon5'],
+            "encounters": ['dungeon1', 'dungeon2', 'dungeon3', 'dungeon4', 'spider'],
             "move_time": 0,
             "visibility": 5
         }
@@ -69,7 +69,7 @@ game_map = {
                 ['---', 'the old woods', '   ', '   ', '   ', '---', '   ', '   ', '   ', 'the quarry', '---', '---'],
                 ['---', '   ', '   ', 'ironwood', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '---', '---', '---'],
                 ['---', 'city of thieves', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', 'riverfell', '   ', '   ', '   ', '   ', '---'],
@@ -92,35 +92,35 @@ game_map = {
 
     "the old woods": {
         "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
-                ['---', '   ', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', 'tumor of the forest', '   ', '   ', '   ', '---', '---', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '---', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', 'sickly tree', '   ', '   ', 'wise tree', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '---', '   ', '---', '   ', '---', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '   ', '---', '---', '   ', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', 'entrepreneurial tree', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', 'ancient tree', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '---', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '---', '   ', '---', '---'],
                 ['---', '   ', '   ', '   ', '   ', '---', '---', '---'],
-                ['---', '   ', '---', '   ', '   ', '   ', '---', '---'],
+                ['---', 'shy tree', '---', '   ', '   ', '   ', '---', '---'],
                 ['---', '---', '---', '   ', '   ', '---', '---', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '---', '---'],
                 ['---', '   ', '---', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '---', '---'],
+                ['---', '   ', 'gangly tree', '   ', '   ', '   ', '---', '---'],
                 ['---', '   ', '   ', '   ', '   ', '---', '---', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '---', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '---', '   ', '---', '   ', '---', '---', '---'],
+                ['---', '---', 'forest entrance', '---', '   ', '---', '---', '---'],
                 ['---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
-            "random_encounter_chance": 0,
-            "encounters": [],
+            "random_encounter_chance": 8,
+            "encounters": ['spider'],
             "move_time": 0,
             "visibility": 5
         }
@@ -190,7 +190,7 @@ rooms = {
         "chapel": {"description": "This room seems it's where they worshipped someone... or something...?"},
         "summoning room": {"description": "There's an ominous summoning circle in the middle of the room with candles surrounding it."}},
     'ironwood': {
-        "black market": {"description": "All the merchants stay in strategic spots to hide from guards."},
+        "black market": {"description": "All the merchants stay in strategic spots to hide from guards.", "shop": "black market"},
         "north entrance": {"description": "The northern entrance to Ironwood. Can also be an exit.", "connections": [3, 2, "world"]},
         "tavern": {"description": "The cheers of drunk men echo throughout the night."},
         "common area": {"description": "Ancient paths and benches and arches said to be constructed by the first settlers."},
@@ -209,9 +209,20 @@ rooms = {
         "townhall": {"description": "Where Lord Svallen works tirelessly for the people of Ironwood."},
         "???": {"description": "???"}},
     "world": {
-        "ironwood" : {"description": "Ironwood", "connections": [3, 1, 'ironwood'], "fight": "elite patrol"}
+        "ironwood" : {"description": "ironwood", "connections": [3, 1, 'ironwood']},
+        "the old woods" : {"description": "an ancient curse echoes...", "connections": [2, 25, 'the old woods']}
     },
     "tutorial": {
         "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
+        },
+    "the old woods": {
+        "forest entrance" : {"description": "The only place where the woods aren't suffocatingly dense.", "connections": [1, 1, "world"]},
+        "gangly tree" : {"description": '"My, my, a visitor? In this part of the woods?"'},
+        "shy tree" : {"description": '"H-hey! Go away!"'},
+        "ancient tree" : {"description": '"You should not be here, traveler... The woods are in pain..."'},
+        "wise tree" : {"description": '"Something is poisoning the forest..."'},
+        "sickly tree" : {"description": '"Please... that thing is killing us..."'},
+        "entrepreneurial tree" : {"description": 'This tree has bent itself into a makeshift shop table.', "shop": "tree's shop"},
+        "tumor of the forest": {"description": "A pulsating purple mass, sucking the life out of the surrounding forest.", "fight": 'tumor of the forest'}
         }
     }

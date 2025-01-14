@@ -715,7 +715,7 @@ def view_inventory():
 
 
 def fight_test():
-    combat(_combat.combat_encounters['dungeon5'])
+    combat(_combat.combat_encounters['dungeon4'])
 
 
 def shopping():
@@ -913,6 +913,16 @@ shops = {
             "Don't tell me you're one of the king's rats...",
             "I'd hide here if you don't want to get caught.",
             "...You don't have any coin, do you?"]
+    },
+    "tree's shop": {
+        "intro": 'You find it a bit odd buying things from a tree.',
+        "wares":
+            ["scroll of healing",
+            "frost scroll",
+            "inferno scroll",
+            "poison bomb"],
+        "dialogue":
+            ["...", "......", "....(what did you expect?)"]
     }
 }
 

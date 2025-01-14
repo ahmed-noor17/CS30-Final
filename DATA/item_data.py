@@ -61,6 +61,12 @@ item = {
             "defence": 0,
             "move": 'fireball',
             "value": 30},
+        "ring of poison": {
+            "description": "A ring emitting a purple smoke. Allows casting of poison cloud",
+            "slot": "accessory",
+            "defence": 0,
+            "move": 'poison cloud',
+            "value": 50},
         "iron chestplate": {
             "description": "A ring embued with magic. Boosts MP.",
             "slot": "torso",

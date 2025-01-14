@@ -12,7 +12,8 @@ enemies = {
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']]
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']],
+    'foul tumor': ["foul tumor", 1, 300, 60, 300, 4, 85, ['bite'], 'ring of poison', 100]
 }
 
 combat_encounters = {
@@ -20,12 +21,13 @@ combat_encounters = {
     'goblin': ['goblin'],
     'goblin patrol': ['goblin', 'goblin'],
     'elite patrol': ['goblin', 'orc'],
-    'dungeon1': ['spider'],
-    'dungeon2': ['spider', 'skeleton warrior'],
-    'dungeon3': ['skeleton warrior', 'skeleton warrior'],
-    'dungeon4': ['skeleton warrior', 'imp', 'spider'],
-    'dungeon5': ['orc', 'imp'],
-    'the final battle': ['the dark lord']
+    'spider': ['spider'],
+    'dungeon1': ['spider', 'skeleton warrior'],
+    'dungeon2': ['skeleton warrior', 'skeleton warrior'],
+    'dungeon3': ['skeleton warrior', 'imp', 'spider'],
+    'dungeon4': ['orc', 'imp'],
+    'the final battle': ['the dark lord'],
+    'tumor of the forest': ['foul tumor']
 }
 
 attacks = {
