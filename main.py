@@ -374,10 +374,16 @@ def combat(encounter_enemies):
     calculate_player_defence()
     gold_prize = 0
     xp_prize = 0
+    item_prize = []
     for enemy in encounter_enemies:
         enemy_object = _character.Character(_combat.enemies[enemy][0], _combat.enemies[enemy][1], _combat.enemies[enemy][2], _combat.enemies[enemy][3], _combat.enemies[enemy][4], _combat.enemies[enemy][5], _combat.enemies[enemy][6], _combat.enemies[enemy][7])
         gold_prize += enemy_object.gold
         xp_prize += enemy_object.xp
+        try:
+            if random.randint(1, 100) <= _combat.enemies[enemy_object.name][9]:  # Random drop chance
+                item_prize.append(_combat.enemies[enemy_object.name][8])  # Adds the enemy's drops to the prize pool
+        except IndexError:
+            pass
         enemy_count = 1
         while enemy_object.name in list(player['enemies'].keys()):
             enemy_count += 1
@@ -398,16 +404,16 @@ def combat(encounter_enemies):
             print(f" > {target_enemy.title()}   ---   (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
         print(f"\nYour HP: {player['character'].hp}/{player['character'].max_hp}")
         display_menu('combat_menu')
-        if check_for_battle_victory(xp_prize, gold_prize):  # This function returns true if the battle is over
+        if check_for_battle_victory(xp_prize, gold_prize, item_prize):  # This function returns true if the battle is over
             return
         _print(_title.enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
-        if check_for_battle_victory(xp_prize, gold_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
+        if check_for_battle_victory(xp_prize, gold_prize, item_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
             return
     player['enemies'].clear()
 
 
-def check_for_battle_victory(xp_prize=0, gold_prize=0):
+def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
     global fighting
     if player['character'].hp <= 0:
         print("You lost!")
@@ -417,6 +423,9 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0):
     elif len(list(player['enemies'].keys())) <= 0:
         print("\nYou won!")
         print(f"You earned {xp_prize} EXP and {gold_prize}g")
+        for item in item_prize:
+            print(f"You got {item.capitalize()}!")
+            player['inventory'].contents.append(item)
         player['character'].gold += gold_prize
         player['character'].xp += xp_prize
         level_up()

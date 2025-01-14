@@ -1,6 +1,6 @@
 import OBJECTS.attack as _attack
 
-#name, level, xp, gold, max_hp, atk, acc, moves
+#name, level, xp, gold, max_hp, atk, acc, moves, item drops, drop % chance
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
@@ -8,7 +8,7 @@ enemies = {
     'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
     'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 5, 85, ['slash', 'arrow', 'arrow']],
     'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'freeze ray', 'magic missile']],
-    'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile']],
+    'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 100],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
