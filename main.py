@@ -12,13 +12,15 @@ import time
 import random
 import math
 import DATA.map_data as _map
+import DATA.item_data as _item
+import DATA.combat_data as _combat
 import OBJECTS.inventory as _inventory
 import OBJECTS.character as _character
 import OBJECTS.equipment as _equipment
-import DATA.item_data as _item
-import DATA.combat_data as _combat
 import TEXT.title_text as _title
 from tabulate import tabulate
+from pygame import mixer
+mixer.init()
 
 playing_game = True
 fighting = False
@@ -552,6 +554,23 @@ def use_attack(attack, attacker, target):
 
 
 # Base Functions --------------------------------------------------------------
+def play_sound(sound: str, fade_out_ms=0.0):
+    sfx = {
+        'blood': [os.getcwd() + '/SOUND/blood-splat-6295.mp3'],
+        'sword_hit': [os.getcwd() + '/SOUND/sword-sound-effect-1-234987.mp3',
+                      os.getcwd() + '/SOUND/sword-sound-effect-2-234986.mp3'],
+        'sword_miss': [os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-1-241824.mp3',
+                       os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-2-241823.mp3'],
+        'hit': [os.getcwd() + '/SOUND/punch-or-kick-sound-effect-1-239696.mp3',
+                os.getcwd() + '/SOUND/punch-or-kick-sound-effect-2-239695.mp3'],
+        'miss': [os.getcwd() + '/SOUND/woosh-230554.mp3'],
+        'fire': [os.getcwd() + '/SOUND/fireball-whoosh-2-179126.mp3']
+    }
+    sound = sfx[sound][random.randint(0, len(sfx[sound]))]
+    sound_effect = mixer.Sound(sound)
+    sound_effect.play()
+    sound_effect.fadeout(fade_out_ms)
+    return
 
 
 def setup():
