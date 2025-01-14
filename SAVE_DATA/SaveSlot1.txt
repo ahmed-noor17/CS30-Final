@@ -13,3 +13,7 @@ player_x_position::2
 player_y_position::4
 player_map::ironwood
 player_inventory::iron chestplate, health potion
+player_head::None
+player_torso::None
+player_weapon::None
+player_accessory::None

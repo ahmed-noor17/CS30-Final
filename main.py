@@ -33,10 +33,10 @@ player = {
 	'inventory': _inventory.Inventory([]),
     'enemies': {},
     'equipment': {
-        "head": None,
-        "torso": None,
-        "weapon": None,
-        "accessory": None
+        "head": "None",
+        "torso": "None",
+        "weapon": "None",
+        "accessory": "None"
     }
 }
 
@@ -429,7 +429,7 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0):
 def attack_menu():
     equipment_moves = []
     for equipment in list(player['equipment'].items()):
-        if not equipment[1] == None:  # I know this seems kinda bad but the alternative was a whole try/except thing that I didn't feel like doing
+        if not equipment[1] == "None":  # I know this seems kinda bad but the alternative was a whole try/except thing that I didn't feel like doing
             if not _item.item['equipment'][equipment[1]]['move'] == None:
                 equipment_moves.append(_item.item['equipment'][equipment[1]]['move'])
     player_moves = player['character'].moves + equipment_moves
@@ -488,9 +488,9 @@ def choose_attack_target(use_move):
 
 def calculate_player_defence():
     player['character'].defence = 0
-    if player['equipment']['head'] != None:
+    if player['equipment']['head'] != "None":
         player['character'].defence += _item.item['equipment'][player['equipment']['head']]['defence']
-    if player['equipment']['torso'] != None:
+    if player['equipment']['torso'] != "None":
         player['character'].defence += _item.item['equipment'][player['equipment']['torso']]['defence']
 
 
@@ -693,34 +693,8 @@ def fight_test():
 def shopping():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
     print(f"Welcome to {current_shop.upper()}!\n")
+    print(shops[current_shop]['intro'])
     display_menu('shop_menu')
-    '''while True:
-        num = 1
-        print(f"\n{current_shop.upper()}:\n")
-        for option in menu['shop_menu']:
-            print(f" {num}. {option.title()}")
-            num += 1
-        print(f" {num}. Quit")
-        choice = input("\nChoice: ").lower()
-        try:
-            choice = int(choice)
-            if 1 <= choice < num:
-                choice = list(menu['shop_menu'].keys())[choice - 1]
-            elif choice == num:
-                choice = 'quit'
-            else:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                continue
-        except ValueError:
-            pass   
-        if choice == 'quit':
-            os.system('cls' if os.name == 'nt' else 'clear')
-            return
-        elif choice in menu['shop_menu']:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            menu['shop_menu'][choice]()
-        else:
-            os.system('cls' if os.name == 'nt' else 'clear')'''
 
 
 def buy():
@@ -728,7 +702,7 @@ def buy():
     while True:
         print(f"Purchasable items:\n")
         num = 1
-        for option in shops[current_shop]:
+        for option in shops[current_shop]['wares']:
             print(f" {num}. {option.capitalize()}  ---  ({_item.item['consumable'][option]['value']}g)")
             num += 1
         print(f" {num}. Quit")
@@ -737,7 +711,7 @@ def buy():
         try:
             item_choice = int(item_choice)
             if 1 <= item_choice < num:
-                item_choice = shops[current_shop][item_choice - 1]
+                item_choice = shops[current_shop]['wares'][item_choice - 1]
             elif item_choice == num:
                 item_choice = 'quit'
             else:
@@ -748,7 +722,7 @@ def buy():
         if item_choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             return
-        elif item_choice in shops[current_shop]:
+        elif item_choice in shops[current_shop]['wares']:
             pass
         else:
             continue
@@ -790,9 +764,15 @@ def sell():
             pass
         player['inventory'].contents.remove(item_choice)
         player['character'].gold += _item.item[check_sellable_category(item_choice)][item_choice]['value'] * 7 // 10
-        _print(f"\nYou sold {item_choice}")
+        _print(f"\nYou sold {item_choice.capitalize()}.")
         input("Press ENTER to continue")
         os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def shop_dialogue():
+    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
+    _print(f'"{shops[current_shop]["dialogue"][random.randint(0, len(shops[current_shop]["dialogue"]) - 1)]}"')
+    return shopping()
 
 
 def check_sellable_category(option):
@@ -837,7 +817,7 @@ def equip_item():
             pass
         if item_to_equip in list(_item.item['equipment'].keys()) and item_to_equip in list(_item.item['equipment'].keys()):
             item_slot = player['equipment'][_item.item['equipment'][item_to_equip]['slot']]
-            if item_slot == None:
+            if item_slot == "None":
                 player['inventory'].contents.remove(item_to_equip)
                 player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
             else:
@@ -874,12 +854,38 @@ def credits_menu():
 
 
 shops = {
-    "dan's thingamabobs": [
-        "health potion",
-        "magic icicle",
-        "inferno scroll",
-        "bottled lightning",
-        "birthday bomb"]
+    "dan's thingamabobs": {
+        "intro": 'An eccentric man stands behind the counter. He has a wooden sign wrapped around his neck with "DAN" scrawled on it.',
+        "wares":
+            ["health potion",
+            "magic icicle",
+            "inferno scroll",
+            "bottled lightning",
+            "birthday bomb"],
+        "dialogue":
+            ["Hey would you be willing to buy this here thingamajig? Actually, wait no, that's not for sale, nevermind...",
+            "Please buy my stuff. I was gravedigging all night yesterday! Hehehe, I jest. I found these in my cellar.",
+            "Y'know, if you're ever in a pinch in combat, these items are a real lifesaver, you know.",
+            "If you're ever in the area, would you mind checking out the sewer for me? I'll buy whatever you dredge up from there!",
+            "My cousin had a birthday party last week and I tried using the birthday bomb. It didn't go very well..."]
+    },
+    "black market": {
+        "intro": 'Men hiding behind leaves stare at you.',
+        "wares":
+            ["health potion",
+            "magic icicle",
+            "inferno scroll",
+            "bottled lightning",
+            "birthday bomb"],
+        "dialogue":
+            ["Are you looking to buy... or sell..?",
+            "No questions. Just business.",
+            "If you're not here for business, then scram!",
+            "Were you followed here?",
+            "Don't tell me you're one of the king's rats...",
+            "I'd hide here if you don't want to get caught.",
+            "...You don't have any coin, do you?"]
+    }
 }
 
 
@@ -912,7 +918,8 @@ menu = {
     },
     "shop_menu": {
         "buy": buy,
-        "sell": sell
+        "sell": sell,
+        "talk": shop_dialogue
     }
 }
 
