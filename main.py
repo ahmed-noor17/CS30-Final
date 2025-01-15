@@ -11,6 +11,9 @@ import os
 import time
 import random
 import math
+import keyboard
+from tabulate import tabulate
+from pygame import mixer
 import DATA.map_data as _map
 import DATA.item_data as _item
 import DATA.combat_data as _combat
@@ -18,8 +21,6 @@ import OBJECTS.inventory as _inventory
 import OBJECTS.character as _character
 import OBJECTS.equipment as _equipment
 import TEXT.title_text as _title
-from tabulate import tabulate
-from pygame import mixer
 mixer.init()
 
 playing_game = True
@@ -141,37 +142,33 @@ def map_encounter():
 def moving():
     moving = True
     print("You begin moving.")
+    room_attributes = {
+                'connections': change_map,
+                'shop': shopping,
+                'fight': map_encounter
+            }
     while moving:
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"{math.ceil(hours_remaining)} hours left until destruction...")
         temp_opt_list = []
-        try:
-            if _map.rooms[player['position'][2]][get_room()]['connections']:
-                menu['movement_menu']['enter'] = change_map
-            temp_opt_list.append('enter')
-        except KeyError:
+        for atr in list(room_attributes.keys()):
             try:
-                menu['movement_menu'].pop('enter')
-            except Exception:
-                pass
-        try:
-            if _map.rooms[player['position'][2]][get_room()]['shop']:
-                menu['movement_menu']['shop'] = shopping
-            temp_opt_list.append('shop')
-        except KeyError:
-            try:
-                menu['movement_menu'].pop('shop')
-            except Exception:
-                pass
-        try:
-            if _map.rooms[player['position'][2]][get_room()]['fight']:
-                menu['movement_menu']['fight'] = map_encounter
-            temp_opt_list.append('fight')
-        except KeyError:
-            try:
-                menu['movement_menu'].pop('fight')
-            except Exception:
-                pass
+                _map.rooms[player['position'][2]][get_room()][atr]
+            except KeyError:
+                try:
+                    if atr == 'connections':
+                        menu['movement_menu'].pop('enter')
+                    else:
+                        menu['movement_menu'].pop(atr)
+                except KeyError:
+                    pass
+            else:
+                if atr == 'connections':
+                    menu['movement_menu']['enter'] = change_map
+                    temp_opt_list.append('enter')
+                else:
+                    menu['movement_menu'][atr] = room_attributes[atr]
+                    temp_opt_list.append(atr)
         try:
             print(_map.rooms[player['position'][2]][get_room()]['description'])
         except KeyError:
@@ -375,6 +372,7 @@ def combat(encounter_enemies):
     gold_prize = 0
     xp_prize = 0
     item_prize = []
+    keyboard.block_key('enter')
     for enemy in encounter_enemies:
         enemy_object = _character.Character(_combat.enemies[enemy][0], _combat.enemies[enemy][1], _combat.enemies[enemy][2], _combat.enemies[enemy][3], _combat.enemies[enemy][4], _combat.enemies[enemy][5], _combat.enemies[enemy][6], _combat.enemies[enemy][7])
         gold_prize += enemy_object.gold
@@ -978,6 +976,7 @@ menu = {
 
 def display_menu(current_menu):
     while True:
+        keyboard.block_key('enter')
         if current_menu == 'main_menu':
             _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
@@ -995,6 +994,7 @@ def display_menu(current_menu):
             num += 1
         if current_menu != 'main_menu' and current_menu != 'combat_menu':
             print(f" {num}. Quit")
+        keyboard.unhook_all()
         choice = input("\nChoice: ").lower()
         try:
             choice = int(choice)
