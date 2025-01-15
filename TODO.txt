@@ -16,7 +16,6 @@ Things to work on:
     -Mana system  (Possibly...)
     -Time system*  (Works, but should be tweaked later)
     -Sound effects in combat (Ahmed, WIP)
-    -Don't read inputs while sleeping
     -Boss defeat memory
     -More details when using attack
     -MORE CONTENT!!!!!!!

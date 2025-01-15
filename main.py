@@ -142,33 +142,10 @@ def map_encounter():
 def moving():
     moving = True
     print("You begin moving.")
-    room_attributes = {
-                'connections': change_map,
-                'shop': shopping,
-                'fight': map_encounter
-            }
     while moving:
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"{math.ceil(hours_remaining)} hours left until destruction...")
-        temp_opt_list = []
-        for atr in list(room_attributes.keys()):
-            try:
-                _map.rooms[player['position'][2]][get_room()][atr]
-            except KeyError:
-                try:
-                    if atr == 'connections':
-                        menu['movement_menu'].pop('enter')
-                    else:
-                        menu['movement_menu'].pop(atr)
-                except KeyError:
-                    pass
-            else:
-                if atr == 'connections':
-                    menu['movement_menu']['enter'] = change_map
-                    temp_opt_list.append('enter')
-                else:
-                    menu['movement_menu'][atr] = room_attributes[atr]
-                    temp_opt_list.append(atr)
+        temp_opt_list = list_room_attributes()
         try:
             print(_map.rooms[player['position'][2]][get_room()]['description'])
         except KeyError:
@@ -181,16 +158,7 @@ def moving():
         for option in temp_opt_list:
             print(f" {num}. {option.title()}")
             num += 1
-        choice = input("\nChoice: ").lower()
-        try:
-            choice = int(choice)
-        except ValueError:
-            pass
-        else:
-            try:
-                choice = list(menu['movement_menu'].keys())[choice + 3]
-            except IndexError:
-                pass
+        choice = convert_num_menu(input("\nChoice: ").lower(), num, 'movement_menu')
         if choice == "stop":
             moving = False
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -218,6 +186,34 @@ def moving():
             elif choice in move_options.keys():
                 expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
                 menu['movement_menu'][move_options[choice]]()
+
+
+def list_room_attributes():
+    room_attributes = {
+            'connections': change_map,
+            'shop': shopping,
+            'fight': map_encounter
+        }
+    temp_opt_list = []
+    for atr in list(room_attributes.keys()):
+        try:
+            _map.rooms[player['position'][2]][get_room()][atr]
+        except KeyError:
+            try:
+                if atr == 'connections':
+                    menu['movement_menu'].pop('enter')
+                else:
+                    menu['movement_menu'].pop(atr)
+            except KeyError:
+                pass
+        else:
+            if atr == 'connections':
+                menu['movement_menu']['enter'] = change_map
+                temp_opt_list.append('enter')
+            else:
+                menu['movement_menu'][atr] = room_attributes[atr]
+                temp_opt_list.append(atr)
+    return temp_opt_list
 
 
 def expend_time(time_cost):
@@ -986,7 +982,6 @@ def display_menu(current_menu):
             print(f"Welcome to {current_shop.title()}.")
             print(shops[current_shop]['intro'])
         print()
-        option_list = list(menu[current_menu].keys())
         num = 1
         for option in menu[current_menu]:
             print(f" {num}. {option.capitalize()}")
@@ -995,20 +990,10 @@ def display_menu(current_menu):
         if current_menu != 'main_menu' and current_menu != 'combat_menu':
             print(f" {num}. Quit")
         keyboard.unhook_all()
-        choice = input("\nChoice: ").lower()
-        try:
-            choice = int(choice)
-            if 1 <= choice < num:  # Check if the number inputted is an option
-                os.system('cls' if os.name == 'nt' else 'clear')
-                choice = option_list[choice - 1]
-            elif choice == num and current_menu != 'main_menu':
-                choice = 'quit'
-            else:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                continue
-        except ValueError:
-            pass
-        if choice == "quit" and current_menu != "main_menu"  and current_menu != "combat_menu":
+        choice = convert_num_menu(input("\nChoice: ").lower(), num, current_menu)
+        if choice == 'retry':
+            continue
+        if choice == "quit" and current_menu not in ['main_menu', 'combat_menu']:
             if current_menu == "game_menu":
                 print("\nWould you like to quit to main menu?")
                 if "y" in input("Any unsaved progress will be lost! (Y/N)").lower():
@@ -1025,6 +1010,24 @@ def display_menu(current_menu):
             return menu[current_menu][choice]()
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def convert_num_menu(choice, num, current_menu):
+    option_list = list(menu[current_menu].keys())
+    try:
+        choice = int(choice)
+    except ValueError:
+        return choice
+    else:
+        if 1 <= choice < num:  # Check if the number inputted is an option
+            os.system('cls' if os.name == 'nt' else 'clear')
+            choice = option_list[choice - 1 + (4 if current_menu=='movement_menu' else 0)]
+        elif choice == num and current_menu != 'movement_menu':
+            choice = 'quit'
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return 'retry'
+    return choice
 
 
 def clamp(value, min_value, max_value):
