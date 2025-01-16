@@ -63,21 +63,3 @@ attacks = {
     'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy', sound='blood'),
     'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy', sound='ice')
 }
-
-combat_sfx = {
-        'blood': [os.getcwd() + '/SOUND/blood-splat-6295.mp3'],
-        'sword_hit': [os.getcwd() + '/SOUND/sword-sound-effect-1-234987.mp3',
-                      os.getcwd() + '/SOUND/sword-sound-effect-2-234986.mp3'],
-        'sword_miss': [os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-1-241824.mp3',
-                       os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-2-241823.mp3'],
-        'hit': [os.getcwd() + '/SOUND/punch-or-kick-sound-effect-1-239696.mp3',
-                os.getcwd() + '/SOUND/punch-or-kick-sound-effect-2-239695.mp3'],
-        'miss': [os.getcwd() + '/SOUND/woosh-230554.mp3'],
-        'fire': [os.getcwd() + '/SOUND/fireball-whoosh-2-179126.mp3'],
-        'electric': [os.getcwd() + '/SOUND/electric-impact-37128.mp3'],
-        'gas': [os.getcwd() + '/SOUND/yt1s.com - Smoke Grenade Sound Effect Free Sound Effect Download.mp3'],
-        'curse': [os.getcwd() + '/SOUND/631769__robinhood76__11095-ancestor-curse-spell.wav'],
-        'ice': [os.getcwd() + '/SOUND/yt1s.com - Ice Crack Freeze Sound Effect.mp3'],
-        'magic': [os.getcwd() + '/SOUND/deathmagic-94937.mp3'],
-        'heal': [os.getcwd() + '/SOUND/621206__eminyildirim__holy-protection-skill-buff.mp3']
-    }

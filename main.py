@@ -17,9 +17,9 @@ from pygame import mixer
 import DATA.map_data as _map
 import DATA.item_data as _item
 import DATA.combat_data as _combat
+import DATA.sound_data as _sound
 import OBJECTS.inventory as _inventory
 import OBJECTS.character as _character
-import OBJECTS.equipment as _equipment
 import TEXT.title_text as _title
 mixer.init()
 
@@ -563,11 +563,20 @@ def use_attack(attack, attacker, target):
 
 # Base Functions --------------------------------------------------------------
 def play_sound(sound: str, volume=1.0, fade_out_ms=0):
-    sound = _combat.combat_sfx[sound][random.randint(0, len(_combat.combat_sfx[sound])-1)]
+    sound = _sound.combat_sfx[sound][random.randint(0, len(_combat.combat_sfx[sound])-1)]
     sound_effect = mixer.Sound(sound)
     sound_effect.set_volume(volume)
     sound_effect.play(fade_ms=fade_out_ms)
     return
+
+
+def play_music(piece: str, volume=1.0, fade_out_ms=0):
+    piece = _sound.bgm[piece]
+    mixer.music.load(piece)
+    mixer.music.set_volume(volume)
+    mixer.music.play(2, 0, 0)
+    mixer.music.fadeout(fade_out_ms)
+    pass
 
 
 def setup():
