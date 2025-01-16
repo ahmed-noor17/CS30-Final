@@ -21,6 +21,5 @@ Things to work on:
         -Ending (completion)
 
 Things we could implement:
-    -Music
     -Progression locked exploration
     -Interactable map tiles (get items around map)
