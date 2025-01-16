@@ -7,15 +7,16 @@ enemies = {
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
     'bandit': ["bandit", 1, 30, 16, 100, 4, 85, ['slash']],
-    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
-    'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 5, 85, ['slash', 'arrow', 'arrow']],
+    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 5, 80, ['slash', 'gash']],
+    'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 6, 85, ['slash', 'arrow', 'arrow']],
     'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'freeze ray', 'magic missile']],
     'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 100],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
-    'goatman': ["goatman", 1, 50, 10, 200, 4, 80, ['headbutt', 'bash']],
+    'goatman': ["goatman", 1, 50, 10, 200, 5, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
     'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']],
-    'foul tumor': ["foul tumor", 1, 300, 60, 300, 4, 85, ['bite'], 'ring of poison', 100]
+    'foul tumor': ["foul tumor", 1, 300, 60, 300, 5, 85, ['bite'], 'ring of poison', 100],
+    'resurrected king megalos': ["resurrected king megalos", 1, 500, 75, 500, 6, 85, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100]
 }
 
 combat_encounters = {
@@ -28,17 +29,22 @@ combat_encounters = {
     'dungeon2': ['skeleton warrior', 'skeleton warrior'],
     'dungeon3': ['skeleton warrior', 'imp', 'spider'],
     'dungeon4': ['orc', 'imp'],
+    'skeleton': ['skeleton warrior'],
+    'skeletons': ['skeleton warrior', 'skeleton archer'],
+    'skeletons2': ['skeleton warrior', 'skeleton mage'],
+    'skeletons3': ['skeleton archer', 'skeleton warrior', 'skeleton mage'],
     'the final battle': ['the dark lord'],
     'tumor of the forest': ['foul tumor'],
-    'bandit ambush': ['bandit', 'bandit']
+    'bandit ambush': ['bandit', 'bandit'],
+    'king megalos': ['resurrected king megalos']
 }
 
 attacks = {
 	'slash': _attack.Attack(5, 100, '{attacker} slashed {target}!', 'single enemy', sound='sword_hit'),
     'bite': _attack.Attack(4, 100, '{attacker} bit {target}!', 'single enemy', sound='blood'),
     'bash': _attack.Attack(7, 85, '{attacker} bashed {target}!', 'single enemy', sound='hit'),
-    'smash': _attack.Attack(10, 90, '{attacker} smashed {target}!', 'single enemy', sound='hit'),
-    'gash': _attack.Attack(9, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1, sound='blood'),
+    'smash': _attack.Attack(9, 80, '{attacker} smashed {target}!', 'single enemy', sound='hit'),
+    'gash': _attack.Attack(6, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1, sound='blood'),
     'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemies', 'bleed', 3, sound='blood'),
     'arrow': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'single enemy', sound='hit'),
     'rain of arrows': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'all enemies', sound='hit'),

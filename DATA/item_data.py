@@ -97,6 +97,12 @@ item = {
             "defence": 2,
             "move": None,
             "value": 25},
+        "helm of megalos": {
+            "description": "Carries the memories of a long forgotten king.",
+            "slot": "head",
+            "defence": 4,
+            "move": 'lightning bolt',
+            "value": 100},
         "iron buckler": {
             "description": "A round shield that can protect you from damage.",
             "slot": "accessory",

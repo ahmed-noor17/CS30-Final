@@ -171,7 +171,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 3,
-            "encounters": ['bandit ambush'],
+            "encounters": ['bandit ambush', 'spider'],
             "move_time": 0,
             "visibility": 5
             }
@@ -211,7 +211,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 0,
-            "encounters": [],
+            "encounters": ['skeleton', 'skeletons', 'skeletons2', 'skeletons3'],
             "move_time": 0,
         }
     },
@@ -336,5 +336,11 @@ rooms = {
     },
     "mount megalos": {
         "mountain gate": {"description": "The entrance to mount megalos.", "connections": [4, 4, "world"]},
+        "to the peak": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "connections": [3, 5, "mount megalos peak"]},
+    },
+
+    "mount megalos peak": {
+        "corpse of king megalos": {"description": "", "fight": "king megalos"},
+        "to the foot": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "connections": [1, 1, "mount megalos"]},
     }
 }
