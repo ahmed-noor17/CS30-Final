@@ -215,7 +215,7 @@ rooms = {
         "well": {"description": "The primary source of water for years to come."},
         "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side."},
         "house": {"description": "The place of dwelling for a citizen of Ironwood."},
-        "market": {"description": "Stalls bustling with merchants looking to make a living.", "shop": "Dan's Thingamabobs"},
+        "market": {"description": "Stalls bustling with merchants looking to make a living.", "shop": "dan's thingamabobs"},
         "stairs": {"description": "Leads upwards to the richer neighbourhood and downwards to the poorer."},
         "west entrance": {"description": "The western entrance to Ironwood. Can also be an exit.", "connections": [3, 2, "world"]},
         "fountain": {"description": "Constructed by those with some knowledge in magic, the water flows unnaturally."},

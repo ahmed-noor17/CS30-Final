@@ -12,7 +12,6 @@ BEFORE HANDING IN:
 
 Things to work on:
     -Time system*  (Works, but should be tweaked later)
-    -Sound effects in combat (Ahmed, WIP, almost complete)
     -Boss defeat memory
     -More details when using attack
     -MORE CONTENT!!!!!!!

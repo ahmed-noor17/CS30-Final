@@ -400,10 +400,12 @@ def combat(encounter_enemies):
         display_menu('combat_menu')
         if check_for_battle_victory(xp_prize, gold_prize, item_prize):  # This function returns true if the battle is over
             return
+        time.sleep(1)
         _print(_title.enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
         if check_for_battle_victory(xp_prize, gold_prize, item_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
             return
+        time.sleep(1)
     player['enemies'].clear()
 
 
@@ -542,7 +544,7 @@ def use_attack(attack, attacker, target):
         attack_damage = int(attack.damage * attacker.atk * defence_modifier)
         target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
         _print(f"\n{attack.use_text.replace('{target}', target.name.title()).replace('{attacker}', attacker.name.title())}")
-        play_sound(attack.sound)
+        play_sound(attack.sound, 0.8)
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
         if not attack.debuff == None:
@@ -560,21 +562,7 @@ def use_attack(attack, attacker, target):
 
 # Base Functions --------------------------------------------------------------
 def play_sound(sound: str, volume=1.0, fade_out_ms=0):
-    sfx = {
-        'blood': [os.getcwd() + '/SOUND/blood-splat-6295.mp3'],
-        'sword_hit': [os.getcwd() + '/SOUND/sword-sound-effect-1-234987.mp3',
-                      os.getcwd() + '/SOUND/sword-sound-effect-2-234986.mp3'],
-        'sword_miss': [os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-1-241824.mp3',
-                       os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-2-241823.mp3'],
-        'hit': [os.getcwd() + '/SOUND/punch-or-kick-sound-effect-1-239696.mp3',
-                os.getcwd() + '/SOUND/punch-or-kick-sound-effect-2-239695.mp3'],
-        'miss': [os.getcwd() + '/SOUND/woosh-230554.mp3'],
-        'fire': [os.getcwd() + '/SOUND/fireball-whoosh-2-179126.mp3'],
-        'electric': [os.getcwd() + '/SOUND/electric-impact-37128.mp3'],
-        'gas': [os.getcwd() + '/SOUND/yt1s.com - Smoke Grenade Sound Effect Free Sound Effect Download.mp3'],
-        'curse': [os.getcwd() + '/SOUND/631769__robinhood76__11095-ancestor-curse-spell.wav']
-    }
-    sound = sfx[sound][random.randint(0, len(sfx[sound])-1)]
+    sound = _combat.combat_sfx[sound][random.randint(0, len(_combat.combat_sfx[sound])-1)]
     sound_effect = mixer.Sound(sound)
     sound_effect.set_volume(volume)
     sound_effect.play(fade_ms=fade_out_ms)
@@ -943,7 +931,6 @@ menu = {
     },
     "game_menu": {
         "move": moving,
-        "fight": fight_test,
         "status": view_character,
         "inventory": view_inventory,
         "equipment": equipment,

@@ -1,4 +1,5 @@
 import OBJECTS.attack as _attack
+import os
 
 #name, level, xp, gold, max_hp, atk, acc, moves, item drops, drop % chance
 enemies = {
@@ -46,11 +47,11 @@ attacks = {
     'lightning bolt': _attack.Attack(12, 99999, '{attacker} shocked {target}!', 'single enemy', sound='electric'),
     'thunderstorm': _attack.Attack(7, 99999, '{attacker} shocked {target}!', 'all enemies', sound='electric'),
     'unholy diver': _attack.Attack(30, 75, '{attacker} unleashed havoc on {target}!', 'all enemies', sound='curse'),
-    'annihilation': _attack.Attack(900, 99999, '{attacker} annihilated {target}!', 'all enemies'),
-    'freeze ray': _attack.Attack(8, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 1),
-    'frost blast': _attack.Attack(5, 90, '{attacker} froze {target}!', 'all enemies', 'freeze', 1),
-    'deep freeze': _attack.Attack(9, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 2),
-    'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy'),
+    'annihilation': _attack.Attack(900, 99999, '{attacker} annihilated {target}!', 'all enemies', sound='magic'),
+    'freeze ray': _attack.Attack(8, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 1, 'ice'),
+    'frost blast': _attack.Attack(5, 90, '{attacker} froze {target}!', 'all enemies', 'freeze', 1, 'ice'),
+    'deep freeze': _attack.Attack(9, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 2, 'ice'),
+    'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy', sound='magic'),
     'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2, sound='gas'),
 
     # Damage over time status effects
@@ -60,3 +61,21 @@ attacks = {
     'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
     'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy')
 }
+
+combat_sfx = {
+        'blood': [os.getcwd() + '/SOUND/blood-splat-6295.mp3'],
+        'sword_hit': [os.getcwd() + '/SOUND/sword-sound-effect-1-234987.mp3',
+                      os.getcwd() + '/SOUND/sword-sound-effect-2-234986.mp3'],
+        'sword_miss': [os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-1-241824.mp3',
+                       os.getcwd() + '/SOUND/sword-swing-whoosh-sound-effect-2-241823.mp3'],
+        'hit': [os.getcwd() + '/SOUND/punch-or-kick-sound-effect-1-239696.mp3',
+                os.getcwd() + '/SOUND/punch-or-kick-sound-effect-2-239695.mp3'],
+        'miss': [os.getcwd() + '/SOUND/woosh-230554.mp3'],
+        'fire': [os.getcwd() + '/SOUND/fireball-whoosh-2-179126.mp3'],
+        'electric': [os.getcwd() + '/SOUND/electric-impact-37128.mp3'],
+        'gas': [os.getcwd() + '/SOUND/yt1s.com - Smoke Grenade Sound Effect Free Sound Effect Download.mp3'],
+        'curse': [os.getcwd() + '/SOUND/631769__robinhood76__11095-ancestor-curse-spell.wav'],
+        'ice': [os.getcwd() + '/SOUND/yt1s.com - Ice Crack Freeze Sound Effect.mp3'],
+        'magic': [os.getcwd() + '/SOUND/deathmagic-94937.mp3'],
+        'heal': [os.getcwd() + '/SOUND/621206__eminyildirim__holy-protection-skill-buff.mp3']
+    }
