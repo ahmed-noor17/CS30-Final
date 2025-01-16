@@ -563,7 +563,7 @@ def use_attack(attack, attacker, target):
 
 # Base Functions --------------------------------------------------------------
 def play_sound(sound: str, volume=1.0, fade_out_ms=0):
-    sound = _sound.combat_sfx[sound][random.randint(0, len(_combat.combat_sfx[sound])-1)]
+    sound = _sound.combat_sfx[sound][random.randint(0, len(_sound.combat_sfx[sound])-1)]
     sound_effect = mixer.Sound(sound)
     sound_effect.set_volume(volume)
     sound_effect.play(fade_ms=fade_out_ms)

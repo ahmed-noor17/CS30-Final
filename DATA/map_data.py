@@ -347,7 +347,17 @@ rooms = {
     },
 
     "mount megalos peak": {
-        "corpse of king megalos": {"description": "", "fight": "king megalos"},
+        "corpse of king megalos": {"description": "The dead king beckons you to fight.", "fight": "king megalos"},
         "to the foot": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "connections": [1, 1, "mount megalos"]},
+    },
+
+    "tower of doom": {
+        "entrance": {"description": "A massive ornate door.", "fight": "king megalos"},
+        "magic elevator": {"description": "A small circular platform that can carry you to the upper level.", "connections": [1, 5, "dark lord chamber"]},
+    },
+
+    "dark lord chamber": {
+        "the dark lord": {"description": "The end of this adventure.", "fight": "the final battle"},
+        "entrance": {"description": "Leads back to the lower level of the tower.", "connections": [8, 1, "tower of doom"]},
     }
 }
