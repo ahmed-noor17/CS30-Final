@@ -16,7 +16,9 @@ enemies = {
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
     'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile']],
     'foul tumor': ["foul tumor", 1, 300, 60, 300, 5, 85, ['bite'], 'ring of poison', 100],
-    'resurrected king megalos': ["resurrected king megalos", 1, 500, 75, 500, 6, 85, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100]
+    'resurrected king megalos': ["resurrected king megalos", 1, 500, 75, 500, 6, 85, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100],
+    'blemmyae': ["blemmyae", 150, 10, 80, ['headbutt']],
+    'Edia': ["edia", 130, 20, 50, ['fireball', 'slash', 'headbutt']]
 }
 
 combat_encounters = {
