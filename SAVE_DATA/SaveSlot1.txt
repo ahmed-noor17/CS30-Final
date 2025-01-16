@@ -16,4 +16,4 @@ player_head::None
 player_torso::None
 player_weapon::None
 player_accessory::None
-player_inventory::iron chestplate, health potion, iron helmet, iron buckler, iron mace
+player_inventory::svarium chestplate, health potion, svarium helmet, iron buckler, iron mace, svarium katana

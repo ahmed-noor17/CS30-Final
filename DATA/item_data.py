@@ -108,7 +108,43 @@ item = {
             "slot": "accessory",
             "defence": 2,
             "move": None,
-            "value": 20}
+            "value": 20},
+        "mithril helmet": {
+            "description": "A blue helmet",
+            "slot": "head",
+            "defence": 5,
+            "move": None,
+            "value": 65},
+        "mithril chestplate": {
+            "description": "A blue chestplate",
+            "slot": "torso",
+            "defence": 7,
+            "move": None,
+            "value": 80},
+        "mithril longsword": {
+            "description": "A blue sword",
+            "slot": "weapon",
+            "defence": 0,
+            "move": "hemorrhage",
+            "value": 100},
+        "svarium helmet": {
+            "description": "A red helmet",
+            "slot": "head",
+            "defence": 9,
+            "move": None,
+            "value": 120},
+        "svarium chestplate": {
+            "description": "A red chestplate",
+            "slot": "torso",
+            "defence": 13,
+            "move": None,
+            "value": 160},
+        "svarium katana": {
+            "description": "A red sword",
+            "slot": "weapon",
+            "defence": 9,
+            "move": "bladestorm",
+            "value": 215},
     },
     "miscellaneous": {
         "silver ring": {

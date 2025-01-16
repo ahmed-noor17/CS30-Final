@@ -45,7 +45,7 @@ attacks = {
     'bash': _attack.Attack(7, 85, '{attacker} bashed {target}!', 'single enemy', sound='hit'),
     'smash': _attack.Attack(9, 80, '{attacker} smashed {target}!', 'single enemy', sound='hit'),
     'gash': _attack.Attack(6, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1, sound='blood'),
-    'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemies', 'bleed', 3, sound='blood'),
+    'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemy', 'bleed', 3, sound='blood'),
     'arrow': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'single enemy', sound='hit'),
     'rain of arrows': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'all enemies', sound='hit'),
     'headbutt': _attack.Attack(10, 70, '{attacker} bashed {target} with their head!', 'single enemy', sound='hit'),
@@ -63,7 +63,7 @@ attacks = {
     'deep freeze': _attack.Attack(9, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 2, 'ice'),
     'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy', sound='magic'),
     'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2, sound='gas'),
-
+    'bladestorm': _attack.Attack(8, 100, '{target} was caught in a storm of blades by {attacker}!', 'all enemies', 'bleed', 3, sound='sword_hit'),
     # Damage over time status effects
     # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
     # to get stunlocked by an enemy freeze blasting you over and over?

@@ -69,11 +69,11 @@ game_map = {
                 ['---', 'the old woods', '   ', '   ', '   ', '---', '   ', '   ', '   ', '   ', '---', '---'],
                 ['---', '   ', '   ', 'ironwood', '   ', '   ', '   ', '   ', '   ', 'the quarry', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '---', '---', '---'],
-                ['---', 'city of thieves', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', 'city of thieves', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '---', '   ', '   ', '   ', '   ', 'riverfell', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', 'riverfell', '   ', '   ', '---'],
                 ['---', '   ', 'the wastes', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
                 ['---', '   ', '---', '---', '---', '   ', '   ', '---', '---', '   ', '---', '---'],
                 ['---', '---', '---', '---', '---', '   ', '---', '---', '---', '---', '---', '---'],
@@ -327,13 +327,17 @@ rooms = {
         "restaurant": {"description": "this should be the description"},
         "barracks": {"description": "Houses guards and soldiers in training."},
         "townhall": {"description": "Where Lord Svallen works tirelessly for the people of Ironwood."},
-        "???": {"description": "???"}},
+        "???": {"description": "???"}
+    },
     "sewer": {
         "to ironwood": {"description": "This leads back to Ironwood.", "connections": [1, 1, "ironwood"]},
         "mysterious door": {"description": "This door doesn't seem to belong here...", "connections": [1, 1, "ironwood"]}
     },
+    "city of thieves": {
+        "entrance": {"description": "An unmanned gate.", "connections": [1, 5, "world"]}
+    },
     "world": {
-        "ironwood" : {"description": "ironwood", "connections": [3, 1, 'ironwood']},
+        "ironwood" : {"description": "The peaceful capital of Sveragard", "connections": [3, 1, 'ironwood']},
         "the old woods" : {"description": "An ancient curse echoes...", "connections": [2, 25, 'the old woods']},
         "mount megalos" : {"description": "The foot of an impossibly tall mountain.", "connections": [4, 8, 'mount megalos']},
         "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "connections": [3, 15, 'city of thieves']},
