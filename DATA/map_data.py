@@ -147,7 +147,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 3,
-            "encounters": ['bandit_ambush'],
+            "encounters": ['bandit ambush'],
             "move_time": 0,
             "visibility": 5
             }
