@@ -54,19 +54,37 @@ item = {
             "slot": "weapon",
             "defence": 0,
             "move": 'gash',
-            "value": 50},
+            "value": 30},
+        "iron mace": {
+            "description": "A hefty mace that can surely smash anyone's head in.",
+            "slot": "weapon",
+            "defence": 0,
+            "move": 'smash',
+            "value": 35},
+        "bow": {
+            "description": "A sturdy and reliable bow.",
+            "slot": "weapon",
+            "defence": 0,
+            "move": 'arrow',
+            "value": 30},
+        "magic bow": {
+            "description": "A bow that can blot out the sun with its rain of arrows.",
+            "slot": "weapon",
+            "defence": 0,
+            "move": 'rain of arrows',
+            "value": 75},
         "red ring": {
-            "description": "A ring embued with magic. Boosts MP.",
+            "description": "A warm, smoking ring. Allows casting of fireball.",
             "slot": "accessory",
             "defence": 0,
             "move": 'fireball',
-            "value": 30},
+            "value": 90},
         "ring of poison": {
             "description": "A ring emitting a purple smoke. Allows casting of poison cloud",
             "slot": "accessory",
             "defence": 0,
             "move": 'poison cloud',
-            "value": 50},
+            "value": 100},
         "iron chestplate": {
             "description": "A ring embued with magic. Boosts MP.",
             "slot": "torso",
@@ -78,7 +96,13 @@ item = {
             "slot": "head",
             "defence": 2,
             "move": None,
-            "value": 30}
+            "value": 25},
+        "iron buckler": {
+            "description": "A round shield that can protect you from damage.",
+            "slot": "accessory",
+            "defence": 2,
+            "move": None,
+            "value": 20}
     },
     "miscellaneous": {
         "silver ring": {

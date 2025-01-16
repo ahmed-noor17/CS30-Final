@@ -20,8 +20,8 @@ game_map = {
                 ['---', 'black market', '   ', 'north entrance', '   ', '---', '---', '---'],
                 ['---', 'tavern', '   ', 'common area', '   ', 'well', 'sewer entrance', '---'],
                 ['---', '   ', 'common area', 'yggdrasil', 'common area', '   ', '---', '---'],
-                ['---', 'house', 'market', 'market', 'stairs', '   ', '---', '---'],
-                ['---', 'house', 'market', '---', '   ', '---', '---', '---'],
+                ['---', 'house', 'magic shop', 'market', 'stairs', '   ', '---', '---'],
+                ['---', 'house', 'blacksmith shop', '---', '   ', '---', '---', '---'],
                 ['---', 'house', 'house', '---', 'house', '   ', 'house', '---'],
                 ['---', 'west entrance', '   ', '---', 'fountain', 'park', 'town hall', '---'],
                 ['---', '???', '---', 'barracks', 'house', 'south entrance', 'house', '---'],
@@ -31,6 +31,17 @@ game_map = {
             "encounters": [],
             "move_time": 0,
             "visibility": 5
+        }
+    },
+
+    "sewer": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'to ironwood', '   ', '   ', '   ', '   ', '   ', '   ', 'mysterious door', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
         }
     },
 
@@ -50,19 +61,16 @@ game_map = {
 
     "world": {
         "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
-                ['---', 'the old woods', '   ', '   ', '   ', '---', '   ', '   ', '   ', 'the quarry', '---', '---'],
-                ['---', '   ', '   ', 'ironwood', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', 'the old woods', '   ', '   ', '   ', '---', '   ', '   ', '   ', '   ', '---', '---'],
+                ['---', '   ', '   ', 'ironwood', '   ', '   ', '   ', '   ', '   ', 'the quarry', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '---', '---', '---'],
                 ['---', 'city of thieves', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', 'riverfell', '   ', '   ', '   ', '   ', '---'],
-                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', 'ancient monument', '   ', '   ', '   ', 'great lake', '   ', '   ', '   ',  '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', 'the wastes', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
-                ['---', '---', '---', '---', '---', '   ', '---', '---', '---', '---', '---', '---'],
+                ['---', '   ', '---', '---', '---', '   ', '   ', '---', '---', '   ', '---', '---'],
                 ['---', '---', '---', '---', '---', '   ', '---', '---', '---', '---', '---', '---'],
                 ['---', '---', '---', '---', '---', '   ', '   ', 'tower of doom', '---', '---', '---', '---'],
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
@@ -91,6 +99,22 @@ game_map = {
             "visibility": 5
         }
     },
+
+    "mount megalos peak": {
+        "map": [['---', '---', '---', '---', '---', '---'],
+                ['---', '   ', '   ', 'corpse of king megalos', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '---', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '---', '---'],
+                ['---', '   ', '---', 'to the foot', '---', '---'],
+                ['---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
+
     "the old woods": {
         "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'tumor of the forest', '   ', '   ', '   ', '---', '---', '---'],
@@ -151,7 +175,92 @@ game_map = {
             "move_time": 0,
             "visibility": 5
             }
-    }
+    },
+
+    "the wastes": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '---', '   ', '---', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---', '---', '   ', '---', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---', '   ', '---', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---', '   ', '---', '   ', '---'],
+                ['---', '   ', '---', '---', '---', '   ', '   ', '   ', '   ', '   ', '---', '---'],
+                ['---', '---', '---', '   ', '---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '---', '---', '   ', '   ', '   ', '   ', '---', '   ', '---', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
+
+    "the quarry": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '---', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---', '---', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '---', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '---', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '---', '---', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '---', '   ', '   ', '---', '---'],
+                ['---', '---', '---', '   ', '---', '---', '---', '---', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
+
+    "the caves": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', '   ', '   ', '   ', '---', '---', '---', '   ', '---', '   ', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---', '   ', '---'],
+                ['---', '   ', '---', '   ', '---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---'],
+                ['---', '   ', '---', '---', '   ', '---', '   ', '---', '   ', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '---', '   ', '---', '   ', '   ', '   ', '---', '---', '   ', '---'],
+                ['---', '   ', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '---', '   ', '   ', '   ', '   ', '---', '   ', '   ', '   ', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
+
+    "tower of doom": {
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'entrance', '   ', '   ', '   ', '   ', '   ', '   ', 'magic elevator', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
+
+    "dark lord chamber": {
+        "map": [['---', '---', '---'],
+                ['---', 'the dark lord', '---'],
+                ['---', '   ', '---'],
+                ['---', '   ', '---'],
+                ['---', '   ', '---'],
+                ['---', 'entrance', '---'],
+                ['---', '---', '---']],
+        "data": {
+            "random_encounter_chance": 0,
+            "encounters": [],
+            "move_time": 0,
+        }
+    },
 
 }
 
@@ -184,9 +293,11 @@ rooms = {
         "common area": {"description": "Ancient paths and benches and arches said to be constructed by the first settlers."},
         "yggdrasil": {"description": "The oldest and biggest tree in town. Sitting next to it gives a great sense of calm."},
         "well": {"description": "The primary source of water for years to come."},
-        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side."},
+        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side.", "connections": [6, 2, "sewer"]},
         "house": {"description": "The place of dwelling for a citizen of Ironwood."},
-        "market": {"description": "Stalls bustling with merchants looking to make a living.", "shop": "dan's thingamabobs"},
+        "market": {"description": "Stalls bustling with merchants looking to make a living."},
+        "magic shop": {"description": "A peculiar shop with all sorts scents coming from it.", "shop": "dan's thingamabobs"},
+        "blacksmith shop": {"description": "A humble blacksmith shop. You can feel the heat emanating from it.", "shop": "blacksmith"},
         "stairs": {"description": "Leads upwards to the richer neighbourhood and downwards to the poorer."},
         "west entrance": {"description": "The western entrance to Ironwood. Can also be an exit.", "connections": [3, 2, "world"]},
         "fountain": {"description": "Constructed by those with some knowledge in magic, the water flows unnaturally."},
@@ -196,11 +307,19 @@ rooms = {
         "barracks": {"description": "Houses guards and soldiers in training."},
         "townhall": {"description": "Where Lord Svallen works tirelessly for the people of Ironwood."},
         "???": {"description": "???"}},
+    "sewer": {
+        "to ironwood": {"description": "This leads back to Ironwood.", "connections": [1, 1, "ironwood"]},
+        "mysterious door": {"description": "This door doesn't seem to belong here...", "connections": [1, 1, "ironwood"]}
+    },
     "world": {
         "ironwood" : {"description": "ironwood", "connections": [3, 1, 'ironwood']},
         "the old woods" : {"description": "An ancient curse echoes...", "connections": [2, 25, 'the old woods']},
         "mount megalos" : {"description": "The foot of an impossibly tall mountain.", "connections": [4, 8, 'mount megalos']},
-        "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "connections": [3, 15, 'city of thieves']}
+        "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "connections": [3, 15, 'city of thieves']},
+        "the wastes" : {"description": "A desolate, toxic swamp that doesn't take kindly to outsiders.", "connections": [5, 1, 'the wastes']},
+        "the quarry" : {"description": "A mineshaft long sealed due to unstable dark energy.", "connections": [3, 9, 'the quarry']},
+        "tower of doom" : {"description": "The heart of this world's disasters. Enter if you dare...", "connections": [1, 1, 'tower of doom']},
+        "riverfell" : {"description": "The ruins of what was once a beautiful city.", "connections": [0, 0, 'riverfell']}
     },
     "tutorial": {
         "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
