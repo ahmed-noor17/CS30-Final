@@ -14,7 +14,7 @@ enemies = {
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'goatman': ["goatman", 1, 50, 10, 200, 5, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']],
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile']],
     'foul tumor': ["foul tumor", 1, 300, 60, 300, 5, 85, ['bite'], 'ring of poison', 100],
     'resurrected king megalos': ["resurrected king megalos", 1, 500, 75, 500, 6, 85, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100]
 }
@@ -56,7 +56,7 @@ attacks = {
     'super heal': _attack.Attack(-15, 99999, '{attacker} healed {target}!', 'single ally'),
     'lightning bolt': _attack.Attack(12, 99999, '{attacker} shocked {target}!', 'single enemy', sound='electric'),
     'thunderstorm': _attack.Attack(7, 99999, '{attacker} shocked {target}!', 'all enemies', sound='electric'),
-    'unholy diver': _attack.Attack(30, 75, '{attacker} unleashed havoc on {target}!', 'all enemies', sound='curse'),
+    'unholy diver': _attack.Attack(20, 75, '{attacker} unleashed havoc on {target}!', 'all enemies', sound='curse'),
     'annihilation': _attack.Attack(900, 99999, '{attacker} annihilated {target}!', 'all enemies', sound='magic'),
     'freeze ray': _attack.Attack(8, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 1, 'ice'),
     'frost blast': _attack.Attack(5, 90, '{attacker} froze {target}!', 'all enemies', 'freeze', 1, 'ice'),
