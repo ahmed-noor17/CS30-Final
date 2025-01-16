@@ -905,11 +905,27 @@ shops = {
             "If you're ever in the area, would you mind checking out the sewer for me? I'll buy whatever you dredge up from there!",
             "My cousin had a birthday party last week and I tried using the birthday bomb. It didn't go very well..."]
     },
+    "blacksmith": {
+        "intro": 'A burly man welcomes you despite his attention clearly being on the lump of metal he is handling.',
+        "wares":
+            ['iron chestplate', 
+             'iron helmet', 
+             'iron sword', 
+             'iron mace', 
+             'iron buckler', 
+             'bow', 
+             'red ring'],
+        "dialogue":
+            ["Buy something. Or don't, I guess.",
+            "I used to be an adventurer like you, but then I took an arrow to the elbow.",
+            "Feel free to come back and thank me when my stuff ends up saving your skin."]
+    },
     "black market": {
         "intro": 'Men hiding behind leaves stare at you.',
         "wares":
             ["poison bomb",
             "iron sword",
+            "iron mace",
             "bottled lightning",
             "cursed flame orb"],
         "dialogue":
@@ -929,7 +945,7 @@ shops = {
             "inferno scroll",
             "poison bomb"],
         "dialogue":
-            ["...", "......", "....(what did you expect?)"]
+            ["...", "......", "....(You feel like the tree is judging you)"]
     }
 }
 
