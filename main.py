@@ -443,7 +443,8 @@ def attack_menu():
     print("Attacks:")
     num = 1
     for attack in player_moves:
-        print(f" {num}. {attack.capitalize()}   ---   (DMG: {_combat.attacks[attack].damage * player['character'].atk} ACC: {_combat.attacks[attack].acc * player['character'].acc / 100}%)")
+        curr_atk = _combat.attacks[attack]
+        print(f" {num}. {attack.capitalize()}   ---   (DMG: {curr_atk.damage * player['character'].atk}, ACC: {curr_atk.acc * player['character'].acc / 100}%, TARGET: {curr_atk.target_type.title()}{(f', DEBUFF: {curr_atk.debuff.title()}' if curr_atk.debuff != None else '')})")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
@@ -455,7 +456,7 @@ def attack_menu():
                 if int(use_move) <= len(player_moves) and int(use_move) >= 1:
                     choose_attack_target(player_moves[int(use_move) - 1])
                     break
-            except Exception:  # TODO: Figure out what exception this should be
+            except ValueError:
                 pass
 
 
@@ -484,7 +485,7 @@ def choose_attack_target(use_move):
                         if int(target) <= len(target_list) and int(target) >= 1:
                             use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target_list[int(target) - 1]])
                             break
-                    except Exception:  # TODO: Figure out what exception this should be
+                    except ValueError:
                         pass
             break
         elif 'all ' in _combat.attacks[use_move].target_type:
@@ -838,7 +839,7 @@ def equip_item():
         try:
             if int(item_to_equip) <= len(equipable_items) and int(item_to_equip) >= 1:
                 item_to_equip = equipable_items[int(item_to_equip) - 1]
-        except Exception:  # TODO: Figure out what exception this should be
+        except ValueError:
             pass
         if item_to_equip in list(_item.item['equipment'].keys()) and item_to_equip in list(_item.item['equipment'].keys()):
             item_slot = player['equipment'][_item.item['equipment'][item_to_equip]['slot']]
@@ -854,10 +855,11 @@ def equip_item():
                     player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
                 else:
                     pass
-        confirm = input("Would you like to continue equipping? (Y/N) ").lower()
+        confirm = input("\nWould you like to continue equipping? (Y/N) ").lower()
         if 'y' in confirm:
             return equip_item()
         else:
+            os.system('cls' if os.name == 'nt' else 'clear')
             break
 
 

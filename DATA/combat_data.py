@@ -57,9 +57,9 @@ attacks = {
     # Damage over time status effects
     # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
     # to get stunlocked by an enemy freeze blasting you over and over?
-    'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy'),
-    'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy'),
-    'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy')
+    'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy', sound='blood'),
+    'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy', sound='blood'),
+    'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy', sound='ice')
 }
 
 combat_sfx = {
