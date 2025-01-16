@@ -6,12 +6,13 @@ enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
+    'bandit': ["bandit", 1, 30, 16, 100, 4, 85, ['slash']],
     'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 4, 75, ['slash', 'gash']],
     'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 5, 85, ['slash', 'arrow', 'arrow']],
     'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'freeze ray', 'magic missile']],
     'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 100],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
-    'blemmyae': ["blemmyae", 1, 50, 10, 240, 10, 80, ['headbutt', 'bash']],
+    'goatman': ["goatman", 1, 50, 10, 200, 4, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
     'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 15, 90, ['cursed fire', 'unholy diver', 'incinerate', 'lightning bolt', 'freeze ray', 'magic missile']],
     'foul tumor': ["foul tumor", 1, 300, 60, 300, 4, 85, ['bite'], 'ring of poison', 100]
@@ -28,7 +29,8 @@ combat_encounters = {
     'dungeon3': ['skeleton warrior', 'imp', 'spider'],
     'dungeon4': ['orc', 'imp'],
     'the final battle': ['the dark lord'],
-    'tumor of the forest': ['foul tumor']
+    'tumor of the forest': ['foul tumor'],
+    'bandit ambush': ['bandit', 'bandit']
 }
 
 attacks = {
@@ -38,7 +40,7 @@ attacks = {
     'gash': _attack.Attack(9, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1, sound='blood'),
     'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemies', 'bleed', 3, sound='blood'),
     'arrow': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'single enemy', sound='hit'),
-    'headbutt': _attack.Attack(10, 90, '{attacker} bashed {target} with their head!', 'single enemy', sound='hit'),
+    'headbutt': _attack.Attack(10, 70, '{attacker} bashed {target} with their head!', 'single enemy', sound='hit'),
 	'fireball': _attack.Attack(10, 95, '{attacker} casted fireball!', 'single enemy', sound='fire'),
     'incinerate': _attack.Attack(7, 95, '{attacker} scorched {target}!', 'all enemies', sound='fire'),
     'cursed flame': _attack.Attack(12, 96, '{attacker} casted cursed flame!', 'single enemy', sound='curse'),
