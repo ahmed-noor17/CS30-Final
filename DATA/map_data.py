@@ -11,7 +11,8 @@ game_map = {
             "random_encounter_chance": 50,
             "encounters": ['dungeon1', 'dungeon2', 'dungeon3', 'dungeon4', 'spider'],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "None"
         }
     },
 
@@ -30,7 +31,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "world2"
         }
     },
 
@@ -42,7 +44,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "None"
         }
     },
 
@@ -56,7 +59,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "None"
         }
     },
 
@@ -79,7 +83,8 @@ game_map = {
             "random_encounter_chance": 3,
             "encounters": ['goblin', 'goblin patrol', 'elite patrol'],
             "move_time": 0.5,
-            "visibility": 5
+            "visibility": 5,
+            "music": "world1"
         }
     },
     "mount megalos": {
@@ -97,7 +102,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "world1"
         }
     },
 
@@ -113,7 +119,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "None"
         }
     },
 
@@ -149,7 +156,8 @@ game_map = {
             "random_encounter_chance": 8,
             "encounters": ['spider'],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "world1"
         }
     },
 
@@ -175,7 +183,8 @@ game_map = {
             "random_encounter_chance": 3,
             "encounters": ['bandit ambush', 'spider'],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "world2"
             }
     },
 
@@ -196,7 +205,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "world1"
         }
     },
 
@@ -216,7 +226,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": ['skeleton', 'skeletons', 'skeletons2', 'skeletons3'],
             "move_time": 0,
-            "visibility": 3
+            "visibility": 3,
+            "music": "world1"
         }
     },
 
@@ -237,7 +248,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 3
+            "visibility": 3,
+            "music": "None"
         }
     },
 
@@ -249,7 +261,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "None"
         }
     },
 
@@ -265,7 +278,8 @@ game_map = {
             "random_encounter_chance": 0,
             "encounters": [],
             "move_time": 0,
-            "visibility": 5
+            "visibility": 5,
+            "music": "None"
         }
     },
 

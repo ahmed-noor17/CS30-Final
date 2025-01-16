@@ -95,6 +95,8 @@ def right():
 
 def change_map():
     print("Changing map...")
+    if _map.game_map[player['position'][2]]['data']['music'] != 'None':
+        play_music(_map.game_map[player['position'][2]]['data']['music'], 0.4)
     player['position'] = list(_map.rooms[player['position'][2]][get_room()]['connections'])
 
 
@@ -563,19 +565,18 @@ def use_attack(attack, attacker, target):
 
 # Base Functions --------------------------------------------------------------
 def play_sound(sound: str, volume=1.0, fade_out_ms=0):
-    sound = _sound.combat_sfx[sound][random.randint(0, len(_combat.combat_sfx[sound])-1)]
+    sound = _sound.combat_sfx[sound][random.randint(0, len(_sound.combat_sfx[sound])-1)]
     sound_effect = mixer.Sound(sound)
     sound_effect.set_volume(volume)
     sound_effect.play(fade_ms=fade_out_ms)
     return
 
 
-def play_music(piece: str, volume=1.0, fade_out_ms=0):
+def play_music(piece: str, volume=1.0):
     piece = _sound.bgm[piece]
     mixer.music.load(piece)
     mixer.music.set_volume(volume)
     mixer.music.play(2, 0, 0)
-    mixer.music.fadeout(fade_out_ms)
     pass
 
 
