@@ -69,11 +69,11 @@ game_map = {
                 ['---', 'the old woods', '   ', '   ', '   ', '---', '   ', '   ', '   ', '   ', '---', '---'],
                 ['---', '   ', '   ', 'ironwood', '   ', '   ', '   ', '   ', '   ', 'the quarry', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '---', '---', '---'],
-                ['---', 'city of thieves', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', 'city of thieves', '   ', '   ', 'mount megalos', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '---', '   ', '   ', '   ', '   ', 'riverfell', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', 'riverfell', '   ', '   ', '---'],
                 ['---', '   ', 'the wastes', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
                 ['---', '   ', '---', '---', '---', '   ', '   ', '---', '---', '   ', '---', '---'],
                 ['---', '---', '---', '---', '---', '   ', '---', '---', '---', '---', '---', '---'],
@@ -166,7 +166,6 @@ game_map = {
                 ['---', '---', '---', '---', 'thieves guild', '   ', '   ', '   ', '   ', '---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'house', '---', '   ', '---', '---', '   ', 'house', 'house', '   ', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'house', 'house', '---', '---', '   ', '   ', 'house', '---', '---', '   ', '   ', '   ', '   ', '   ', '---', '---'],
-                ['---', '---', 'house', '   ', '   ', '   ', '   ', 'house', 'house', '---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', 'market', '   ', '   ', 'house', 'house', '   ', '---'],
                 ['---', 'black market', '---', '---', '---', '---', '   ', '   ', '   ', '   ', '   ', '   ', 'house', 'house', '   ', 'town hall', '---'],
                 ['---', '   ', '---', '   ', 'tavern', '---', '   ', '   ', '   ', '   ', '   ', 'market', 'house', 'house', '   ', '   ', '---'],
@@ -303,50 +302,54 @@ rooms = {
         "portal room": {"description": "There's a portal on the wall. You do not know where it leads."},
         "workshop": {"description": "There are many unfamiliar tools here, it seems to be a workshop."},
         "prison cell": {"description": "It looks like your average jail cell. "},
-        "entrance": {"description": "This leads to your house.", "connections": [1, 4, "house"]},
+        "entrance": {"description": "This leads to your house.", "enter": [1, 4, "house"]},
         "chapel": {"description": "This room seems it's where they worshipped someone... or something...?"},
         "summoning room": {"description": "There's an ominous summoning circle in the middle of the room with candles surrounding it."}
     },
     'ironwood': {
         "black market": {"description": "All the merchants stay in strategic spots to hide from guards.", "shop": "black market"},
-        "north entrance": {"description": "The northern entrance to Ironwood. Can also be an exit.", "connections": [3, 2, "world"]},
+        "north entrance": {"description": "The northern entrance to Ironwood. Can also be an exit.", "enter": [3, 2, "world"]},
         "tavern": {"description": "The cheers of drunk men echo throughout the night."},
         "common area": {"description": "Ancient paths and benches and arches said to be constructed by the first settlers."},
         "yggdrasil": {"description": "The oldest and biggest tree in town. Sitting next to it gives a great sense of calm."},
         "well": {"description": "The primary source of water for years to come."},
-        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side.", "connections": [6, 2, "sewer"]},
+        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side.", "enter": [6, 2, "sewer"]},
         "house": {"description": "The place of dwelling for a citizen of Ironwood."},
         "market": {"description": "Stalls bustling with merchants looking to make a living."},
         "magic shop": {"description": "A peculiar shop with all sorts scents coming from it.", "shop": "dan's thingamabobs"},
         "blacksmith shop": {"description": "A humble blacksmith shop. You can feel the heat emanating from it.", "shop": "blacksmith"},
         "stairs": {"description": "Leads upwards to the richer neighbourhood and downwards to the poorer."},
-        "west entrance": {"description": "The western entrance to Ironwood. Can also be an exit.", "connections": [3, 2, "world"]},
+        "west entrance": {"description": "The western entrance to Ironwood. Can also be an exit.", "enter": [3, 2, "world"]},
         "fountain": {"description": "Constructed by those with some knowledge in magic, the water flows unnaturally."},
         "park": {"description": "Has a pond with some ducks with benches surrounding it."},
-        "south entrance": {"description": "The southern entrance to Ironwood. Can also be an exit.", "connections": [3, 2, "world"]},
+        "south entrance": {"description": "The southern entrance to Ironwood. Can also be an exit.", "enter": [3, 2, "world"]},
         "restaurant": {"description": "this should be the description"},
         "barracks": {"description": "Houses guards and soldiers in training."},
         "townhall": {"description": "Where Lord Svallen works tirelessly for the people of Ironwood."},
-        "???": {"description": "???"}},
+        "???": {"description": "???"}
+    },
     "sewer": {
-        "to ironwood": {"description": "This leads back to Ironwood.", "connections": [1, 1, "ironwood"]},
-        "mysterious door": {"description": "This door doesn't seem to belong here...", "connections": [1, 1, "ironwood"]}
+        "to ironwood": {"description": "This leads back to Ironwood.", "enter": [1, 1, "ironwood"]},
+        "mysterious door": {"description": "This door doesn't seem to belong here...", "enter": [1, 1, "ironwood"]}
+    },
+    "city of thieves": {
+        "entrance": {"description": "An unmanned gate.", "enter": [1, 5, "world"]}
     },
     "world": {
-        "ironwood" : {"description": "ironwood", "connections": [3, 1, 'ironwood']},
-        "the old woods" : {"description": "An ancient curse echoes...", "connections": [2, 25, 'the old woods']},
-        "mount megalos" : {"description": "The foot of an impossibly tall mountain.", "connections": [4, 8, 'mount megalos']},
-        "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "connections": [3, 15, 'city of thieves']},
-        "the wastes" : {"description": "A desolate, toxic swamp that doesn't take kindly to outsiders.", "connections": [5, 1, 'the wastes']},
-        "the quarry" : {"description": "A mineshaft long sealed due to unstable dark energy.", "connections": [3, 9, 'the quarry']},
-        "tower of doom" : {"description": "The heart of this world's disasters. Enter if you dare...", "connections": [1, 1, 'tower of doom']},
-        "riverfell" : {"description": "The ruins of what was once a beautiful city.", "connections": [0, 0, 'riverfell']}
+        "ironwood" : {"description": "The peaceful capital of Sveragard", "enter": [3, 1, 'ironwood']},
+        "the old woods" : {"description": "An ancient curse echoes...", "enter": [2, 25, 'the old woods']},
+        "mount megalos" : {"description": "The foot of an impossibly tall mountain.", "enter": [4, 8, 'mount megalos']},
+        "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "enter": [3, 15, 'city of thieves']},
+        "the wastes" : {"description": "A desolate, toxic swamp that doesn't take kindly to outsiders.", "enter": [5, 1, 'the wastes']},
+        "the quarry" : {"description": "A mineshaft long sealed due to unstable dark energy.", "enter": [3, 9, 'the quarry']},
+        "tower of doom" : {"description": "The heart of this world's disasters. Enter if you dare...", "enter": [1, 1, 'tower of doom']},
+        "riverfell" : {"description": "The ruins of what was once a beautiful city.", "enter": [0, 0, 'riverfell']}
     },
     "tutorial": {
-        "spirit gate" : {"description": "This gate leads to the real world...", "connections": [3, 3, "ironwood"]},
+        "spirit gate" : {"description": "This gate leads to the real world...", "enter": [3, 3, "ironwood"]},
     },
     "the old woods": {
-        "forest entrance" : {"description": "The only place where the woods aren't suffocatingly dense.", "connections": [1, 1, "world"]},
+        "forest entrance" : {"description": "The only place where the woods aren't suffocatingly dense.", "enter": [1, 1, "world"]},
         "gangly tree" : {"description": '"My, my, a visitor? In this part of the woods?"'},
         "shy tree" : {"description": '"H-hey! Go away!"'},
         "ancient tree" : {"description": '"You should not be here, traveler... The woods are in pain..."'},
@@ -356,22 +359,22 @@ rooms = {
         "tumor of the forest": {"description": "A pulsating purple mass, sucking the life out of the surrounding forest.", "fight": 'tumor of the forest'}
     },
     "mount megalos": {
-        "mountain gate": {"description": "The entrance to mount megalos.", "connections": [4, 4, "world"]},
-        "to the peak": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "connections": [3, 5, "mount megalos peak"]},
+        "mountain gate": {"description": "The entrance to mount megalos.", "enter": [4, 4, "world"]},
+        "to the peak": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "enter": [3, 5, "mount megalos peak"]},
     },
 
     "mount megalos peak": {
         "corpse of king megalos": {"description": "The dead king beckons you to fight.", "fight": "king megalos"},
-        "to the foot": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "connections": [1, 1, "mount megalos"]},
+        "to the foot": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "enter": [1, 1, "mount megalos"]},
     },
 
     "tower of doom": {
         "entrance": {"description": "A massive ornate door.", "fight": "king megalos"},
-        "magic elevator": {"description": "A small circular platform that can carry you to the upper level.", "connections": [1, 5, "dark lord chamber"]},
+        "magic elevator": {"description": "A small circular platform that can carry you to the upper level.", "enter": [1, 5, "dark lord chamber"]},
     },
 
     "dark lord chamber": {
-        "the dark lord": {"description": "The end of this adventure.", "fight": "the final battle"},
-        "entrance": {"description": "Leads back to the lower level of the tower.", "connections": [8, 1, "tower of doom"]},
+        "the dark lord": {"description": "The end of this adventure.", "fight": "the dark lord"},
+        "entrance": {"description": "Leads back to the lower level of the tower.", "enter": [8, 1, "tower of doom"]},
     }
 }

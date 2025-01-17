@@ -40,7 +40,8 @@ player = {
         "torso": "None",
         "weapon": "None",
         "accessory": "None"
-    }
+    },
+    'defeated bosses': []
 }
 
 save_files = {
@@ -53,7 +54,8 @@ debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100,
 
 text_speed = 0.01
 map_cell_character_len = 25
-hours_remaining = 72.0
+max_hours = 168
+hours_remaining = 168.0
 
 data_to_save = {}
 
@@ -97,7 +99,7 @@ def change_map():
     print("Changing map...")
     if _map.game_map[player['position'][2]]['data']['music'] != 'None':
         play_music(_map.game_map[player['position'][2]]['data']['music'], 0.4)
-    player['position'] = list(_map.rooms[player['position'][2]][get_room()]['connections'])
+    player['position'] = list(_map.rooms[player['position'][2]][get_room()]['enter'])
 
 
 def update_position(axis, value):
@@ -192,7 +194,7 @@ def moving():
 
 def list_room_attributes():
     room_attributes = {
-            'connections': change_map,
+            'enter': change_map,
             'shop': shopping,
             'fight': map_encounter
         }
@@ -202,16 +204,14 @@ def list_room_attributes():
             _map.rooms[player['position'][2]][get_room()][atr]
         except KeyError:
             try:
-                if atr == 'connections':
-                    menu['movement_menu'].pop('enter')
-                else:
-                    menu['movement_menu'].pop(atr)
+                menu['movement_menu'].pop(atr)
             except KeyError:
                 pass
         else:
-            if atr == 'connections':
-                menu['movement_menu']['enter'] = change_map
-                temp_opt_list.append('enter')
+            if atr == 'fight':
+                if not _map.rooms[player['position'][2]][get_room()]['fight'] in player['defeated bosses']:
+                    menu['movement_menu']['fight'] = map_encounter
+                    temp_opt_list.append('fight')
             else:
                 menu['movement_menu'][atr] = room_attributes[atr]
                 temp_opt_list.append(atr)
@@ -320,18 +320,20 @@ def load_data():
 
 def game_over():
     global fighting
+    global max_hours
     global hours_remaining
     time.sleep(2)
     os.system('cls' if os.name == 'nt' else 'clear')
     _print(_title.game_over_text, delay=0.1, print_by_line=True)
     time.sleep(1.5)
     show_story_text(death_file)
-    hours_remaining = 72
+    hours_remaining = max_hours
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
     player['character'].hp = player['character'].max_hp
     player['inventory'] = _inventory.Inventory([])
     player['enemies'].clear()
+    player['defeated bosses'].clear()
     fighting = False
 
 
@@ -373,6 +375,10 @@ def combat(encounter_enemies):
     keyboard.block_key('enter')
     for enemy in encounter_enemies:
         enemy_object = _character.Character(_combat.enemies[enemy][0], _combat.enemies[enemy][1], _combat.enemies[enemy][2], _combat.enemies[enemy][3], _combat.enemies[enemy][4], _combat.enemies[enemy][5], _combat.enemies[enemy][6], _combat.enemies[enemy][7])
+        try:
+            enemy_object.boss = _combat.enemies[enemy][10]
+        except IndexError:
+            pass  # Enemy is not a boss
         gold_prize += enemy_object.gold
         xp_prize += enemy_object.xp
         try:
@@ -558,6 +564,8 @@ def use_attack(attack, attacker, target):
             print(f"Defeated {target.name.title()}!")
             if target.name != player['character'].name:
                 player['enemies'].pop(target.name)
+                if target.boss:  # If we killed a boss, remember this.
+                    player['defeated bosses'].append(target.name)
     else:
         play_sound('miss')
         print(f"\n{target.name.title()} evaded the attack!")
@@ -572,7 +580,7 @@ def play_sound(sound: str, volume=1.0, fade_out_ms=0):
     return
 
 
-def play_music(piece: str, volume=1.0):
+def play_music(piece: str, volume=0.3):
     piece = _sound.bgm[piece]
     mixer.music.load(piece)
     mixer.music.set_volume(volume)
@@ -750,7 +758,7 @@ def buy():
         else:
             continue
         item_price = _item.item[check_sellable_category(item_choice)][item_choice]["value"]
-        _print(f"\nITEM: {item_choice.title()}\nPRICE: {item_price}\n{_item.item[check_sellable_category(item_choice)][item_choice]['description'].capitalize()}\n")
+        _print(f"\nITEM: {item_choice.title()}\nPRICE: {item_price}\n{_item.item[check_sellable_category(item_choice)][item_choice]['description']}\n")
         if 'n' in input("Would you like to buy this item? (Y/N)"):
             os.system('cls' if os.name == 'nt' else 'clear')
             continue
@@ -1013,7 +1021,7 @@ def display_menu(current_menu):
                 print("\nWould you like to quit to main menu?")
                 if "y" in input("Any unsaved progress will be lost! (Y/N)").lower():
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    current_menu = 'main_menu'              
+                    current_menu = 'main_menu'
                 else:
                     os.system('cls' if os.name == 'nt' else 'clear')
                     break
