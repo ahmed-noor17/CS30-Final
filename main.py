@@ -580,7 +580,7 @@ def play_sound(sound: str, volume=1.0, fade_out_ms=0):
     return
 
 
-def play_music(piece: str, volume=1.0):
+def play_music(piece: str, volume=0.3):
     piece = _sound.bgm[piece]
     mixer.music.load(piece)
     mixer.music.set_volume(volume)
@@ -1021,7 +1021,7 @@ def display_menu(current_menu):
                 print("\nWould you like to quit to main menu?")
                 if "y" in input("Any unsaved progress will be lost! (Y/N)").lower():
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    current_menu = 'main_menu'              
+                    current_menu = 'main_menu'
                 else:
                     os.system('cls' if os.name == 'nt' else 'clear')
                     break
