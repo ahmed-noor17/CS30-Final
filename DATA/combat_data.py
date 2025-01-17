@@ -1,7 +1,7 @@
 import OBJECTS.attack as _attack
 import os
 
-#name, level, xp, gold, max_hp, atk, acc, moves, item drops, drop % chance
+# name, level, xp, gold, max_hp, atk, acc, moves, item drops, drop % chance, is_boss
 enemies = {
 	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
@@ -14,9 +14,14 @@ enemies = {
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'goatman': ["goatman", 1, 50, 10, 200, 5, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
+
+    # Bosses
     'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile']],
-    'foul tumor': ["foul tumor", 1, 300, 60, 300, 5, 85, ['bite'], 'ring of poison', 100],
-    'resurrected king megalos': ["resurrected king megalos", 1, 500, 75, 500, 6, 85, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100]
+    'tumor of the forest': ["tumor of the forest", 1, 200, 60, 300, 5, 85, ['bite'], 'ring of poison', 100, True],
+    'king megalos': ["king megalos", 1, 400, 80, 500, 5, 65, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100, True],
+    'king of thieves': ["king of thieves", 1, 400, 200, 400, 6, 90, ['arrow', 'arrow', 'rain of arrows', 'slash', 'smash'], 'magic bow', 100, True],
+    'the minotaur': ["the minotaur", 1, 600, 250, 600, 6, 70, ['headbutt', 'smash'], 'mighty battleaxe', 100, True],
+    'hideous bogman': ["hideous bogman", 1, 700, 300, 650, 7, 80, ['headbutt', 'smash'], 'mighty battleaxe', 100, True],
 }
 
 combat_encounters = {
@@ -33,10 +38,15 @@ combat_encounters = {
     'skeletons': ['skeleton warrior', 'skeleton archer'],
     'skeletons2': ['skeleton warrior', 'skeleton mage'],
     'skeletons3': ['skeleton archer', 'skeleton warrior', 'skeleton mage'],
-    'the final battle': ['the dark lord'],
-    'tumor of the forest': ['foul tumor'],
     'bandit ambush': ['bandit', 'bandit'],
-    'king megalos': ['resurrected king megalos']
+
+    # Bosses
+    'the dark lord': ['the dark lord'],
+    'tumor of the forest': ['tumor of the forest'],
+    'king megalos': ['king megalos'],
+    'king of thieves': ['king of thieves'],
+    'the minotaur': ['the minotaur'],
+    'hideous bogman': ['hideous bogman']
 }
 
 attacks = {
@@ -47,7 +57,7 @@ attacks = {
     'gash': _attack.Attack(6, 100, '{attacker} lacerated {target}!', 'single enemy', 'bleed', 1, sound='blood'),
     'hemorrhage': _attack.Attack(8, 100, '{attacker} caused {target} to bleed profusely!', 'single enemy', 'bleed', 3, sound='blood'),
     'arrow': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'single enemy', sound='hit'),
-    'rain of arrows': _attack.Attack(8, 90, '{attacker} shot {target} with an arrow!', 'all enemies', sound='hit'),
+    'rain of arrows': _attack.Attack(8, 100, '{attacker} shot {target} with an arrow!', 'all enemies', sound='hit'),
     'headbutt': _attack.Attack(10, 70, '{attacker} bashed {target} with their head!', 'single enemy', sound='hit'),
 	'fireball': _attack.Attack(10, 95, '{attacker} casted fireball!', 'single enemy', sound='fire'),
     'incinerate': _attack.Attack(7, 95, '{attacker} scorched {target}!', 'all enemies', sound='fire'),
@@ -63,7 +73,8 @@ attacks = {
     'deep freeze': _attack.Attack(9, 95, '{attacker} froze {target}!', 'single enemy', 'freeze', 2, 'ice'),
     'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy', sound='magic'),
     'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2, sound='gas'),
-    'bladestorm': _attack.Attack(8, 100, '{target} was caught in a storm of blades by {attacker}!', 'all enemies', 'bleed', 3, sound='sword_hit'),
+    'venom haze': _attack.Attack(5, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 3, sound='gas'),
+    'bladestorm': _attack.Attack(10, 100, '{target} was caught in a storm of blades by {attacker}!', 'all enemies', 'bleed', 3, sound='sword_hit'),
     # Damage over time status effects
     # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
     # to get stunlocked by an enemy freeze blasting you over and over?

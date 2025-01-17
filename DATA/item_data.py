@@ -61,6 +61,12 @@ item = {
             "defence": 0,
             "move": 'smash',
             "value": 35},
+        "mighty battleaxe": {
+            "description": "A legendary axe that carries the spirit of a minotaur.",
+            "slot": "weapon",
+            "defence": 2,
+            "move": 'smash',
+            "value": 75},
         "bow": {
             "description": "A sturdy and reliable bow.",
             "slot": "weapon",
@@ -80,11 +86,17 @@ item = {
             "move": 'fireball',
             "value": 90},
         "ring of poison": {
-            "description": "A ring emitting a purple smoke. Allows casting of poison cloud",
+            "description": "A ring emitting a purple smoke. Allows casting of poison cloud.",
             "slot": "accessory",
             "defence": 0,
             "move": 'poison cloud',
             "value": 100},
+        "pendant of the wastes": {
+            "description": "A glowing pendant that allows the casting of venom haze",
+            "slot": "accessory",
+            "defence": 2,
+            "move": 'venom haze',
+            "value": 150},
         "iron chestplate": {
             "description": "A ring embued with magic. Boosts MP.",
             "slot": "torso",
