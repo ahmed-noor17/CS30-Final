@@ -31,7 +31,15 @@ story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
 death_file = os.getcwd() + '/TEXT/STORY/death.txt'
 
 player = {
-	'character': _character.Character("if you see this it is a bug!", 1, 0, 0, 100, 10, 95, ['slash', 'fireball']),
+	'character': _character.Character(
+        name="if you see this it is a bug!",
+        level=1,
+        xp=0,
+        gold=0,
+        max_hp=100,
+        atk=10,
+        acc=95,
+        moves=['slash', 'fireball']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([]),
     'enemies': {},
@@ -39,8 +47,7 @@ player = {
         "head": "None",
         "torso": "None",
         "weapon": "None",
-        "accessory": "None"
-    },
+        "accessory": "None"},
     'defeated bosses': []
 }
 
@@ -99,7 +106,8 @@ def change_map():
     print("Changing map...")
     if _map.game_map[player['position'][2]]['data']['music'] != 'None':
         play_music(_map.game_map[player['position'][2]]['data']['music'], 0.4)
-    player['position'] = list(_map.rooms[player['position'][2]][get_room()]['enter'])
+    player['position'] = list(_map.rooms[player['position'][2]][get_room()]
+                              ['enter'])
 
 
 def update_position(axis, value):
@@ -113,7 +121,7 @@ def update_position(axis, value):
             player['position'][0] += value
             random_encounter()
         except IndexError:
-            print("You cannot go that way.")
+            pass
     elif axis == "y":
         try:
             try_position = get_room(y_offset=-value)
@@ -122,7 +130,7 @@ def update_position(axis, value):
             player['position'][1] -= value
             random_encounter()
         except IndexError:
-            print("You cannot go that way.")
+            pass
 
 
 def update_map_display(width: int, height: int):
@@ -136,11 +144,15 @@ def update_map_display(width: int, height: int):
         for w in range(width):
             map_display[h].append(get_room(h-(height//2), w-(width//2), True))
     map_display[height//2][width//2] = f"{get_room()}\n(You)"
-    return tabulate(map_display, tablefmt="rounded_grid", stralign='center', rowalign='center').title()
+    return tabulate(map_display,
+                    tablefmt="rounded_grid",
+                    stralign='center',
+                    rowalign='center').title()
 
 
 def map_encounter():
-    combat(_combat.combat_encounters[_map.rooms[player['position'][2]][get_room()]['fight']])
+    combat(_combat.combat_encounters[_map.rooms[player['position'][2]]
+                                     [get_room()]['fight']])
 
 
 def moving():
@@ -149,26 +161,26 @@ def moving():
     while moving:
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"{math.ceil(hours_remaining)} hours left until destruction...")
-        temp_opt_list = list_room_attributes()
+        temp_opt_list = room_attribute_list()
         try:
             print(_map.rooms[player['position'][2]][get_room()]['description'])
         except KeyError:
             pass
-        print(update_map_display(_map.game_map[player['position'][2]]['data']['visibility'], _map.game_map[player['position'][2]]['data']['visibility']))  # This is where the movement menu code starts
+        print(update_map_display(
+            _map.game_map[player['position'][2]]['data']['visibility'],
+            _map.game_map[player['position'][2]]['data']['visibility']))
         print("Move with WASD, type 'stop' to stop.")
-        if temp_opt_list != []:
+        if temp_opt_list != []:  # Movement menu code starts here
             print("\nOptions:\n")
-        num = 1
-        for option in temp_opt_list:
-            print(f" {num}. {option.title()}")
-            num += 1
-        choice = convert_num_menu(input("\nChoice: ").lower(), num, 'movement_menu')
+        num = list_menu_options(temp_opt_list, 'movement_menu')
+        choice = convert_num_menu(input("\nChoice: ").lower(), num,
+                                  'movement_menu')
         if choice == "stop":
             moving = False
             os.system('cls' if os.name == 'nt' else 'clear')
             return
         elif choice == "quit":
-            if "n" in input("Would you like to quit to main menu? (Y/N) ").lower():
+            if "n" in input("Quit to main menu? (Y/N) ").lower():
                 break
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -185,19 +197,19 @@ def moving():
             if choice == 'shop' or choice == 'fight':
                 return menu['movement_menu'][choice]()
             if choice in menu['movement_menu']:
-                expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
+                expend_time(_map.game_map[player['position'][2]]['data']
+                            ['move_time'])
                 menu['movement_menu'][choice]()
             elif choice in move_options.keys():
-                expend_time(_map.game_map[player['position'][2]]['data']['move_time'])
+                expend_time(_map.game_map[player['position'][2]]['data']
+                            ['move_time'])
                 menu['movement_menu'][move_options[choice]]()
 
 
-def list_room_attributes():
-    room_attributes = {
-            'enter': change_map,
-            'shop': shopping,
-            'fight': map_encounter
-        }
+def room_attribute_list():
+    room_attributes = {'enter': change_map,
+                       'shop': shopping,
+                       'fight': map_encounter}
     temp_opt_list = []
     for atr in list(room_attributes.keys()):
         try:
@@ -227,10 +239,12 @@ def expend_time(time_cost):
 
 def get_room(y_offset=0, x_offset=0, for_display=False):
     try:
-        room_name = _map.game_map[player['position'][2]]['map'][int(player['position'][1]) + y_offset][int(player['position'][0]) + x_offset]  # map, y, x
+        room_name = (_map.game_map[player['position'][2]]['map']
+            [int(player['position'][1]) + y_offset]
+            [int(player['position'][0]) + x_offset])
     except IndexError:
         return "////////////////\n" * 3
-    padding = '­' * (int(max(map_cell_character_len - len(room_name), 0)/4))  # works now
+    padding = '­' * (int(max(map_cell_character_len - len(room_name), 0)/4))
     if for_display:
         if room_name == "---":
             room_name = "////////////////\n"*3
@@ -241,8 +255,10 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
 
 def random_encounter():
     roll = random.randint(1, 100)
-    if roll <= _map.game_map[player['position'][2]]['data']['random_encounter_chance']:
-        map_encounters = _map.game_map[player['position'][2]]['data']['encounters']
+    if roll <= (_map.game_map[player['position'][2]]['data']
+                ['random_encounter_chance']):
+        map_encounters = (_map.game_map[player['position'][2]]['data']
+                          ['encounters'])
         encounter = map_encounters[random.randint(0, len(map_encounters) - 1)]
         combat(_combat.combat_encounters[encounter])
 
@@ -281,7 +297,8 @@ def save_data():
     try:
         with open(current_save_file, 'w') as f:
             for data in list(data_to_save.keys()):
-                edited_data = str(data_to_save[data]).replace("'", "").replace('[', '').replace(']', '')
+                edited_data = str(data_to_save[data]).replace("'", "")\
+                    .replace('[', '').replace(']', '')
                 f.write(f"{data}::{edited_data}\n")
     except Exception:
         print("An error occurred while saving data.")
@@ -298,18 +315,29 @@ def load_data():
                     data[1] = data[1].split(", ")
                 loaded_data[data[0]] = data[1]
         global player
-        player['character'] = _character.Character(loaded_data['player_name'], int(loaded_data['player_level']), int(loaded_data['player_xp']), int(loaded_data['player_gold']), int(loaded_data['player_max_hp']), int(loaded_data['player_atk']), int(loaded_data['player_acc']), loaded_data['player_moves'])
+        player['character'] = _character.Character(loaded_data['player_name'],
+                              int(loaded_data['player_level']),
+                              int(loaded_data['player_xp']),
+                              int(loaded_data['player_gold']),
+                              int(loaded_data['player_max_hp']),
+                              int(loaded_data['player_atk']),
+                              int(loaded_data['player_acc']),
+                              loaded_data['player_moves'])
         player['character'].hp = int(loaded_data['player_hp'])
-        player['position'] = [int(loaded_data['player_x_position']), int(loaded_data['player_y_position']), loaded_data['player_map']]
+        player['position'] = [int(loaded_data['player_x_position']),
+                              int(loaded_data['player_y_position']),
+                              loaded_data['player_map']]
         player['equipment']['head'] = loaded_data['player_head']
         player['equipment']['torso'] = loaded_data['player_torso']
         player['equipment']['weapon'] = loaded_data['player_weapon']
         player['equipment']['accessory'] = loaded_data['player_accessory']
         if isinstance(loaded_data['player_inventory'], str):
             player['inventory'] = _inventory.Inventory([])
-            player['inventory'].contents.append(loaded_data['player_inventory'])
+            player['inventory'].contents.append(
+                loaded_data['player_inventory'])
         else:
-            player['inventory'] = _inventory.Inventory(loaded_data['player_inventory'])
+            player['inventory'] = _inventory.Inventory(
+                loaded_data['player_inventory'])
         skip_introduction = loaded_data['skip_introduction']
     except FileNotFoundError:
         print("File does not exist.")
@@ -680,10 +708,7 @@ def play():
     global skip_introduction
     while True:
         print("\nSave files:")
-        num = 1
-        for save in list(save_files.keys()):
-            print(f" {num}. {save.title()}")
-            num += 1
+        num = list_menu_options(list(save_files.keys()), 'file_select_menu')
         chosen_save_file = input("Choose a save file: ").lower()
         try:
             if 1 <= int(chosen_save_file) < num:
@@ -1005,13 +1030,7 @@ def display_menu(current_menu):
             print(f"Welcome to {current_shop.title()}.")
             print(shops[current_shop]['intro'])
         print()
-        num = 1
-        for option in menu[current_menu]:
-            print(f" {num}. {option.capitalize()}")
-            time.sleep(0.05)
-            num += 1
-        if current_menu != 'main_menu' and current_menu != 'combat_menu':
-            print(f" {num}. Quit")
+        num = list_menu_options(menu[current_menu], current_menu)
         keyboard.unhook_all()
         choice = convert_num_menu(input("\nChoice: ").lower(), num, current_menu)
         if choice == 'retry':
@@ -1051,6 +1070,19 @@ def convert_num_menu(choice, num, current_menu):
             os.system('cls' if os.name == 'nt' else 'clear')
             return 'retry'
     return choice
+
+
+def list_menu_options(menu_options: list, current_menu: str = ''):
+    num = 1
+    for option in menu_options:
+        print(f" {num}. {option.capitalize()}")
+        time.sleep(0.05)
+        num += 1
+    if current_menu == '':
+        exit("current_menu not found!")
+    if current_menu not in ['main_menu', 'combat_menu', 'movement_menu', 'file_select_menu']:
+        print(f" {num}. Quit")
+    return num
 
 
 def clamp(value, min_value, max_value):

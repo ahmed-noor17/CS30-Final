@@ -11,14 +11,13 @@ BEFORE HANDING IN:
     -Do a full game run
 
 Things to work on:
-    -Time system*  (Works, but should be tweaked later)
-    -Boss defeat memory
+    -Time system*
     -MORE CONTENT!!!!!!!
-        -Towns  (and descriptions)
-        -Items  (and descriptions)
+        -Towns
+        -Items
         -Dungeons
-        -Dialogue  (right-justification?)
-        -Ending (completion)
+        -Dialogue
+        -Ending
 
 Things we could implement:
     -Progression locked exploration
