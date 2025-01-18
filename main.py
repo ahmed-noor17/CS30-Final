@@ -392,8 +392,7 @@ def enemy_turn():
                                        0, len(enemy_object.moves) - 1)]]
         if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
             _print(f"\n{enemy_object.name.title()} took a turn!")
-            use_attack(_combat.attacks[enemy_attack], enemy_object,
-                       player['character'])
+            use_attack(enemy_attack, enemy_object, player['character'])
         for debuff in list(dict.fromkeys(enemy_object.debuffs)):
             if enemy_object.hp > 0 and not player['character'].hp <= 0:
                 enemy_object.debuffs.remove(debuff)  # No DOT damage if dead

@@ -1,7 +1,7 @@
 -ISSUE: There's an issue where if you try to use an item when you have none, it doesn't print your health.
         Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.  -Aiden
 -ISSUE: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight.
-         I only got this to happen when I left my name blank, so maybe that has something to do with it???  -Aiden
+        I only got this to happen when I left my name blank, so maybe that has something to do with it???  -Aiden
 
 BEFORE HANDING IN:
     -Check to make sure the credits are updated
@@ -12,7 +12,11 @@ BEFORE HANDING IN:
 
 Things to work on:
     -Time system*
+    -Cancel item use mid combat
+    -Check buy confirmation
+    -Game balancing
     -MORE CONTENT!!!!!!!
+        -Music
         -Towns
         -Items
         -Dungeons
@@ -20,5 +24,6 @@ Things to work on:
         -Ending
 
 Things we could implement:
+    -File peaking in file select screen
     -Progression locked exploration
     -Interactable map tiles (get items around map)

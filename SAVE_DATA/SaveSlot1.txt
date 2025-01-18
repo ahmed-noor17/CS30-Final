@@ -1,17 +1,17 @@
 text_speed::0.01
 skip_introduction::True
-player_name::Nedia
-player_level::2
-player_xp::55
-player_gold::33
-player_hp::110
-player_max_hp::110
-player_atk::11
+player_name::Hero
+player_level::1
+player_xp::0
+player_gold::100
+player_hp::100
+player_max_hp::100
+player_atk::10
 player_acc::95
-player_moves::slash, fireball, poison cloud
-player_x_position::3
-player_y_position::2
-player_map::world
+player_moves::slash, bash
+player_x_position::1
+player_y_position::3
+player_map::tutorial
 player_head::None
 player_torso::None
 player_weapon::None
