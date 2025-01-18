@@ -62,7 +62,7 @@ data_to_save = {}
 loaded_data = {}
 current_save_file = None
 
-debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
+debuff_char = _character.Character("debuff man", 1, 0, 0, 0, 1, 100, [])
 text_speed = 0.01
 map_cell_character_len = 25
 max_hours = 168
@@ -224,7 +224,7 @@ def room_attribute_list():
                 pass
         else:
             if (atr == 'fight'
-                    and _map.rooms[player['position'][2]][get_room()]['fight']  # The fight option will not be available if the fight has already been done
+                    and _map.rooms[player['position'][2]][get_room()]['fight']
                     not in player['defeated bosses']):
                 menu['movement_menu']['fight'] = map_encounter
                 temp_opt_list.append('fight')
@@ -517,9 +517,9 @@ def attack_menu():
     '''
     equipment_moves = []
     for equipment in list(player['equipment'].items()):
-        if (equipment[1] != "None"
-                and _item.item['equipment'][equipment[1]]['move'] != None):
-            equipment_moves.append(_item.item['equipment'][equipment[1]]['move'])
+        move = _item.item['equipment'][equipment[1]]['move']
+        if (equipment[1] != "None" and move != None):
+            equipment_moves.append(move)
     player_moves = player['character'].moves + equipment_moves
     print("Attacks:")
     num = 1
@@ -529,7 +529,7 @@ def attack_menu():
               f"(DMG: {curr_atk.damage * player['character'].atk},"
               f" ACC: {curr_atk.acc * player['character'].acc / 100}%,"
               f" TARGET: {curr_atk.target_type.title()})"
-              #f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if it exists
+              #f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if exists
                   #if curr_atk.debuff != None else '')})")
         )
         num += 1
@@ -567,10 +567,11 @@ def choose_attack_target(use_move):
                               f"/{player['enemies'][target_enemy].max_hp})")
                         num += 1  # AIDEN, WHAT THE HELL IS THIS NESTING???
                     print(f" {num}. Cancel")
-                    target = convert_num_menu(input("Choose a target: ").lower(), num, list_of_options=target_list)
+                    target = (
+                        convert_num_menu(input("Choose a target: ").lower(),
+                                         num, list_of_options=target_list))
                 if target in target_list:
-                    use_attack(_combat.attacks[use_move],
-                               player['character'],
+                    use_attack(_combat.attacks[use_move], player['character'],
                                player['enemies'][target])
                     break
                 elif target == "cancel":
@@ -578,7 +579,8 @@ def choose_attack_target(use_move):
             break
         elif 'all ' in _combat.attacks[use_move].target_type:
             for target_enemy in target_list:
-                use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target_enemy])
+                use_attack(_combat.attacks[use_move], player['character'],
+                           player['enemies'][target_enemy])
             break
 
 
@@ -587,9 +589,11 @@ def calculate_player_defence():
     '''
     player['character'].defence = 0
     if player['equipment']['head'] != "None":
-        player['character'].defence += _item.item['equipment'][player['equipment']['head']]['defence']
+        player['character'].defence += (
+            _item.item['equipment'][player['equipment']['head']]['defence'])
     if player['equipment']['torso'] != "None":
-        player['character'].defence += _item.item['equipment'][player['equipment']['torso']]['defence']
+        player['character'].defence += (
+            _item.item['equipment'][player['equipment']['torso']]['defence'])
 
 
 def flee_battle():
@@ -618,7 +622,9 @@ def use_item():
         print("You do not have any usable items!")
         return display_menu('combat_menu')
     while True:
-        item_choice = convert_num_menu(input("Choose an item to use: ").lower(), num, list_of_options=unique_usable_items)
+        item_choice = (
+            convert_num_menu(input("Choose an item to use: ").lower(), num,
+                             list_of_options=unique_usable_items))
         if item_choice in usable_items:
             player['inventory'].contents.remove(item_choice)
             choose_attack_target(_item.item['consumable'][item_choice]['cast'])
@@ -637,14 +643,17 @@ def use_attack(attack, attacker, target):
         defence_modifier = 1 - (target.defence / (target.defence + 50))
         attack_damage = int(attack.damage * attacker.atk * defence_modifier)
         target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
-        _print(f"\n{attack.use_text.replace('{target}', target.name.title()).replace('{attacker}', attacker.name.title())}")
+        attack_text = (attack.use_text.replace('{target}', target.name.title())
+                       .replace('{attacker}', attacker.name.title()))
+        _print(f"\n{attack_text}")
         play_sound(attack.sound, 0.8)
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
         if not attack.debuff == None:
             for i in range(attack.debuff_stack_amount):
                 target.debuffs.append(attack.debuff)
-            _print(f"{target.name.title()} is now suffering from {attack.debuff}!")
+            _print(f"{target.name.title()} is now suffering from "
+                   f"{attack.debuff}!")
         if target.hp <= 0:
             print(f"Defeated {target.name.title()}!")
             if target.name != player['character'].name:
@@ -658,7 +667,8 @@ def use_attack(attack, attacker, target):
 
 # Base Functions --------------------------------------------------------------
 def play_sound(sound: str, volume=1.0, fade_out_ms=0):
-    sound = _sound.combat_sfx[sound][random.randint(0, len(_sound.combat_sfx[sound])-1)]
+    sound = (_sound.combat_sfx[sound]
+             [random.randint(0, len(_sound.combat_sfx[sound])-1)])
     sound_effect = mixer.Sound(sound)
     sound_effect.set_volume(volume)
     sound_effect.play(fade_ms=fade_out_ms)
@@ -703,8 +713,11 @@ def story():
     os.system('cls' if os.name == 'nt' else 'clear')
     show_story_text(story_intro_file)
     while True:
-        player['character'].name = input("Enter player name: ")
-        confirm = input(f"{player['character'].name}... Is this correct? (Y/N) ").lower()
+        _print("Enter player name: ", newline=False)
+        player['character'].name = input()
+        _print(f"{player['character'].name}... Is this correct? (Y/N) ",
+               newline=False)
+        confirm = input().lower()
         if "y" in confirm:
             break
     skip_introduction = "True"
@@ -735,7 +748,8 @@ def play():
         chosen_save_file = input("Choose a save file: ").lower()
         try:
             if 1 <= int(chosen_save_file) < num:
-                chosen_save_file = list(save_files.keys())[int(chosen_save_file) - 1]
+                chosen_save_file = (list(save_files.keys())
+                                    [int(chosen_save_file) - 1])
         except ValueError:
             pass
         if chosen_save_file in list(save_files.keys()):
@@ -764,7 +778,8 @@ def view_inventory():
         print("There is nothing in your bag.\n")
         return
     for item in list(dict.fromkeys(player['inventory'].contents)):
-        print(f" - {item.title()} (x{player['inventory'].contents.count(item)})")
+        print(f" - {item.title()} "
+              f"(x{player['inventory'].contents.count(item)})")
 
 
 def fight_test():
@@ -776,12 +791,14 @@ def shopping():
 
 
 def buy():
-    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
+    current_shop = (_map.rooms[player['position'][2]][get_room()]
+                    ['shop'].lower())
     while True:
         print(f"Purchasable items:\n")
         num = 1
         for option in _shop.shops[current_shop]['wares']:
-            print(f" {num}. {option.title()}  ---  ({_item.item[check_sellable_category(option)][option]['value']}g)")
+            print(f" {num}. {option.title()}  ---  "
+                  f"({_item.item[sellable(option)][option]['value']}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
@@ -789,7 +806,8 @@ def buy():
         try:
             item_choice = int(item_choice)
             if 1 <= item_choice < num:
-                item_choice = _shop.shops[current_shop]['wares'][item_choice - 1]
+                item_choice = (_shop.shops[current_shop]['wares']
+                               [item_choice - 1])
             elif item_choice == num:
                 item_choice = 'quit'
             else:
@@ -804,8 +822,11 @@ def buy():
             pass
         else:
             continue
-        item_price = _item.item[check_sellable_category(item_choice)][item_choice]["value"]
-        _print(f"\nITEM: {item_choice.title()}\nPRICE: {item_price}\n{_item.item[check_sellable_category(item_choice)][item_choice]['description']}\n")
+        item_price = _item.item[sellable(item_choice)][item_choice]["value"]
+        item_desc = (_item.item[sellable(item_choice)][item_choice]
+                     ['description'])
+        _print(f"\nITEM: {item_choice.title()}\nPRICE: {item_price}"
+               f"\n{item_desc}\n")
         if 'n' in input("Would you like to buy this item? (Y/N)").lower():
             os.system('cls' if os.name == 'nt' else 'clear')
             continue
@@ -827,7 +848,9 @@ def sell():
         print("Your sellable items:\n")
         num = 1
         for option in player['inventory'].contents:
-            print(f" {num}. {option.title()}  ---  ({_item.item[check_sellable_category(option)][option]['value'] * 7 // 10}g)")
+            item_price = (_item.item[sellable(option)][option]
+                          ['value'] * 7 // 10)
+            print(f" {num}. {option.title()}  ---  ({item_price}g)")
             num += 1
         print(f" {num}. Quit")
         print(f"\nYou have {player['character'].gold}g")
@@ -849,8 +872,11 @@ def sell():
             return display_menu('shop_menu')
         elif item_choice in player['inventory'].contents:
             pass
-        item_price = _item.item[check_sellable_category(item_choice)][item_choice]['value'] * 7 // 10
-        if 'n' in input(f"Would you like to sell {item_choice.title()}? (Y/N)").lower():
+        item_price = (_item.item[sellable(item_choice)][item_choice]
+                      ['value'] * 7 // 10)
+        confirmation = (input(f"Would you like to sell "
+                              f"{item_choice.title()}? (Y/N)").lower())
+        if 'n' in confirmation:
             os.system('cls' if os.name == 'nt' else 'clear')
             continue
         player['inventory'].contents.remove(item_choice)
@@ -861,12 +887,16 @@ def sell():
 
 
 def shop_dialogue():
-    current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
-    _print(f'"{_shop.shops[current_shop]["dialogue"][random.randint(0, len(_shop.shops[current_shop]["dialogue"]) - 1)]}"')
+    current_shop = (_map.rooms[player['position'][2]][get_room()]
+                    ['shop'].lower())
+    dialogue = (
+        _shop.shops[current_shop]["dialogue"]
+        [random.randint(0, len(_shop.shops[current_shop]["dialogue"]) - 1)])
+    _print(f'"{dialogue}"')
     return shopping()
 
 
-def check_sellable_category(option):
+def sellable(option):
     sellable_categories = list(dict.fromkeys(_item.item))[1:]
     for category in sellable_categories:
         try:
@@ -883,7 +913,10 @@ def equipment():
 
 
 def player_equipment():
-    return f"Current equipment:\nHEAD: {player['equipment']['head'].title()}\nTORSO: {player['equipment']['torso'].title()}\nWEAPON: {player['equipment']['weapon'].title()}\nACCESSORY: {player['equipment']['accessory'].title()}"  # The equipment isn't .title()'d because it is NoneType idk how to fix this
+    return (f"Current equipment:\nHEAD: {player['equipment']['head'].title()}"
+            f"\nTORSO: {player['equipment']['torso'].title()}"
+            f"\nWEAPON: {player['equipment']['weapon'].title()}"
+            f"\nACCESSORY: {player['equipment']['accessory'].title()}")
 
 
 def equip_item():
@@ -897,30 +930,34 @@ def equip_item():
     print("Equipable items:")
     num = 1
     for item in equipable_items:
-        print(f" {num}. {item.capitalize()}   ---   (DEF: {_item.item['equipment'][item]['defence']} MOVE: {_item.item['equipment'][item]['move']})")
+        print(f" {num}. {item.capitalize()}   ---   "
+              f"(DEF: {_item.item['equipment'][item]['defence']} "
+              f"MOVE: {_item.item['equipment'][item]['move']})")
         num += 1
     while True:
         item_to_equip = input("Choose an item to equip: ").lower()
         try:
-            if int(item_to_equip) <= len(equipable_items) and int(item_to_equip) >= 1:
+            if 1 <= int(item_to_equip) <= len(equipable_items):
                 item_to_equip = equipable_items[int(item_to_equip) - 1]
         except ValueError:
             pass
-        if item_to_equip in list(_item.item['equipment'].keys()) and item_to_equip in list(_item.item['equipment'].keys()):
-            item_slot = player['equipment'][_item.item['equipment'][item_to_equip]['slot']]
+        if item_to_equip in list(_item.item['equipment'].keys()):
+            item_slot = (player['equipment'][_item.item['equipment']
+                                             [item_to_equip]['slot']])
             if item_slot == "None":
                 player['inventory'].contents.remove(item_to_equip)
-                player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
+                player['equipment'][item_slot] = item_to_equip
             else:
                 # Player already has something equipped in this slot
-                confirm = input(f"You already have {item_slot} equipped! Replace it? (Y/N) ").lower()
+                confirm = input(f"You already have {item_slot} equipped! "
+                                f"Replace it? (Y/N) ").lower()
                 if "y" in confirm:
                     player['inventory'].contents.append(item_slot)
                     player['inventory'].contents.remove(item_to_equip)
-                    player['equipment'][_item.item['equipment'][item_to_equip]['slot']] = item_to_equip
+                    player['equipment'][item_slot] = item_to_equip
                 else:
                     pass
-        confirm = input("\nWould you like to continue equipping? (Y/N) ").lower()
+        confirm = input("\nContinue equipping? (Y/N) ").lower()
         if 'y' in confirm:
             return equip_item()
         else:
@@ -941,8 +978,12 @@ def _quit():
 
 def credits_menu():
     print(_title.credit_text)
-    print("Created as a final project for Ms. Lynn's CS 30 class 2024-2025.\n")
-    print("Regress Development Team:\n - Aiden Dielschneider (Developer)\n - Ahmed Noor (Developer)\n - Damian Knourek (Credit pending)")
+    print("Created as a final project for Ms. Lynn's CS 30 class 2024-2025.")
+    print("""
+Regress Development Team:
+ - Aiden Dielschneider (Developer)
+ - Ahmed Noor (Developer)
+ - Damian Knourek (Credit pending)\n""")
 
 
 menu = {
@@ -985,21 +1026,26 @@ def display_menu(current_menu):
         if current_menu == 'main_menu':
             _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
-            print(f"{math.ceil(hours_remaining)} hours left until destruction...")
+            print(f"{math.ceil(hours_remaining)} hours left "
+                  f"until destruction...")
         elif current_menu == 'shop_menu':
-            current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
+            current_shop = (_map.rooms[player['position'][2]][get_room()]
+                            ['shop'].lower())
             print(f"Welcome to {current_shop.title()}.")
             print(_shop.shops[current_shop]['intro'])
         print()
         num = list_menu_options(menu[current_menu], current_menu)
         keyboard.unhook_all()
-        choice = convert_num_menu(input("\nChoice: ").lower(), num, current_menu)
+        choice = convert_num_menu(input("\nChoice: ").lower(), num,
+                                  current_menu)
         if choice == 'retry':
             continue
-        if choice == "quit" and current_menu not in ['main_menu', 'combat_menu']:
+        if (choice == "quit" and
+                current_menu not in ['main_menu', 'combat_menu']):
             if current_menu == "game_menu":
                 print("\nWould you like to quit to main menu?")
-                if "y" in input("Any unsaved progress will be lost! (Y/N)").lower():
+                print("Any unsaved progress will be lost!", end='')
+                if "y" in input(" (Y/N) ").lower():
                     os.system('cls' if os.name == 'nt' else 'clear')
                     current_menu = 'main_menu'
                 else:
@@ -1019,13 +1065,15 @@ def display_menu(current_menu):
 
 def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
     if current_menu != '' and list_of_options != []:
-        raise Exception("The function convert_num_menu needs the 3rd or 4th argument! Not both!")
+        raise Exception("The function convert_num_menu "
+                        + "needs the 3rd or 4th argument! Not both!")
     elif current_menu != '':
         option_list = list(menu[current_menu].keys())
     elif list_of_options != []:
         option_list = list_of_options
     else:
-        raise Exception("The function convert_num_menu needs the 3rd or 4th argument! Not neither!")
+        raise Exception("The function convert_num_menu "
+                        + "needs the 3rd or 4th argument! Not neither!")
     try:
         choice = int(choice)
     except ValueError:
@@ -1033,8 +1081,10 @@ def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
     else:
         if 1 <= choice < num:  # Check if the number inputted is an option
             os.system('cls' if os.name == 'nt' else 'clear')
-            choice = option_list[choice - 1 + (4 if current_menu=='movement_menu' else 0)]
-        elif choice == num and current_menu != 'movement_menu' and list_of_options == []:
+            choice = option_list[choice - 1
+                                 + (4 if current_menu=='movement_menu' else 0)]
+        elif (choice == num and current_menu != 'movement_menu' and
+                list_of_options == []):
             choice = 'quit'
         elif choice == num and list_of_options != []:
             choice = 'cancel'
@@ -1052,7 +1102,8 @@ def list_menu_options(menu_options: list, current_menu: str = ''):
         num += 1
     if current_menu == '':
         exit("current_menu not found!")
-    if current_menu not in ['main_menu', 'combat_menu', 'movement_menu', 'file_select_menu']:
+    if current_menu not in ['main_menu', 'combat_menu', 'movement_menu',
+                            'file_select_menu']:
         print(f" {num}. Quit")
     return num
 
@@ -1062,7 +1113,7 @@ def clamp(value, min_value, max_value):
 
 
 def main():
-    os.system('cls' if os.name == 'nt' else 'clear')  # Clears console
+    os.system('cls' if os.name == 'nt' else 'clear')
     global playing_game
     while playing_game:
         display_menu('main_menu')
