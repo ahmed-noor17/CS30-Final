@@ -458,7 +458,6 @@ def combat(encounter_enemies):
         n = 'n' if enemy[0] in ['a', 'e', 'i', 'o', 'u'] else ''
         _print(f"You've encountered a{n} {enemy.title()}!")
     time.sleep(0.5)
-
     global fighting
     fighting = True
     while fighting:
@@ -469,7 +468,8 @@ def combat(encounter_enemies):
                   f"/{player['enemies'][target_enemy].max_hp})")
         print(f"\nYour HP: {player['character'].hp}"
               f"/{player['character'].max_hp}")
-        display_menu('combat_menu')
+        if display_menu('combat_menu') == "cancel":
+            continue
         if check_for_battle_victory(xp_prize, gold_prize, item_prize):
             return  # Ends function if battle is over
         time.sleep(1)
@@ -524,11 +524,12 @@ def attack_menu():
         print(f" {num}. {attack.capitalize()}   ---   "
               f"(DMG: {curr_atk.damage * player['character'].atk},"
               f" ACC: {curr_atk.acc * player['character'].acc / 100}%,"
-              f" TARGET: {curr_atk.target_type.title()}"
+              f" TARGET: {curr_atk.target_type.title()})"
               #f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if it exists
                   #if curr_atk.debuff != None else '')})")
         )
         num += 1
+    print(f" {num}. Cancel")
     while True:
         use_move = input("Choose a move: ").lower()
         if (use_move in player_moves
@@ -619,23 +620,20 @@ def use_item():
     for item in unique_usable_items:
         print(f" {num}. {item.title()} (x{usable_items.count(item)})")
         num += 1
+    print(f" {num}. Cancel")
     if len(usable_items) <= 0:
         print("You do not have any usable items!")
         return display_menu('combat_menu')
     while True:
-        use_item = input("Choose an item to use: ").lower()
-        try:
-            use_item = int(use_item)
-            if 1 <= use_item <= num:
-                use_item = unique_usable_items[use_item - 1]
-        except ValueError:
-            pass
-        if use_item in usable_items:
-            player['inventory'].contents.remove(use_item)
-            choose_attack_target(_item.item['consumable'][use_item]['cast'])
+        item_choice = convert_num_menu(input("Choose an item to use: ").lower(), num, list_of_options=unique_usable_items)
+        if item_choice in usable_items:
+            player['inventory'].contents.remove(item_choice)
+            choose_attack_target(_item.item['consumable'][item_choice]['cast'])
             break
-        else:
-            pass
+        elif item_choice == "cancel":
+            return "cancel"
+        elif item_choice == "retry":
+            continue
 
 
 def use_attack(attack, attacker, target):
@@ -1024,8 +1022,15 @@ def display_menu(current_menu):
             os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def convert_num_menu(choice, num, current_menu):
-    option_list = list(menu[current_menu].keys())
+def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
+    if current_menu != '' and list_of_options != []:
+        raise Exception("The function convert_num_menu needs the 3rd or 4th argument! Not both!")
+    elif current_menu != '':
+        option_list = list(menu[current_menu].keys())
+    elif list_of_options != []:
+        option_list = list_of_options
+    else:
+        raise Exception("The function convert_num_menu needs the 3rd or 4th argument! Not neither!")
     try:
         choice = int(choice)
     except ValueError:
@@ -1034,8 +1039,10 @@ def convert_num_menu(choice, num, current_menu):
         if 1 <= choice < num:  # Check if the number inputted is an option
             os.system('cls' if os.name == 'nt' else 'clear')
             choice = option_list[choice - 1 + (4 if current_menu=='movement_menu' else 0)]
-        elif choice == num and current_menu != 'movement_menu':
+        elif choice == num and current_menu != 'movement_menu' and list_of_options == []:
             choice = 'quit'
+        elif choice == num and list_of_options != []:
+            choice = 'cancel'
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             return 'retry'
