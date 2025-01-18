@@ -363,8 +363,7 @@ def load_data():
 
 
 def game_over():
-    ''' Does some story text then resets the player to the beginning.
-    '''
+    ''' Does some story text then resets the player to the beginning.'''
     global fighting
     global max_hours
     global hours_remaining
@@ -384,8 +383,7 @@ def game_over():
 
 
 def level_up():
-    ''' Increases the player's stats.
-    '''
+    ''' Increases the player's stats.'''
     required_xp = level_formula()
     if player['character'].xp >= required_xp:
         player['character'].level += 1
@@ -421,8 +419,7 @@ def enemy_turn():
 
 
 def combat(encounter_enemies):
-    ''' Handles basically all of the combat.
-    '''
+    ''' Handles basically all of the combat.'''
     calculate_player_defence()
     gold_prize = 0
     xp_prize = 0
@@ -513,8 +510,7 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
 
 
 def attack_menu():
-    ''' Allows the player to pick an attack to use and displays info.
-    '''
+    ''' Allows the player to pick an attack to use and displays info.'''
     equipment_moves = []
     for equipment in list(player['equipment'].items()):
         move = _item.item['equipment'][equipment[1]]['move']
@@ -546,8 +542,7 @@ def attack_menu():
 
 
 def choose_attack_target(use_move):
-    ''' Allows the player to choose a target to use an attack on.
-    '''
+    ''' Allows the player to choose a target to use an attack on.'''
     while True:
         if 'ally' in _combat.attacks[use_move].target_type:
             use_attack(_combat.attacks[use_move],
@@ -585,8 +580,7 @@ def choose_attack_target(use_move):
 
 
 def calculate_player_defence():
-    ''' Calculates player defence based on their equipment.
-    '''
+    ''' Calculates player defence based on their equipment.'''
     player['character'].defence = 0
     if player['equipment']['head'] != "None":
         player['character'].defence += (
@@ -597,16 +591,14 @@ def calculate_player_defence():
 
 
 def flee_battle():
-    ''' Will end the battle after the next loop.
-    '''
+    ''' Will end the battle after the next loop.'''
     global fighting
     fighting = False
     _print(f"{player['character'].name.title()} is attempting to flee!")
 
 
 def use_item():
-    ''' Allows the player to pick an item to use.
-    '''
+    ''' Allows the player to pick an item to use.'''
     usable_items = []
     num = 1
     print("Usable items:\n")
@@ -636,8 +628,7 @@ def use_item():
 
 
 def use_attack(attack, attacker, target):
-    ''' Damages a target, inflicts debuffs, and checks for kills.
-    '''
+    ''' Damages a target, inflicts debuffs, and checks for kills.'''
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
         defence_modifier = 1 - (target.defence / (target.defence + 50))
@@ -684,8 +675,7 @@ def play_music(piece: str, volume=0.1):
 
 
 def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
-    ''' Function prints text with a typing effect.
-    '''
+    ''' Function prints text with a typing effect.'''
     punctuation = ['.', '!', '?']
     if delay != 0.0:
         if print_by_line:
@@ -706,8 +696,7 @@ def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
 
 
 def story():
-    ''' This is the opening to the game.
-    '''
+    ''' This is the opening to the game.'''
     global text_speed
     global skip_introduction
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -724,8 +713,7 @@ def story():
 
 
 def show_story_text(file):
-    ''' Reads text from a specified .txt file
-    '''
+    ''' Reads text from a specified .txt file.'''
     try:
         with open(file, 'r') as f:
             print("Press ENTER to continue")
@@ -738,8 +726,7 @@ def show_story_text(file):
 
 
 def play():
-    ''' Lets the player pick a save file and begin playing.
-    '''
+    ''' Lets the player pick a save file and begin playing.'''
     global current_save_file
     global skip_introduction
     while True:
@@ -766,6 +753,7 @@ def play():
 
 
 def view_character():
+    ''' Prints character stats.'''
     calculate_player_defence()
     print(f"Time remaining: {hours_remaining} hours\n")
     print("Stats:")
@@ -773,6 +761,7 @@ def view_character():
 
 
 def view_inventory():
+    ''' Displays player inventory.'''
     print("Inventory:")
     if player['inventory'].contents == []:
         print("There is nothing in your bag.\n")
@@ -791,6 +780,7 @@ def shopping():
 
 
 def buy():
+    ''' Allows the player to choose an item to buy from the shop.'''
     current_shop = (_map.rooms[player['position'][2]][get_room()]
                     ['shop'].lower())
     while True:
@@ -844,6 +834,7 @@ def buy():
 
 
 def sell():
+    ''' Allows the player to sell one of their items (70% value)'''
     while True:
         print("Your sellable items:\n")
         num = 1
@@ -887,6 +878,7 @@ def sell():
 
 
 def shop_dialogue():
+    ''' Gets a dialogue from the current shop and prints it.'''
     current_shop = (_map.rooms[player['position'][2]][get_room()]
                     ['shop'].lower())
     dialogue = (
@@ -897,6 +889,7 @@ def shop_dialogue():
 
 
 def sellable(option):
+    ''' Returns the category of item that an item is.'''
     sellable_categories = list(dict.fromkeys(_item.item))[1:]
     for category in sellable_categories:
         try:
@@ -908,6 +901,7 @@ def sellable(option):
 
 
 def equipment():
+    ''' Shows player's current equipment and opens equip menu.'''
     print(player_equipment())
     display_menu('equipment_menu')
 
@@ -920,6 +914,7 @@ def player_equipment():
 
 
 def equip_item():
+    ''' Allows the player to choose an item to equip.'''
     equipable_items = []
     for item in player['inventory'].contents:
         if item in list(_item.item['equipment'].keys()):
@@ -1021,6 +1016,8 @@ menu = {
 
 
 def display_menu(current_menu):
+    ''' Displays the menu's options and lets the player pick one. Then,
+        it executes the corresponding function.'''
     while True:
         keyboard.block_key('enter')
         if current_menu == 'main_menu':
@@ -1064,6 +1061,7 @@ def display_menu(current_menu):
 
 
 def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
+    ''' Converts a number input to a regular text input in the menus.'''
     if current_menu != '' and list_of_options != []:
         raise Exception("The function convert_num_menu "
                         + "needs the 3rd or 4th argument! Not both!")
@@ -1095,6 +1093,7 @@ def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
 
 
 def list_menu_options(menu_options: list, current_menu: str = ''):
+    ''' Lists menu options.'''
     num = 1
     for option in menu_options:
         print(f" {num}. {option.capitalize()}")
@@ -1109,6 +1108,7 @@ def list_menu_options(menu_options: list, current_menu: str = ''):
 
 
 def clamp(value, min_value, max_value):
+    ''' Clamps a value to a range of [min_value, max_value].'''
     return max(min_value, min(value, max_value))
 
 

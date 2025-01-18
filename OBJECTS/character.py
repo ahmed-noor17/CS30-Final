@@ -15,4 +15,3 @@ class Character:
     
     def __str__(self):
         return f"NAME: {self.name.title()}\nHP: {self.hp}/{self.max_hp}\nLEVEL: {self.level}\nGOLD: {self.gold}\nATK: {self.atk}\nDEF: {self.defence}\nACC: {self.acc}\n"
-    
