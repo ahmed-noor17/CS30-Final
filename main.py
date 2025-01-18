@@ -329,18 +329,20 @@ def load_data():
                     data[1] = data[1].split(", ")
                 loaded_data[data[0]] = data[1]
         global player
-        player['character'] = _character.Character(loaded_data['player_name'],
-                              int(loaded_data['player_level']),
-                              int(loaded_data['player_xp']),
-                              int(loaded_data['player_gold']),
-                              int(loaded_data['player_max_hp']),
-                              int(loaded_data['player_atk']),
-                              int(loaded_data['player_acc']),
-                              loaded_data['player_moves'])
+        player['character'] = _character.Character(
+            loaded_data['player_name'],
+            int(loaded_data['player_level']),
+            int(loaded_data['player_xp']),
+            int(loaded_data['player_gold']),
+            int(loaded_data['player_max_hp']),
+            int(loaded_data['player_atk']),
+            int(loaded_data['player_acc']),
+            loaded_data['player_moves'])
         player['character'].hp = int(loaded_data['player_hp'])
-        player['position'] = [int(loaded_data['player_x_position']),
-                              int(loaded_data['player_y_position']),
-                              loaded_data['player_map']]
+        player['position'] = [
+            int(loaded_data['player_x_position']),
+            int(loaded_data['player_y_position']),
+            loaded_data['player_map']]
         player['equipment']['head'] = loaded_data['player_head']
         player['equipment']['torso'] = loaded_data['player_torso']
         player['equipment']['weapon'] = loaded_data['player_weapon']
@@ -427,14 +429,15 @@ def combat(encounter_enemies):
     item_prize = []
     keyboard.block_key('enter')
     for enemy in encounter_enemies:  # Aiden, explain.
-        enemy_object = _character.Character(_combat.enemies[enemy][0],
-                                            _combat.enemies[enemy][1],
-                                            _combat.enemies[enemy][2],
-                                            _combat.enemies[enemy][3],
-                                            _combat.enemies[enemy][4],
-                                            _combat.enemies[enemy][5],
-                                            _combat.enemies[enemy][6],
-                                            _combat.enemies[enemy][7])
+        enemy_object = _character.Character(
+            _combat.enemies[enemy][0],
+            _combat.enemies[enemy][1],
+            _combat.enemies[enemy][2],
+            _combat.enemies[enemy][3],
+            _combat.enemies[enemy][4],
+            _combat.enemies[enemy][5],
+            _combat.enemies[enemy][6],
+            _combat.enemies[enemy][7])
         try:
             enemy_object.boss = _combat.enemies[enemy][10]
         except IndexError:
@@ -469,6 +472,7 @@ def combat(encounter_enemies):
         print(f"\nYour HP: {player['character'].hp}"
               f"/{player['character'].max_hp}")
         if display_menu('combat_menu') == "cancel":
+            os.system('cls' if os.name == 'nt' else 'clear')
             continue
         if check_for_battle_victory(xp_prize, gold_prize, item_prize):
             return  # Ends function if battle is over
@@ -531,12 +535,13 @@ def attack_menu():
         num += 1
     print(f" {num}. Cancel")
     while True:
-        use_move = convert_num_menu(input("Choose a move: ").lower(), num, list_of_options=player_moves)
+        use_move = convert_num_menu(input("Choose a move: ").lower(), num,
+                                    list_of_options=player_moves)
         if use_move in player_moves:
-            choose_attack_target(use_move)
+            if choose_attack_target(use_move) == "cancel":
+                return "cancel"
             break
         elif use_move == "cancel":
-            os.system('cls' if os.name == 'nt' else 'clear')
             return "cancel"
 
 
@@ -552,7 +557,7 @@ def choose_attack_target(use_move):
             target_list = list(player['enemies'].keys())
         if 'single' in _combat.attacks[use_move].target_type:
             while True:
-                if len(list(player['enemies'].keys())) <= 1:
+                if len(target_list) <= 1:
                     target = target_list[0].lower()  # If one target, target it
                 else:
                     num = 1
@@ -561,22 +566,15 @@ def choose_attack_target(use_move):
                               f"(HP: {player['enemies'][target_enemy].hp}"
                               f"/{player['enemies'][target_enemy].max_hp})")
                         num += 1  # AIDEN, WHAT THE HELL IS THIS NESTING???
-                    target = input("Choose a target: ").lower()
-                if target in list(player['enemies'].keys()):
+                    print(f" {num}. Cancel")
+                    target = convert_num_menu(input("Choose a target: ").lower(), num, list_of_options=target_list)
+                if target in target_list:
                     use_attack(_combat.attacks[use_move],
                                player['character'],
                                player['enemies'][target])
                     break
-                else:
-                    try:
-                        if (int(target) <= len(target_list)
-                                and int(target) >= 1):
-                            use_attack(_combat.attacks[use_move],
-                                       player['character'],
-                                       player['enemies'][target_list[int(target) - 1]])
-                            break
-                    except ValueError:
-                        pass
+                elif target == "cancel":
+                    return "cancel"
             break
         elif 'all ' in _combat.attacks[use_move].target_type:
             for target_enemy in target_list:
@@ -626,7 +624,6 @@ def use_item():
             choose_attack_target(_item.item['consumable'][item_choice]['cast'])
             break
         elif item_choice == "cancel":
-            os.system('cls' if os.name == 'nt' else 'clear')
             return "cancel"
         elif item_choice == "retry":
             continue
@@ -668,7 +665,7 @@ def play_sound(sound: str, volume=1.0, fade_out_ms=0):
     return
 
 
-def play_music(piece: str, volume=0.3):
+def play_music(piece: str, volume=0.1):
     piece = _sound.bgm[piece]
     mixer.music.load(piece)
     mixer.music.set_volume(volume)
@@ -1011,6 +1008,8 @@ def display_menu(current_menu):
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 return
+        elif choice == "cancel":
+            return "cancel"
         elif choice in menu[current_menu]:
             os.system('cls' if os.name == 'nt' else 'clear')
             return menu[current_menu][choice]()
