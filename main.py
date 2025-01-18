@@ -220,10 +220,11 @@ def room_attribute_list():
             except KeyError:
                 pass
         else:
-            if atr == 'fight':
-                if not _map.rooms[player['position'][2]][get_room()]['fight'] in player['defeated bosses']:
-                    menu['movement_menu']['fight'] = map_encounter
-                    temp_opt_list.append('fight')
+            if (atr == 'fight'
+                    and _map.rooms[player['position'][2]][get_room()]['fight']
+                    not in player['defeated bosses']):
+                menu['movement_menu']['fight'] = map_encounter
+                temp_opt_list.append('fight')
             else:
                 menu['movement_menu'][atr] = room_attributes[atr]
                 temp_opt_list.append(atr)
@@ -297,8 +298,10 @@ def save_data():
     try:
         with open(current_save_file, 'w') as f:
             for data in list(data_to_save.keys()):
-                edited_data = str(data_to_save[data]).replace("'", "")\
-                    .replace('[', '').replace(']', '')
+                edited_data = (str(data_to_save[data])
+                               .replace("'", "")
+                               .replace('[', '')
+                               .replace(']', ''))
                 f.write(f"{data}::{edited_data}\n")
     except Exception:
         print("An error occurred while saving data.")
@@ -385,12 +388,15 @@ def level_formula():
 def enemy_turn():
     for enemy in list(player['enemies'].keys()):
         enemy_object = player['enemies'][enemy]
+        enemy_attack = _combat.attacks[enemy_object.moves[random.randint(
+                                       0, len(enemy_object.moves) - 1)]]
         if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
             _print(f"\n{enemy_object.name.title()} took a turn!")
-            use_attack(_combat.attacks[enemy_object.moves[random.randint(0, len(enemy_object.moves) - 1)]], enemy_object, player['character'])
+            use_attack(_combat.attacks[enemy_attack], enemy_object,
+                       player['character'])
         for debuff in list(dict.fromkeys(enemy_object.debuffs)):
-            if enemy_object.hp > 0 and not player['character'].hp <= 0:  # Enemies do not take DOT damage if they are already dead or if they killed the player
-                enemy_object.debuffs.remove(debuff)
+            if enemy_object.hp > 0 and not player['character'].hp <= 0:
+                enemy_object.debuffs.remove(debuff)  # No DOT damage if dead
                 use_attack(_combat.attacks[debuff], debuff_char, enemy_object)
         time.sleep(0.1)
 
@@ -401,24 +407,32 @@ def combat(encounter_enemies):
     xp_prize = 0
     item_prize = []
     keyboard.block_key('enter')
-    for enemy in encounter_enemies:
-        enemy_object = _character.Character(_combat.enemies[enemy][0], _combat.enemies[enemy][1], _combat.enemies[enemy][2], _combat.enemies[enemy][3], _combat.enemies[enemy][4], _combat.enemies[enemy][5], _combat.enemies[enemy][6], _combat.enemies[enemy][7])
+    for enemy in encounter_enemies:  # Aiden, explain.
+        enemy_object = _character.Character(_combat.enemies[enemy][0],
+                                            _combat.enemies[enemy][1],
+                                            _combat.enemies[enemy][2],
+                                            _combat.enemies[enemy][3],
+                                            _combat.enemies[enemy][4],
+                                            _combat.enemies[enemy][5],
+                                            _combat.enemies[enemy][6],
+                                            _combat.enemies[enemy][7])
         try:
             enemy_object.boss = _combat.enemies[enemy][10]
         except IndexError:
             pass  # Enemy is not a boss
         gold_prize += enemy_object.gold
         xp_prize += enemy_object.xp
-        try:
-            if random.randint(1, 100) <= _combat.enemies[enemy_object.name][9]:  # Random drop chance
-                item_prize.append(_combat.enemies[enemy_object.name][8])  # Adds the enemy's drops to the prize pool
-        except IndexError:
+        try:  # Line below makes random drop chance
+            if random.randint(1, 100) <= _combat.enemies[enemy_object.name][9]:
+                item_prize.append(_combat.enemies[enemy_object.name][8])
+        except IndexError:  # Line above adds drop to prize pool
             pass
         enemy_count = 1
         while enemy_object.name in list(player['enemies'].keys()):
             enemy_count += 1
-            if enemy_count > 2:  # This names the enemies if there are multiple of the same type
-                enemy_object.name = f"{enemy_object.name[:-2]} {str(enemy_count)}"
+            if enemy_count > 2:  # Numbers enemies sharing the same name
+                enemy_object.name = (
+                    f"{enemy_object.name[:-2]}{str(enemy_count)}")
             else:
                 enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
@@ -431,16 +445,19 @@ def combat(encounter_enemies):
     while fighting:
         _print(_title.player_turn_text, delay=0.04, print_by_line=True)
         for target_enemy in list(player['enemies'].keys()):
-            print(f" > {target_enemy.title()}   ---   (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
-        print(f"\nYour HP: {player['character'].hp}/{player['character'].max_hp}")
+            print(f" > {target_enemy.title()}   ---   "
+                  f"(HP: {player['enemies'][target_enemy].hp}"
+                  f"/{player['enemies'][target_enemy].max_hp})")
+        print(f"\nYour HP: {player['character'].hp}"
+              f"/{player['character'].max_hp}")
         display_menu('combat_menu')
-        if check_for_battle_victory(xp_prize, gold_prize, item_prize):  # This function returns true if the battle is over
-            return
+        if check_for_battle_victory(xp_prize, gold_prize, item_prize):
+            return  # Ends function if battle is over
         time.sleep(1)
         _print(_title.enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
-        if check_for_battle_victory(xp_prize, gold_prize, item_prize):  # It checks here too for if the player was killed or the enemies died on their own turn
-            return
+        if check_for_battle_victory(xp_prize, gold_prize, item_prize):
+            return  # Also checks here if player was killed or all enemies died
         time.sleep(1)
     player['enemies'].clear()
 
@@ -472,19 +489,25 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
 def attack_menu():
     equipment_moves = []
     for equipment in list(player['equipment'].items()):
-        if not equipment[1] == "None":  # I know this seems kinda bad but the alternative was a whole try/except thing that I didn't feel like doing
-            if not _item.item['equipment'][equipment[1]]['move'] == None:
-                equipment_moves.append(_item.item['equipment'][equipment[1]]['move'])
+        if (equipment[1] != "None"
+                and _item.item['equipment'][equipment[1]]['move'] != None):
+            equipment_moves.append(_item.item['equipment'][equipment[1]]['move'])
     player_moves = player['character'].moves + equipment_moves
     print("Attacks:")
     num = 1
     for attack in player_moves:
         curr_atk = _combat.attacks[attack]
-        print(f" {num}. {attack.capitalize()}   ---   (DMG: {curr_atk.damage * player['character'].atk}, ACC: {curr_atk.acc * player['character'].acc / 100}%, TARGET: {curr_atk.target_type.title()}{(f', DEBUFF: {curr_atk.debuff.title()}' if curr_atk.debuff != None else '')})")
+        print(f" {num}. {attack.capitalize()}   ---   "
+              f"(DMG: {curr_atk.damage * player['character'].atk},"
+              f" ACC: {curr_atk.acc * player['character'].acc / 100}%,"
+              f" TARGET: {curr_atk.target_type.title()}"
+              f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if it exists
+                  if curr_atk.debuff != None else '')})")
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
-        if use_move in player_moves and use_move in list(_combat.attacks.keys()):
+        if (use_move in player_moves
+                and use_move in list(_combat.attacks.keys())):
             choose_attack_target(use_move)
             break
         else:
@@ -499,27 +522,35 @@ def attack_menu():
 def choose_attack_target(use_move):
     while True:
         if 'ally' in _combat.attacks[use_move].target_type:
-            use_attack(_combat.attacks[use_move], player['character'], player['character'])
+            use_attack(_combat.attacks[use_move],
+                       player['character'], player['character'])
             break
         else:
             target_list = list(player['enemies'].keys())
-        if 'single' in _combat.attacks[use_move].target_type:          
+        if 'single' in _combat.attacks[use_move].target_type:
             while True:
                 if len(list(player['enemies'].keys())) <= 1:
-                    target = target_list[0].lower()  # If only one target on the field, it will be automatically targetted
+                    target = target_list[0].lower()  # If one target, target it
                 else:
                     num = 1
                     for target_enemy in target_list:
-                        print(f" {num}. {target_enemy.title()}   ---   (HP: {player['enemies'][target_enemy].hp}/{player['enemies'][target_enemy].max_hp})")
-                        num += 1
+                        print(f" {num}. {target_enemy.title()}   ---   "
+                              f"(HP: {player['enemies'][target_enemy].hp}"
+                              f"/{player['enemies'][target_enemy].max_hp})")
+                        num += 1  # AIDEN, WHAT THE HELL IS THIS NESTING???
                     target = input("Choose a target: ").lower()
                 if target in list(player['enemies'].keys()):
-                    use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target])
+                    use_attack(_combat.attacks[use_move],
+                               player['character'],
+                               player['enemies'][target])
                     break
                 else:
                     try:
-                        if int(target) <= len(target_list) and int(target) >= 1:
-                            use_attack(_combat.attacks[use_move], player['character'], player['enemies'][target_list[int(target) - 1]])
+                        if (int(target) <= len(target_list)
+                                and int(target) >= 1):
+                            use_attack(_combat.attacks[use_move],
+                                       player['character'],
+                                       player['enemies'][target_list[int(target) - 1]])
                             break
                     except ValueError:
                         pass
