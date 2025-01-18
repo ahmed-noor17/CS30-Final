@@ -806,7 +806,7 @@ def buy():
             continue
         item_price = _item.item[check_sellable_category(item_choice)][item_choice]["value"]
         _print(f"\nITEM: {item_choice.title()}\nPRICE: {item_price}\n{_item.item[check_sellable_category(item_choice)][item_choice]['description']}\n")
-        if 'n' in input("Would you like to buy this item? (Y/N)"):
+        if 'n' in input("Would you like to buy this item? (Y/N)").lower():
             os.system('cls' if os.name == 'nt' else 'clear')
             continue
         if item_price <= player['character'].gold:
@@ -850,7 +850,7 @@ def sell():
         elif item_choice in player['inventory'].contents:
             pass
         item_price = _item.item[check_sellable_category(item_choice)][item_choice]['value'] * 7 // 10
-        if 'n' in input(f"Would you like to sell {item_choice.title()}? (Y/N)"):
+        if 'n' in input(f"Would you like to sell {item_choice.title()}? (Y/N)").lower():
             os.system('cls' if os.name == 'nt' else 'clear')
             continue
         player['inventory'].contents.remove(item_choice)

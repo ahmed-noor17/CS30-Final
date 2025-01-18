@@ -12,7 +12,6 @@ BEFORE HANDING IN:
 
 Things to work on:
     -Time system*
-    -Check buy confirmation
     -Game balancing
     -MORE CONTENT!!!!!!!
         -Music
