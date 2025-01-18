@@ -16,6 +16,7 @@ from tabulate import tabulate
 from pygame import mixer
 import DATA.map_data as _map
 import DATA.item_data as _item
+import DATA.shop_data as _shop
 import DATA.combat_data as _combat
 import DATA.sound_data as _sound
 import OBJECTS.inventory as _inventory
@@ -38,8 +39,8 @@ player = {
         gold=0,
         max_hp=100,
         atk=10,
-        acc=95,
-        moves=['slash', 'fireball']),
+        acc=100,
+        moves=['slash']),
 	'position': [1, 3, "tutorial"],  # [x, y, map]
 	'inventory': _inventory.Inventory([]),
     'enemies': {},
@@ -51,24 +52,21 @@ player = {
     'defeated bosses': []
 }
 
+
 save_files = {
 	'file 1': os.getcwd() + '/SAVE_DATA/SaveSlot1.txt',
     'file 2': os.getcwd() + '/SAVE_DATA/SaveSlot2.txt',
     'file 3': os.getcwd() + '/SAVE_DATA/SaveSlot3.txt'
 }
+data_to_save = {}
+loaded_data = {}
+current_save_file = None
 
 debuff_char = _character.Character("man behind the curtain", 1, 0, 0, 0, 1, 100, [])
-
 text_speed = 0.01
 map_cell_character_len = 25
 max_hours = 168
 hours_remaining = 168.0
-
-data_to_save = {}
-
-loaded_data = {}
-
-current_save_file = None
 
 move_options = {"w": "up",
                 "a": "left",
@@ -156,6 +154,8 @@ def map_encounter():
 
 
 def moving():
+    ''' Displays movement options and lets the player move.
+    '''
     moving = True
     print("You begin moving.")
     while moving:
@@ -207,6 +207,9 @@ def moving():
 
 
 def room_attribute_list():
+    ''' Figures out what special attributes the current map tile has
+        and adds them to the options menu.
+    '''
     room_attributes = {'enter': change_map,
                        'shop': shopping,
                        'fight': map_encounter}
@@ -221,7 +224,7 @@ def room_attribute_list():
                 pass
         else:
             if (atr == 'fight'
-                    and _map.rooms[player['position'][2]][get_room()]['fight']
+                    and _map.rooms[player['position'][2]][get_room()]['fight']  # The fight option will not be available if the fight has already been done
                     not in player['defeated bosses']):
                 menu['movement_menu']['fight'] = map_encounter
                 temp_opt_list.append('fight')
@@ -239,6 +242,9 @@ def expend_time(time_cost):
 
 
 def get_room(y_offset=0, x_offset=0, for_display=False):
+    ''' Gets the name of the room the player is in. Offsets allow getting
+        adjacent rooms and for_display formats it for use on the map.
+    '''
     try:
         room_name = (_map.game_map[player['position'][2]]['map']
             [int(player['position'][1]) + y_offset]
@@ -255,6 +261,9 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
 
 
 def random_encounter():
+    ''' Roll for random encounter based on the data of the current map
+        in map_data.
+    '''
     roll = random.randint(1, 100)
     if roll <= (_map.game_map[player['position'][2]]['data']
                 ['random_encounter_chance']):
@@ -268,11 +277,11 @@ def random_encounter():
 
 
 def save_data():
-    ''' Writes data to save file.'''
+    ''' Writes data to save file.
+    '''
     global data_to_save
     global skip_introduction
     data_to_save = {
-        'text_speed': text_speed,
         'skip_introduction': skip_introduction,
         'player_name': player['character'].name,
         'player_level': player['character'].level,
@@ -308,6 +317,8 @@ def save_data():
 
 
 def load_data():
+    ''' Changes the player's stats to match what is in the save file.
+    '''
     global skip_introduction
     try:
         with open(current_save_file, 'r') as f:
@@ -350,6 +361,8 @@ def load_data():
 
 
 def game_over():
+    ''' Does some story text then resets the player to the beginning.
+    '''
     global fighting
     global max_hours
     global hours_remaining
@@ -369,6 +382,8 @@ def game_over():
 
 
 def level_up():
+    ''' Increases the player's stats.
+    '''
     required_xp = level_formula()
     if player['character'].xp >= required_xp:
         player['character'].level += 1
@@ -386,6 +401,9 @@ def level_formula():
 
 
 def enemy_turn():
+    ''' Makes all enemies attack the player and take DoT damage if
+        applicable.
+    '''
     for enemy in list(player['enemies'].keys()):
         enemy_object = player['enemies'][enemy]
         enemy_attack = _combat.attacks[enemy_object.moves[random.randint(
@@ -401,6 +419,8 @@ def enemy_turn():
 
 
 def combat(encounter_enemies):
+    ''' Handles basically all of the combat.
+    '''
     calculate_player_defence()
     gold_prize = 0
     xp_prize = 0
@@ -462,6 +482,9 @@ def combat(encounter_enemies):
 
 
 def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
+    ''' Will check if the player has either won or lost. Returns False
+        if the battle is still in progress.
+    '''
     global fighting
     if player['character'].hp <= 0:
         print("You lost!")
@@ -486,6 +509,8 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
 
 
 def attack_menu():
+    ''' Allows the player to pick an attack to use and displays info.
+    '''
     equipment_moves = []
     for equipment in list(player['equipment'].items()):
         if (equipment[1] != "None"
@@ -500,8 +525,9 @@ def attack_menu():
               f"(DMG: {curr_atk.damage * player['character'].atk},"
               f" ACC: {curr_atk.acc * player['character'].acc / 100}%,"
               f" TARGET: {curr_atk.target_type.title()}"
-              f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if it exists
-                  if curr_atk.debuff != None else '')})")
+              #f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if it exists
+                  #if curr_atk.debuff != None else '')})")
+        )
         num += 1
     while True:
         use_move = input("Choose a move: ").lower()
@@ -519,6 +545,8 @@ def attack_menu():
 
 
 def choose_attack_target(use_move):
+    ''' Allows the player to choose a target to use an attack on.
+    '''
     while True:
         if 'ally' in _combat.attacks[use_move].target_type:
             use_attack(_combat.attacks[use_move],
@@ -561,6 +589,8 @@ def choose_attack_target(use_move):
 
 
 def calculate_player_defence():
+    ''' Calculates player defence based on their equipment.
+    '''
     player['character'].defence = 0
     if player['equipment']['head'] != "None":
         player['character'].defence += _item.item['equipment'][player['equipment']['head']]['defence']
@@ -569,12 +599,16 @@ def calculate_player_defence():
 
 
 def flee_battle():
+    ''' Will end the battle after the next loop.
+    '''
     global fighting
     fighting = False
     _print(f"{player['character'].name.title()} is attempting to flee!")
 
 
 def use_item():
+    ''' Allows the player to pick an item to use.
+    '''
     usable_items = []
     num = 1
     print("Usable items:\n")
@@ -605,6 +639,8 @@ def use_item():
 
 
 def use_attack(attack, attacker, target):
+    ''' Damages a target, inflicts debuffs, and checks for kills.
+    '''
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
         defence_modifier = 1 - (target.defence / (target.defence + 50))
@@ -646,46 +682,6 @@ def play_music(piece: str, volume=0.3):
     pass
 
 
-def setup():
-    global text_speed
-    os.system('cls' if os.name == 'nt' else 'clear')
-    with open(current_save_file) as file:  # Reads the speed on file and sets it
-        for line in file.readlines():
-            if "text_speed" in line:
-                line = line.strip().split('::')
-                text_speed = float(line[1])
-    _print("This is the game's current text speed.")
-    _print("Would you like to change the text speed? (Y/N) ", newline=False)
-    if "n" in input().lower():
-        os.system('cls' if os.name == 'nt' else 'clear')
-        return
-    _print("You are changing the text speed.")
-    while True:
-        print()
-        text_speeds = {
-            "slow": 0.038,
-            "mid": 0.025,
-            "fast": 0.012,
-            "instant": 0
-        }
-        choice = input(
-            'Choose "Slow", "Mid", "Fast", "Instant" or "Quit": ').lower()
-        if choice in list(text_speeds.keys()):
-            text_speed = text_speeds[choice]
-        elif choice in "quit":
-            os.system('cls' if os.name == 'nt' else 'clear')
-            break
-        else:
-            pass
-        _print("This is how fast the text will appear. Here is some extra text.")
-    with open(current_save_file, "r") as file:
-        temp_list = file.readlines()  # Temp list of all lines in file
-        temp_list[0] = f"text_speed::{str(text_speed)}\n"
-        with open(current_save_file, "w") as file:
-            file.writelines(temp_list)  # Updates setting in file
-    return None
-
-
 def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
     ''' Function prints text with a typing effect.
     '''
@@ -709,6 +705,8 @@ def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
 
 
 def story():
+    ''' This is the opening to the game.
+    '''
     global text_speed
     global skip_introduction
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -722,6 +720,8 @@ def story():
 
 
 def show_story_text(file):
+    ''' Reads text from a specified .txt file
+    '''
     try:
         with open(file, 'r') as f:
             print("Press ENTER to continue")
@@ -734,6 +734,8 @@ def show_story_text(file):
 
 
 def play():
+    ''' Lets the player pick a save file and begin playing.
+    '''
     global current_save_file
     global skip_introduction
     while True:
@@ -772,7 +774,6 @@ def view_inventory():
         return
     for item in list(dict.fromkeys(player['inventory'].contents)):
         print(f" - {item.title()} (x{player['inventory'].contents.count(item)})")
-        
 
 
 def fight_test():
@@ -788,7 +789,7 @@ def buy():
     while True:
         print(f"Purchasable items:\n")
         num = 1
-        for option in shops[current_shop]['wares']:
+        for option in _shop.shops[current_shop]['wares']:
             print(f" {num}. {option.title()}  ---  ({_item.item[check_sellable_category(option)][option]['value']}g)")
             num += 1
         print(f" {num}. Quit")
@@ -797,7 +798,7 @@ def buy():
         try:
             item_choice = int(item_choice)
             if 1 <= item_choice < num:
-                item_choice = shops[current_shop]['wares'][item_choice - 1]
+                item_choice = _shop.shops[current_shop]['wares'][item_choice - 1]
             elif item_choice == num:
                 item_choice = 'quit'
             else:
@@ -808,7 +809,7 @@ def buy():
         if item_choice == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             return display_menu('shop_menu')
-        elif item_choice in shops[current_shop]['wares']:
+        elif item_choice in _shop.shops[current_shop]['wares']:
             pass
         else:
             continue
@@ -870,7 +871,7 @@ def sell():
 
 def shop_dialogue():
     current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
-    _print(f'"{shops[current_shop]["dialogue"][random.randint(0, len(shops[current_shop]["dialogue"]) - 1)]}"')
+    _print(f'"{_shop.shops[current_shop]["dialogue"][random.randint(0, len(_shop.shops[current_shop]["dialogue"]) - 1)]}"')
     return shopping()
 
 
@@ -953,67 +954,6 @@ def credits_menu():
     print("Regress Development Team:\n - Aiden Dielschneider (Developer)\n - Ahmed Noor (Developer)\n - Damian Knourek (Credit pending)")
 
 
-shops = {
-    "dan's thingamabobs": {
-        "intro": 'An eccentric man stands behind the counter. He has a wooden sign wrapped around his neck with "DAN" scrawled on it.',
-        "wares":
-            ["health potion",
-            "magic icicle",
-            "inferno scroll",
-            "bottled lightning",
-            "birthday bomb"],
-        "dialogue":
-            ["Hey would you be willing to buy this here thingamajig? Actually, wait no, that's not for sale, nevermind...",
-            "Please buy my stuff. I was gravedigging all night yesterday! Hehehe, I jest. I found these in my cellar.",
-            "Y'know, if you're ever in a pinch in combat, these items are a real lifesaver, you know.",
-            "If you're ever in the area, would you mind checking out the sewer for me? I'll buy whatever you dredge up from there!",
-            "My cousin had a birthday party last week and I tried using the birthday bomb. It didn't go very well..."]
-    },
-    "blacksmith": {
-        "intro": 'A burly man welcomes you despite his attention clearly being on the lump of metal he is handling.',
-        "wares":
-            ['iron chestplate', 
-             'iron helmet', 
-             'iron sword', 
-             'iron mace', 
-             'iron buckler', 
-             'bow', 
-             'red ring'],
-        "dialogue":
-            ["Buy something. Or don't, I guess.",
-            "I used to be an adventurer like you, but then I took an arrow to the elbow.",
-            "Feel free to come back and thank me when my stuff ends up saving your skin."]
-    },
-    "black market": {
-        "intro": 'Men hiding behind leaves stare at you.',
-        "wares":
-            ["poison bomb",
-            "iron sword",
-            "iron mace",
-            "bottled lightning",
-            "cursed flame orb"],
-        "dialogue":
-            ["Are you looking to buy... or sell..?",
-            "No questions. Just business.",
-            "If you're not here for business, then scram!",
-            "Were you followed here?",
-            "Don't tell me you're one of the king's rats...",
-            "I'd hide here if you don't want to get caught.",
-            "...You don't have any coin, do you?"]
-    },
-    "tree's shop": {
-        "intro": 'You find it a bit odd buying things from a tree.',
-        "wares":
-            ["scroll of healing",
-            "frost scroll",
-            "inferno scroll",
-            "poison bomb"],
-        "dialogue":
-            ["...", "......", "....(You feel like the tree is judging you)"]
-    }
-}
-
-
 menu = {
     "main_menu": {
         "play": play,
@@ -1058,7 +998,7 @@ def display_menu(current_menu):
         elif current_menu == 'shop_menu':
             current_shop = _map.rooms[player['position'][2]][get_room()]['shop'].lower()
             print(f"Welcome to {current_shop.title()}.")
-            print(shops[current_shop]['intro'])
+            print(_shop.shops[current_shop]['intro'])
         print()
         num = list_menu_options(menu[current_menu], current_menu)
         keyboard.unhook_all()

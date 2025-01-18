@@ -313,7 +313,7 @@ rooms = {
         "common area": {"description": "Ancient paths and benches and arches said to be constructed by the first settlers."},
         "yggdrasil": {"description": "The oldest and biggest tree in town. Sitting next to it gives a great sense of calm."},
         "well": {"description": "The primary source of water for years to come."},
-        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side.", "enter": [6, 2, "sewer"]},
+        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side.", "enter": [1, 1, "sewer"]},
         "house": {"description": "The place of dwelling for a citizen of Ironwood."},
         "market": {"description": "Stalls bustling with merchants looking to make a living."},
         "magic shop": {"description": "A peculiar shop with all sorts scents coming from it.", "shop": "dan's thingamabobs"},
@@ -329,8 +329,8 @@ rooms = {
         "???": {"description": "???"}
     },
     "sewer": {
-        "to ironwood": {"description": "This leads back to Ironwood.", "enter": [1, 1, "ironwood"]},
-        "mysterious door": {"description": "This door doesn't seem to belong here...", "enter": [1, 1, "ironwood"]}
+        "to ironwood": {"description": "This leads back to Ironwood.", "enter": [6, 2, "ironwood"]},
+        "mysterious door": {"description": "This door doesn't seem to belong here...", "enter": [6, 2, "ironwood"]}
     },
     "city of thieves": {
         "entrance": {"description": "An unmanned gate.", "enter": [1, 5, "world"]}
@@ -339,7 +339,7 @@ rooms = {
         "ironwood" : {"description": "The peaceful capital of Sveragard", "enter": [3, 1, 'ironwood']},
         "the old woods" : {"description": "An ancient curse echoes...", "enter": [2, 25, 'the old woods']},
         "mount megalos" : {"description": "The foot of an impossibly tall mountain.", "enter": [4, 8, 'mount megalos']},
-        "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "enter": [3, 15, 'city of thieves']},
+        "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "enter": [3, 14, 'city of thieves']},
         "the wastes" : {"description": "A desolate, toxic swamp that doesn't take kindly to outsiders.", "enter": [5, 1, 'the wastes']},
         "the quarry" : {"description": "A mineshaft long sealed due to unstable dark energy.", "enter": [3, 9, 'the quarry']},
         "tower of doom" : {"description": "The heart of this world's disasters. Enter if you dare...", "enter": [1, 1, 'tower of doom']},
