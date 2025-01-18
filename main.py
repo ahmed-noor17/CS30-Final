@@ -531,18 +531,13 @@ def attack_menu():
         num += 1
     print(f" {num}. Cancel")
     while True:
-        use_move = input("Choose a move: ").lower()
-        if (use_move in player_moves
-                and use_move in list(_combat.attacks.keys())):
+        use_move = convert_num_menu(input("Choose a move: ").lower(), num, list_of_options=player_moves)
+        if use_move in player_moves:
             choose_attack_target(use_move)
             break
-        else:
-            try:
-                if int(use_move) <= len(player_moves) and int(use_move) >= 1:
-                    choose_attack_target(player_moves[int(use_move) - 1])
-                    break
-            except ValueError:
-                pass
+        elif use_move == "cancel":
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return "cancel"
 
 
 def choose_attack_target(use_move):
@@ -631,6 +626,7 @@ def use_item():
             choose_attack_target(_item.item['consumable'][item_choice]['cast'])
             break
         elif item_choice == "cancel":
+            os.system('cls' if os.name == 'nt' else 'clear')
             return "cancel"
         elif item_choice == "retry":
             continue

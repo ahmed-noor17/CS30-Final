@@ -12,7 +12,6 @@ BEFORE HANDING IN:
 
 Things to work on:
     -Time system*
-    -Cancel item use mid combat
     -Check buy confirmation
     -Game balancing
     -MORE CONTENT!!!!!!!
