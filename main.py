@@ -32,17 +32,17 @@ story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
 death_file = os.getcwd() + '/TEXT/STORY/death.txt'
 
 player = {
-	'character': _character.Character(
-        name="if you see this it is a bug!",
-        level=1,
-        xp=0,
-        gold=0,
-        max_hp=100,
-        atk=10,
-        acc=100,
-        moves=['slash']),
-	'position': [1, 3, "tutorial"],  # [x, y, map]
-	'inventory': _inventory.Inventory([]),
+    'character': _character.Character(
+                name="bug",
+                level=1,
+                xp=0,
+                gold=0,
+                max_hp=100,
+                atk=10,
+                acc=100,
+                moves=['slash']),
+    'position': [1, 3, "tutorial"],  # [x, y, map]
+    'inventory': _inventory.Inventory([]),
     'enemies': {},
     'equipment': {
         "head": "None",
@@ -54,7 +54,7 @@ player = {
 
 
 save_files = {
-	'file 1': os.getcwd() + '/SAVE_DATA/SaveSlot1.txt',
+    'file 1': os.getcwd() + '/SAVE_DATA/SaveSlot1.txt',
     'file 2': os.getcwd() + '/SAVE_DATA/SaveSlot2.txt',
     'file 3': os.getcwd() + '/SAVE_DATA/SaveSlot3.txt'
 }
@@ -247,8 +247,8 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
     '''
     try:
         room_name = (_map.game_map[player['position'][2]]['map']
-            [int(player['position'][1]) + y_offset]
-            [int(player['position'][0]) + x_offset])
+                     [int(player['position'][1]) + y_offset]
+                     [int(player['position'][0]) + x_offset])
     except IndexError:
         return "////////////////\n" * 3
     padding = '­' * (int(max(map_cell_character_len - len(room_name), 0)/4))
@@ -301,7 +301,7 @@ def save_data():
         'player_weapon': player['equipment']['weapon'],
         'player_accessory': player['equipment']['accessory']
     }
-    if player['inventory'].contents != None:
+    if player['inventory'].contents is not None:
         data_to_save['player_inventory'] = player['inventory'].contents
 
     try:
@@ -408,7 +408,7 @@ def enemy_turn():
         enemy_object = player['enemies'][enemy]
         enemy_attack = _combat.attacks[enemy_object.moves[random.randint(
                                        0, len(enemy_object.moves) - 1)]]
-        if enemy_object.hp > 0 and not 'freeze' in enemy_object.debuffs:
+        if enemy_object.hp > 0 and 'freeze' not in enemy_object.debuffs:
             _print(f"\n{enemy_object.name.title()} took a turn!")
             use_attack(enemy_attack, enemy_object, player['character'])
         for debuff in list(dict.fromkeys(enemy_object.debuffs)):
@@ -512,8 +512,8 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
 def attack_menu():
     ''' Allows the player to pick an attack to use and displays info.'''
     equipment_moves = []
-    for equipment in list(player['equipment'].items()):      
-        if (equipment[1] != "None" and move != None):
+    for equipment in list(player['equipment'].items()):
+        if (equipment[1] != "None" and move is not None):
             move = _item.item['equipment'][equipment[1]]['move']
             equipment_moves.append(move)
     player_moves = player['character'].moves + equipment_moves
@@ -524,10 +524,7 @@ def attack_menu():
         print(f" {num}. {attack.capitalize()}   ---   "
               f"(DMG: {curr_atk.damage * player['character'].atk},"
               f" ACC: {curr_atk.acc * player['character'].acc / 100}%,"
-              f" TARGET: {curr_atk.target_type.title()})"
-              #f"{(f', DEBUFF: {curr_atk.debuff.title()}'  # Prints if exists
-                  #if curr_atk.debuff != None else '')})")
-        )
+              f" TARGET: {curr_atk.target_type.title()})")
         num += 1
     print(f" {num}. Cancel")
     while True:
@@ -545,7 +542,7 @@ def choose_attack_target(use_move):
     ''' Allows the player to choose a target to use an attack on.'''
     if 'ally' in _combat.attacks[use_move].target_type:
         use_attack(_combat.attacks[use_move],
-                    player['character'], player['character'])
+                   player['character'], player['character'])
         return
     else:
         target_list = list(player['enemies'].keys())
@@ -557,23 +554,23 @@ def choose_attack_target(use_move):
                 num = 1
                 for target_enemy in target_list:
                     print(f" {num}. {target_enemy.title()}   ---   "
-                            f"(HP: {player['enemies'][target_enemy].hp}"
-                            f"/{player['enemies'][target_enemy].max_hp})")
-                    num += 1  # AIDEN, WHAT THE HELL IS THIS NESTING???
+                          f"(HP: {player['enemies'][target_enemy].hp}"
+                          f"/{player['enemies'][target_enemy].max_hp})")
+                    num += 1
                 print(f" {num}. Cancel")
                 target = (
                     convert_num_menu(input("Choose a target: ").lower(),
-                                        num, list_of_options=target_list))
+                                     num, list_of_options=target_list))
             if target in target_list:
                 use_attack(_combat.attacks[use_move], player['character'],
-                            player['enemies'][target])
+                           player['enemies'][target])
                 break
             elif target == "cancel":
                 return "cancel"
     elif 'all ' in _combat.attacks[use_move].target_type:
         for target_enemy in target_list:
             use_attack(_combat.attacks[use_move], player['character'],
-                        player['enemies'][target_enemy])
+                       player['enemies'][target_enemy])
 
 
 def calculate_player_defence():
@@ -637,7 +634,7 @@ def use_attack(attack, attacker, target):
         play_sound(attack.sound, 0.8)
         _print(f"Dealt {attack_damage} damage!")
         _print(f"{target.name.title()} has {target.hp} health remaining!")
-        if not attack.debuff == None:
+        if attack.debuff is not None:
             for i in range(attack.debuff_stack_amount):
                 target.debuffs.append(attack.debuff)
             _print(f"{target.name.title()} is now suffering from "
@@ -966,7 +963,7 @@ def _quit():
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
         return display_menu('main_menu')
-    
+
 
 def credits_menu():
     print(_title.credit_text)
@@ -1076,8 +1073,9 @@ def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
     else:
         if 1 <= choice < num:  # Check if the number inputted is an option
             os.system('cls' if os.name == 'nt' else 'clear')
-            choice = option_list[choice - 1
-                                 + (4 if current_menu=='movement_menu' else 0)]
+            choice = (
+                option_list[choice - 1
+                            + 4 if current_menu == 'movement_menu' else 0])
         elif (choice == num and current_menu != 'movement_menu' and
                 list_of_options == []):
             choice = 'quit'
