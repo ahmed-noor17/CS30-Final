@@ -512,9 +512,9 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
 def attack_menu():
     ''' Allows the player to pick an attack to use and displays info.'''
     equipment_moves = []
-    for equipment in list(player['equipment'].items()):
-        move = _item.item['equipment'][equipment[1]]['move']
+    for equipment in list(player['equipment'].items()):      
         if (equipment[1] != "None" and move != None):
+            move = _item.item['equipment'][equipment[1]]['move']
             equipment_moves.append(move)
     player_moves = player['character'].moves + equipment_moves
     print("Attacks:")
@@ -543,40 +543,37 @@ def attack_menu():
 
 def choose_attack_target(use_move):
     ''' Allows the player to choose a target to use an attack on.'''
-    while True:
-        if 'ally' in _combat.attacks[use_move].target_type:
-            use_attack(_combat.attacks[use_move],
-                       player['character'], player['character'])
-            break
-        else:
-            target_list = list(player['enemies'].keys())
-        if 'single' in _combat.attacks[use_move].target_type:
-            while True:
-                if len(target_list) <= 1:
-                    target = target_list[0].lower()  # If one target, target it
-                else:
-                    num = 1
-                    for target_enemy in target_list:
-                        print(f" {num}. {target_enemy.title()}   ---   "
-                              f"(HP: {player['enemies'][target_enemy].hp}"
-                              f"/{player['enemies'][target_enemy].max_hp})")
-                        num += 1  # AIDEN, WHAT THE HELL IS THIS NESTING???
-                    print(f" {num}. Cancel")
-                    target = (
-                        convert_num_menu(input("Choose a target: ").lower(),
-                                         num, list_of_options=target_list))
-                if target in target_list:
-                    use_attack(_combat.attacks[use_move], player['character'],
-                               player['enemies'][target])
-                    break
-                elif target == "cancel":
-                    return "cancel"
-            break
-        elif 'all ' in _combat.attacks[use_move].target_type:
-            for target_enemy in target_list:
+    if 'ally' in _combat.attacks[use_move].target_type:
+        use_attack(_combat.attacks[use_move],
+                    player['character'], player['character'])
+        return
+    else:
+        target_list = list(player['enemies'].keys())
+    if 'single' in _combat.attacks[use_move].target_type:
+        while True:
+            if len(target_list) <= 1:
+                target = target_list[0].lower()  # If one target, target it
+            else:
+                num = 1
+                for target_enemy in target_list:
+                    print(f" {num}. {target_enemy.title()}   ---   "
+                            f"(HP: {player['enemies'][target_enemy].hp}"
+                            f"/{player['enemies'][target_enemy].max_hp})")
+                    num += 1  # AIDEN, WHAT THE HELL IS THIS NESTING???
+                print(f" {num}. Cancel")
+                target = (
+                    convert_num_menu(input("Choose a target: ").lower(),
+                                        num, list_of_options=target_list))
+            if target in target_list:
                 use_attack(_combat.attacks[use_move], player['character'],
-                           player['enemies'][target_enemy])
-            break
+                            player['enemies'][target])
+                break
+            elif target == "cancel":
+                return "cancel"
+    elif 'all ' in _combat.attacks[use_move].target_type:
+        for target_enemy in target_list:
+            use_attack(_combat.attacks[use_move], player['character'],
+                        player['enemies'][target_enemy])
 
 
 def calculate_player_defence():
