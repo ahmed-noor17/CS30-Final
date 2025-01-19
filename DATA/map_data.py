@@ -2,7 +2,7 @@ game_map = {
     "ironwood": {
         "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'black market', '   ', 'north entrance', '   ', '---', '---', '---'],
-                ['---', 'tavern', '   ', 'common area', '   ', 'well', 'sewer entrance', '---'],
+                ['---', 'tavern', '   ', 'common area', '   ', 'well', 'sewer', '---'],
                 ['---', '   ', 'common area', 'yggdrasil', 'common area', '   ', '---', '---'],
                 ['---', 'house', 'magic shop', 'market', 'stairs', '   ', '---', '---'],
                 ['---', 'house', 'blacksmith shop', '---', '   ', '---', '---', '---'],
@@ -16,19 +16,6 @@ game_map = {
             "move_time": 0,
             "visibility": 5,
             "music": "world2"
-        }
-    },
-
-    "sewer": {
-        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
-                ['---', 'to ironwood', '   ', '   ', '   ', '   ', '   ', '   ', 'mysterious door', '---'],
-                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
-        "data": {
-            "random_encounter_chance": 0,
-            "encounters": [],
-            "move_time": 0,
-            "visibility": 5,
-            "music": "None"
         }
     },
 
@@ -253,7 +240,7 @@ rooms = {
         "common area": {"description": "Ancient paths and benches and arches said to be constructed by the first settlers."},
         "yggdrasil": {"description": "The oldest and biggest tree in town. Sitting next to it gives a great sense of calm."},
         "well": {"description": "The primary source of water for years to come."},
-        "sewer entrance": {"description": "A run-down wooden door on the side of a hill and a sewer on the other side.", "enter": [1, 1, "sewer"]},
+        "sewer": {"description": "A run-down sewer coming out of the side of a hill."},
         "house": {"description": "The place of dwelling for a citizen of Ironwood."},
         "market": {"description": "Stalls bustling with merchants looking to make a living."},
         "magic shop": {"description": "A peculiar shop with all sorts scents coming from it.", "shop": "dan's thingamabobs"},
@@ -267,10 +254,6 @@ rooms = {
         "barracks": {"description": "Houses guards and soldiers in training."},
         "townhall": {"description": "Where Lord Svallen works tirelessly for the people of Ironwood."},
         "???": {"description": "???"}
-    },
-    "sewer": {
-        "to ironwood": {"description": "This leads back to Ironwood.", "enter": [6, 2, "ironwood"]},
-        "mysterious door": {"description": "This door doesn't seem to belong here...", "enter": [6, 2, "ironwood"]}
     },
     "city of thieves": {
         "entrance": {"description": "An unmanned gate.", "enter": [1, 5, "world"]},
