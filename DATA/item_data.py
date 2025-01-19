@@ -98,13 +98,13 @@ item = {
             "move": 'venom haze',
             "value": 150},
         "iron chestplate": {
-            "description": "A ring embued with magic. Boosts MP.",
+            "description": "A well made piece of armour.",
             "slot": "torso",
             "defence": 3,
             "move": None,
             "value": 30},
         "iron helmet": {
-            "description": "A ring embued with magic. Boosts MP.",
+            "description": "Will protect your noggin.",
             "slot": "head",
             "defence": 2,
             "move": None,
@@ -118,49 +118,49 @@ item = {
         "iron buckler": {
             "description": "A round shield that can protect you from damage.",
             "slot": "accessory",
-            "defence": 2,
+            "defence": 8,
             "move": None,
             "value": 20},
         "mithril helmet": {
-            "description": "A blue helmet",
+            "description": "A glittery blue helmet.",
             "slot": "head",
             "defence": 57,
             "move": None,
             "value": 65},
         "mithril chestplate": {
-            "description": "A blue chestplate",
+            "description": "A glittery blue chestplate.",
             "slot": "torso",
             "defence": 9,
             "move": None,
             "value": 80},
         "mithril longsword": {
-            "description": "A blue sword",
+            "description": "A blue sword.",
             "slot": "weapon",
             "defence": 0,
             "move": "hemorrhage",
             "value": 100},
         "svarium helmet": {
-            "description": "A red helmet",
+            "description": "A fiery red helmet.",
             "slot": "head",
             "defence": 14,
             "move": None,
             "value": 120},
         "svarium chestplate": {
-            "description": "A red chestplate",
+            "description": "A fiery red chestplate.",
             "slot": "torso",
             "defence": 17,
             "move": None,
             "value": 160},
         "svarium katana": {
-            "description": "A red sword",
+            "description": "A blade so sharp that just looking at it makes you wince.",
             "slot": "weapon",
             "defence": 3,
             "move": "bladestorm",
             "value": 250},
     },
     "miscellaneous": {
-        "silver ring": {
-            "description": "A ring embued with magic. Boosts MP.",
+        "silver scraps": {
+            "description": "Some goblin's collection of shiny trinkets.",
             "value": 24}
     }
 }

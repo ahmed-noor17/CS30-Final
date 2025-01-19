@@ -82,8 +82,8 @@ game_map = {
                 ['---', 'cave entrance', '   ', '---', 'mountain gate', '   ', '---', '   ', '---'],
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
-            "random_encounter_chance": 0,
-            "encounters": [],
+            "random_encounter_chance": 5,
+            "encounters": ['goatman', 'elite patrol'],
             "move_time": 0,
             "visibility": 5,
             "music": "world1"
@@ -137,7 +137,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 8,
-            "encounters": ['spider'],
+            "encounters": ['spider', 'spiders'],
             "move_time": 0,
             "visibility": 5,
             "music": "world1"
@@ -184,7 +184,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 8,
-            "encounters": ['dungeon1', 'skeleton', 'skeletons', 'skeletons2', 'skeletons3'],
+            "encounters": ['skeleton', 'wastes', 'wastes2', 'wastes3', 'wastes4'],
             "move_time": 0,
             "visibility": 5,
             "music": "world1"
@@ -206,7 +206,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 5,
-            "encounters": ['spider', 'skeleton', 'skeletons', 'skeletons2'],
+            "encounters": ['quarry', 'quarry2', 'quarry3', 'quarry4'],
             "move_time": 0,
             "visibility": 3,
             "music": "None"

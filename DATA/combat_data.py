@@ -3,23 +3,23 @@ import os
 
 # name, level, xp, gold, max_hp, atk, acc, moves, item drops, drop % chance, is_boss
 enemies = {
-	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash']],
+	'goblin': ["goblin", 1, 20, 5, 100, 2, 80, ['slash'], 'silver scraps', 10],
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
     'bandit': ["bandit", 1, 30, 16, 100, 4, 85, ['slash']],
-    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 180, 6, 80, ['slash']],
-    'skeleton archer': ["skeleton archer", 1, 50, 10, 130, 6, 85, ['slash', 'arrow', 'arrow']],
-    'skeleton mage': ["skeleton mage", 1, 55, 12, 120, 5, 90, ['fireball', 'lightning bolt', 'magic missile']],
-    'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 100],
+    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 6, 80, ['slash'], 'iron sword', 5],
+    'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 6, 85, ['slash', 'arrow', 'arrow'], 'bow', 5],
+    'skeleton mage': ["skeleton mage", 1, 55, 12, 110, 5, 90, ['fireball', 'lightning bolt', 'magic missile']],
+    'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 50],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
-    'goatman': ["goatman", 1, 50, 10, 200, 5, 80, ['headbutt', 'bash']],
-    'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
+    'goatman': ["goatman", 1, 50, 7, 150, 3, 80, ['headbutt', 'bash']],
+    'zombie': ["zombie", 1, 70, 10, 200, 5, 95, ['headbutt', 'bite']],
 
     # Bosses
-    'the dark lord': ["the dark lord", 1, 3000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile'], 'birthday bomb', 100, True],
+    'the dark lord': ["the dark lord", 1, 3000, 1000, 750, 10, 85, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile'], 'birthday bomb', 100, True],
     'tumor of the forest': ["tumor of the forest", 1, 200, 60, 300, 5, 85, ['bite'], 'ring of poison', 100, True],
     'king megalos': ["king megalos", 1, 400, 80, 450, 5, 65, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100, True],
-    'king of thieves': ["king of thieves", 1, 400, 200, 400, 6, 90, ['arrow', 'arrow', 'rain of arrows', 'slash', 'smash'], 'magic bow', 100, True],
+    'king of thieves': ["king of thieves", 1, 400, 200, 400, 6, 90, ['arrow', 'rain of arrows', 'slash', 'smash'], 'magic bow', 100, True],
     'the minotaur': ["the minotaur", 1, 600, 250, 600, 6, 70, ['headbutt', 'smash'], 'mighty battleaxe', 100, True],
     'hideous bogman': ["hideous bogman", 1, 700, 300, 650, 7, 80, ['headbutt', 'smash'], 'pendant of the wastes', 100, True],
 }
@@ -29,16 +29,19 @@ combat_encounters = {
     'goblin': ['goblin'],
     'goblin patrol': ['goblin', 'goblin'],
     'elite patrol': ['goblin', 'orc'],
+    'goatman': ['goatman'],
     'spider': ['spider'],
-    'dungeon1': ['spider', 'skeleton warrior'],
-    'dungeon2': ['skeleton warrior', 'skeleton warrior'],
-    'dungeon3': ['skeleton warrior', 'imp', 'spider'],
-    'dungeon4': ['orc', 'imp'],
-    'skeleton': ['skeleton warrior'],
-    'skeletons': ['skeleton warrior', 'skeleton archer'],
-    'skeletons2': ['skeleton warrior', 'skeleton mage'],
-    'skeletons3': ['skeleton archer', 'skeleton warrior', 'skeleton mage'],
+    'spiders': ['spider', 'spider'],
     'bandit ambush': ['bandit', 'bandit'],
+    'skeleton': ['skeleton warrior'],
+    'wastes': ['zombie', 'zombie'],
+    'wastes2': ['skeleton archer', 'zombie'],
+    'wastes3': ['zombie', 'zombie', 'skeleton warrior'],
+    'wastes4': ['zombie', 'skeleton mage'],
+    'quarry': ['spider', 'skeleton warrior'],
+    'quarry2': ['skeleton warrior', 'skeleton archer'],
+    'quarry3': ['skeleton warrior', 'skeleton mage'],
+    'quarry4': ['skeleton archer', 'skeleton warrior', 'skeleton mage'],
 
     # Bosses
     'the dark lord': ['the dark lord'],
@@ -75,9 +78,8 @@ attacks = {
     'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2, sound='gas'),
     'venom haze': _attack.Attack(5, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 3, sound='gas'),
     'bladestorm': _attack.Attack(9, 95, '{target} was caught in a storm of blades by {attacker}!', 'all enemies', 'bleed', 1, sound='sword_hit'),
+
     # Damage over time status effects
-    # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
-    # to get stunlocked by an enemy freeze blasting you over and over?
     'bleed': _attack.Attack(20, 99999, '{target} bled!', 'single enemy', sound='blood'),
     'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy', sound='blood'),
     'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy', sound='ice')
