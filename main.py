@@ -160,7 +160,8 @@ def moving():
     print("You begin moving.")
     while moving:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(f"{math.ceil(hours_remaining)} hours left until destruction...")
+        print("OBJECTIVE: Vanquish the Dark Lord")
+        print(f"{math.ceil(hours_remaining)} hours remain...")
         temp_opt_list = room_attribute_list()
         try:
             print(_map.rooms[player['position'][2]][get_room()]['description'])
@@ -1002,7 +1003,14 @@ Regress Development Team:
 
 
 def tutorial():
-    print("Tutorial under construction...")
+    _print("HOW TO PLAY:\nNavigate menus by typing the options you want or" +
+           " the corresponding number, then hitting ENTER. Type quit when" +
+           " on the main menu to exit the game.\nIf you begin moving, you" +
+           " may use WASD to move on the map. When you are on a tile that" +
+           " you can interact with, an option will appear.\nYou may" +
+           " encounter powerful enemies on your journey, so make sure to" +
+           " stock up on items, armour, and other equipment to give" +
+           " yourself the edge.")
 
 
 menu = {
@@ -1049,8 +1057,8 @@ def display_menu(current_menu):
             mixer.music.stop()
             _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
-            print(f"{math.ceil(hours_remaining)} hours left "
-                  f"until destruction...")
+            print("OBJECTIVE: Vanquish the Dark Lord")
+            print(f"{math.ceil(hours_remaining)} hours remain...")
         elif current_menu == 'shop_menu':
             current_shop = (_map.rooms[player['position'][2]][get_room()]
                             ['shop'].lower())

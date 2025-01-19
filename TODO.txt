@@ -3,11 +3,9 @@ BEFORE HANDING IN:
     -Make sure CHANGELOG.md is updated
     -Format all save files properly
     -Style the code to PEP8
-    -Do a full game run
+    -Do a full game run, constantly checking for bugs and bad input handling
     -Add more music
-    -Add tutorial
-
-Things we could implement:
-    -File peaking in file select screen
-    -Progression locked exploration
-    -Interactable map tiles (get items around map)
+    -Sewer mysterious door
+    -Move sound credits to in-game credits
+    -Delete this file
+    -Delete all unnecessary files
