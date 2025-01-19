@@ -294,6 +294,7 @@ def save_data():
     ''' Writes data to save file.'''
     global data_to_save
     global skip_introduction
+    global hours_remaining
     data_to_save = {
         'skip_introduction': skip_introduction,
         'player_name': player['character'].name,
@@ -313,6 +314,7 @@ def save_data():
         'player_torso': player['equipment']['torso'],
         'player_weapon': player['equipment']['weapon'],
         'player_accessory': player['equipment']['accessory']
+        'hours_remaining': hours_remaining
     }
     if player['inventory'].contents is not None:
         data_to_save['player_inventory'] = player['inventory'].contents
@@ -334,6 +336,8 @@ def save_data():
 def load_data():
     ''' Changes the player's stats to match what is in the save file.'''
     global skip_introduction
+    global hours_remaining
+    reset_player()
     try:
         with open(current_save_file, 'r') as f:
             file_list = f.readlines()
@@ -374,6 +378,7 @@ def load_data():
         else:
             player['defeated bosses'] = loaded_data['defeated_bosses']
         skip_introduction = loaded_data['skip_introduction']
+        hours_remaining = loaded_data['hours_remaining']
     except FileNotFoundError:
         print("File does not exist.")
 
@@ -384,13 +389,18 @@ def load_data():
 def game_over():
     ''' Does some story text then resets the player to the beginning.'''
     global fighting
-    global max_hours
-    global hours_remaining
+    global max_hours 
     time.sleep(2)
     os.system('cls' if os.name == 'nt' else 'clear')
     _print(_title.game_over_text, delay=0.1, print_by_line=True)
     time.sleep(1.5)
     show_story_text(death_file)
+    reset_player()
+    fighting = False
+
+
+def reset_player():
+    global hours_remaining
     hours_remaining = max_hours
     player['position'] = [1, 3, "tutorial"]
     player['character'].gold = 0
@@ -398,7 +408,6 @@ def game_over():
     player['inventory'] = _inventory.Inventory([])
     player['enemies'].clear()
     player['defeated bosses'].clear()
-    fighting = False
 
 
 def level_up():

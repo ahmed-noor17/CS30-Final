@@ -17,3 +17,4 @@ player_weapon::None
 player_accessory::None
 player_inventory::
 defeated_bosses::
+hours_remaining::
