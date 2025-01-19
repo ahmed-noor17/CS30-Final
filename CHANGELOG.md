@@ -364,3 +364,23 @@ Character and inventory bug fix, easy moving, and map update
 - Fixed a bug where the player could fight the same boss multiple times
 - Fixed a crash that could occur during combat
 - Updated CHANGELOG.md
+
+
+# 18 JANUARY, 2025:
+
+**Aiden**
+
+- Balanced enemy and equipment stats
+- Updated victory text
+- Removed unused enemies and enemy encounters
+- Fixed a bug where defeated bosses were being added to the player's inventory
+- Fixed a bug where heals were being reduced by defence
+- Fully added the City of Thieves (descriptions, boss, etc.)
+- Added a tutorial to the main menu
+- Made the credits also print the sound credits from sound_credits.txt
+- Removed the sewer map
+- Made docstrings more descriptive
+
+**Ahmed**
+
+-
