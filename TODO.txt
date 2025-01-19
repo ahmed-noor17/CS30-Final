@@ -3,7 +3,7 @@ BEFORE HANDING IN:
     -Make sure CHANGELOG.md is updated
     -Format all save files properly
     -Style the code to PEP8
-    -Do a full game run, constantly checking for bugs and bad input handling
+    -Do a full game run, constantly checking for bugs and bad input handling, killing all bosses
     -Add more music
     -Sewer mysterious door
     -Move sound credits to in-game credits

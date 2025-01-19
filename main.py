@@ -31,6 +31,7 @@ skip_introduction = "False"
 story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
 death_file = os.getcwd() + '/TEXT/STORY/death.txt'
 victory_file = os.getcwd() + '/TEXT/STORY/victory.txt'
+sound_credits_file = os.getcwd() + '/TEXT/sound_credits.txt'
 
 player = {
     'character': _character.Character(
@@ -997,9 +998,11 @@ def credits_menu():
     print("Created as a final project for Ms. Lynn's CS 30 class 2024-2025.")
     print("""
 Regress Development Team:
- - Aiden Dielschneider (Developer)
- - Ahmed Noor (Developer)
- - Damian Knourek (Credit pending)\n""")
+ - Aiden Dielschneider
+ - Ahmed Noor
+ - Damian Knourek\n""")
+    sound_credits = open(sound_credits_file, 'r')
+    print("Sound credits:\n" + sound_credits.read(), print_by_line=True)
 
 
 def tutorial():
