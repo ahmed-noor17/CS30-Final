@@ -7,21 +7,21 @@ enemies = {
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
     'bandit': ["bandit", 1, 30, 16, 100, 4, 85, ['slash']],
-    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 5, 80, ['slash', 'gash']],
+    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 6, 80, ['slash']],
     'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 6, 85, ['slash', 'arrow', 'arrow']],
-    'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'freeze ray', 'magic missile']],
+    'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'magic missile']],
     'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 100],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'goatman': ["goatman", 1, 50, 10, 200, 5, 80, ['headbutt', 'bash']],
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
 
     # Bosses
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile']],
+    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile'], 'birthday bomb', 100, True],
     'tumor of the forest': ["tumor of the forest", 1, 200, 60, 300, 5, 85, ['bite'], 'ring of poison', 100, True],
     'king megalos': ["king megalos", 1, 400, 80, 500, 5, 65, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100, True],
     'king of thieves': ["king of thieves", 1, 400, 200, 400, 6, 90, ['arrow', 'arrow', 'rain of arrows', 'slash', 'smash'], 'magic bow', 100, True],
     'the minotaur': ["the minotaur", 1, 600, 250, 600, 6, 70, ['headbutt', 'smash'], 'mighty battleaxe', 100, True],
-    'hideous bogman': ["hideous bogman", 1, 700, 300, 650, 7, 80, ['headbutt', 'smash'], 'mighty battleaxe', 100, True],
+    'hideous bogman': ["hideous bogman", 1, 700, 300, 650, 7, 80, ['headbutt', 'smash'], 'pendant of the wastes', 100, True],
 }
 
 combat_encounters = {
