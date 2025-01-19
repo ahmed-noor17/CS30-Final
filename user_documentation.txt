@@ -1,0 +1,4 @@
+How to use program:
+ - Open main.py and run the file.
+ - Use number keys or type out options to choose what to do.
+ - Type quit to quit. (Unsaved data will be lost)
