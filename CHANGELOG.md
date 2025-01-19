@@ -197,4 +197,164 @@ Character and inventory bug fix, easy moving, and map update
 
 **Ahmed**
 
-- Can now buy from shops
+- Added buying from shops
+- Improved readability of map by making all cells a similar size
+- Fixed various bugs relating to shopping
+
+
+# 11 JANUARY, 2025:
+
+**Aiden**
+
+- Added debuffs (damage over time and freezing) that can be applied to enemies by attacks
+- Fixed a bug relating to winning using damage over time effects.
+- Updated combat visuals
+- Made inventory group items together when printing. e.g Iron Sword (x2)
+- Added defence (reduces incoming damage)
+- Made death sequence print text from a file and added new text
+- Added credits screen
+
+**Ahmed**
+
+- Made it print "quit" as an option in the display_menu function
+- Made it show valid options while moving (fight, shop, etc.)
+- Fixed a bug relating to the player's inventory resetting on death
+- Added the ability to sell items to shopkeepers.
+- Changed combat to work with items being moved to item_data.py
+- Changed player default name
+- Fixed a bug relating to buying items from shops
+
+
+# 12 JANUARY, 2025:
+
+**Aiden**
+
+- Made a map making tool to help speed up future map creation
+- Added more maps
+- Added large ascii text during combat to show when the player/enemy turn begins
+- Updated _print() to allow printing large pieces of text line by line
+- Made the size of the map adjustable for each map in map_data.py
+
+**Ahmed**
+
+- Made it so the map's width and height can be adjusted easily
+- Added item and map descriptions
+- Reduced nesting in display_map
+- Made it print enemy and player health info every turn
+- Organized files into folders
+- Fixed a bug relating to selling items
+
+
+# 13 JANUARY, 2025:
+
+**Aiden**
+
+- Added equipment and made the player be able to inherit new moves and defence from their equipment
+- Fixed a bug relating to save data not saving properly
+- Reformatted shopping to work with the display_menu() function
+- Added dialogue to shops
+
+**Ahmed**
+
+- Uploaded sound files
+- Fixed weird map text wrapping issues
+- Improved consistency of map movement controls
+- Fixed a bug where fleeing would instantly end the battle
+- Made it print the movement controls when you begin moving
+- Made it save your equipment to the save file
+- Improved equip menus
+- Fixed a bug where menus would kick you to the main menu when you exited them
+
+
+# 14 JANUARY, 2025:
+
+**Aiden**
+
+- Made enemies able to drop items with a customizable random drop chance
+- Added the Old Woods location
+
+**Ahmed**
+
+- Added sound effect system
+- Added the Mount Megalos location
+- Made shops print descriptions of items you are buying/selling and added confirmation prompts
+- Rewrote movement function to fix issues with try/except
+- Cleaned up code in display_menu() and moving()
+
+
+# 15 JANUARY, 2025:
+
+**Damian**
+
+- Filled in the map for the City of Thieves location
+
+**Aiden**
+
+- Removed unnecessary maps in the files
+- Added connections between all the new maps and the world map
+- Added the bandit enemy
+- Added King Megalos boss fight and related items
+- Added the Tower of Doom location
+
+**Ahmed**
+
+- Made attacks print information about them when you are selecting them
+- Added sound effects during combat
+- Added music files and music implementation
+
+
+# 16 JANUARY, 2025:
+
+**Damian**
+
+- Added more enemies
+
+**Aiden**
+
+- Added more bosses and boss drops
+- Made it remember which bosses you have defeated so that you cannot fight them again
+
+**Ahmed**
+
+- Added new equipment items
+- Reduced trailing whitespace
+- Adjusted music volume
+
+
+# 17 JANUARY, 2025:
+
+**Ahmed**
+
+- Added a function that makes numbered lists
+- Did some PEP8 code styling
+- Formatted save files
+- Fixed a crash that could occur during combat
+
+
+# 18 JANUARY, 2025:
+
+**Aiden**
+
+- Cleaned up main.py
+- Added docstrings in main.py
+- Moved shop data to a new shop_data.py file
+- Reformatted some code for readability/simplicity
+- Added the Wastes location
+- Edited death.txt to fit with some of the newly added story
+- Made defeated bosses save to the save file
+- Added some story text
+- Added victory.txt (will display when winning the game)
+- Added user_documentation.txt
+- Updated CHANGELOG.md
+
+**Ahmed**
+
+- Made it so that the player can cancel attacks and item usage
+- Fixed an issue where you could not cancel buying/selling due to .lower()
+- Made all lines 79 characters or less in length
+- Made main.py adhere to PEP8 guidelines
+- Added battle music
+- Made music play at proper times
+- Fixed a bug where the player could fight the same boss multiple times
+- Fixed a crash that could occur during combat
+- Updated CHANGELOG.md
