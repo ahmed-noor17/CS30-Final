@@ -4,10 +4,11 @@ BEFORE HANDING IN:
     -Format all save files properly
     -Style the code to PEP8
     -Do a full game run
-    -Balance the game
-    -Add music
-    -Add the ending
-    -Make it so you can't have a blank name
+    -Add more music
+    -Add tutorial
+    -Fix selling
+    -Make healing not be blocked
+    -Add city of thieves
 
 Things we could implement:
     -File peaking in file select screen

@@ -320,8 +320,7 @@ def save_data():
 
 
 def load_data():
-    ''' Changes the player's stats to match what is in the save file.
-    '''
+    ''' Changes the player's stats to match what is in the save file.'''
     global skip_introduction
     try:
         with open(current_save_file, 'r') as f:
@@ -358,10 +357,10 @@ def load_data():
             player['inventory'] = _inventory.Inventory(
                 loaded_data['player_inventory'])
         if isinstance(loaded_data['defeated_bosses'], str):
-            player['inventory'].contents.append(
+            player['defeated_bosses'].append(
                 loaded_data['defeated_bosses'])
         else:
-            player['inventory'] = loaded_data['defeated_bosses']
+            player['defeated_bosses'] = loaded_data['defeated_bosses']
         skip_introduction = loaded_data['skip_introduction']
     except FileNotFoundError:
         print("File does not exist.")
@@ -643,7 +642,8 @@ def use_attack(attack, attacker, target):
     ''' Damages a target, inflicts debuffs, and checks for kills.'''
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
-        defence_modifier = 1 - (target.defence / (target.defence + 50))
+        defence_modifier = 1 - ((target.defence / (target.defence + 50)) 
+        * (attack.damage >= 0))
         attack_damage = int(attack.damage * attacker.atk * defence_modifier)
         target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
         attack_text = (attack.use_text.replace('{target}', target.name.title())
@@ -1001,9 +1001,14 @@ Regress Development Team:
  - Damian Knourek (Credit pending)\n""")
 
 
+def tutorial():
+    print("Tutorial under construction...")
+
+
 menu = {
     "main_menu": {
         "play": play,
+        "how to play": tutorial,
         "credits": credits_menu,
         "quit": _quit
     },

@@ -299,7 +299,7 @@ rooms = {
         "tumor of the forest": {"description": "A pulsating purple mass, sucking the life out of the surrounding forest.", "fight": 'tumor of the forest'}
     },
     "mount megalos": {
-        "mountain gate": {"description": "The entrance to mount megalos.", "enter": [4, 4, "world"]},
+        "mountain gate": {"description": "The entrance to mount megalos.", "enter": [4, 5, "world"]},
         "to the peak": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "enter": [3, 5, "mount megalos peak"]},
         "big shiny rock": {"description": "A rock. Big and shiny. Big shiny rock."},
         "hot springs": {"description": "Maybe if the world wasn't ending you'd have time to relax here."},
