@@ -302,6 +302,8 @@ def save_data():
     }
     if player['inventory'].contents is not None:
         data_to_save['player_inventory'] = player['inventory'].contents
+    if player['defeated bosses'] is not None:
+        data_to_save['defeated_bosses'] = player['defeated bosses']
 
     try:
         with open(current_save_file, 'w') as f:
@@ -353,6 +355,11 @@ def load_data():
         else:
             player['inventory'] = _inventory.Inventory(
                 loaded_data['player_inventory'])
+        if isinstance(loaded_data['defeated_bosses'], str):
+            player['inventory'].contents.append(
+                loaded_data['defeated_bosses'])
+        else:
+            player['inventory'] = loaded_data['defeated_bosses']
         skip_introduction = loaded_data['skip_introduction']
     except FileNotFoundError:
         print("File does not exist.")
