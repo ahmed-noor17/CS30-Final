@@ -380,6 +380,8 @@ Character and inventory bug fix, easy moving, and map update
 - Made the credits also print the sound credits from sound_credits.txt
 - Removed the sewer map
 - Made docstrings more descriptive
+- Fixed a bug where the victory text would not play after beating the dark lord
+- Made it so that the time limit is removed after defeating the dark lord
 
 **Ahmed**
 

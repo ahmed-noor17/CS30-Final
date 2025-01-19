@@ -165,8 +165,7 @@ def moving():
     print("You begin moving.")
     while moving:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("OBJECTIVE: Vanquish the Dark Lord")
-        print(f"{math.ceil(hours_remaining)} hours remain...")
+        show_remaining_time()
         temp_opt_list = room_attribute_list()
         try:
             print(_map.rooms[player['position'][2]][get_room()]['description'])
@@ -241,11 +240,19 @@ def room_attribute_list():
 
 
 def expend_time(time_cost):
+    if 'the dark lord' in player['defeated bosses']:
+        return
     global hours_remaining
     hours_remaining -= time_cost
     if hours_remaining <= 0:
         _print("Time has run out... The hour of darkness is upon us...")
         game_over()
+
+
+def show_remaining_time():
+    if 'the dark lord' not in player['defeated bosses']:
+        print("OBJECTIVE: Vanquish the Dark Lord")
+        print(f"{math.ceil(hours_remaining)} hours remain...")
 
 
 def get_room(y_offset=0, x_offset=0, for_display=False):
@@ -405,7 +412,7 @@ def level_up():
         print(f"LEVEL UP! YOU ARE NOW LEVEL {player['character'].level}")
         required_xp = level_formula()
         return level_up()
-    print(f"EXP to next level up: {required_xp - player['character'].xp}")
+    print(f"EXP to next level: {int(required_xp - player['character'].xp)}")
 
 
 def level_formula():
@@ -499,13 +506,12 @@ def combat(encounter_enemies):
         time.sleep(1)
     music_check()
     player['enemies'].clear()
-    if 'the dark lord' in player['defeated bosses']:
-        show_story_text(victory_file)
 
 
 def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
     ''' Will check if the player has either won or lost. Returns False
-        if the battle is still in progress.
+        if the battle is still in progress. Will also print the victory
+        text if the player beats the dark lord.
     '''
     global fighting
     if player['character'].hp <= 0:
@@ -525,6 +531,8 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
         input("Press any key to continue: ")
         os.system('cls' if os.name == 'nt' else 'clear')
         fighting = False
+        if 'the dark lord' in player['defeated bosses']:
+            show_story_text(victory_file)
         return True
     else:
         return False
@@ -1073,8 +1081,7 @@ def display_menu(current_menu):
             mixer.music.stop()
             _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
-            print("OBJECTIVE: Vanquish the Dark Lord")
-            print(f"{math.ceil(hours_remaining)} hours remain...")
+            show_remaining_time()
         elif current_menu == 'shop_menu':
             current_shop = (_map.rooms[player['position'][2]][get_room()]
                             ['shop'].lower())

@@ -1,11 +1,8 @@
-BEFORE HANDING IN:
-    -Check to make sure the credits are updated
-    -Make sure CHANGELOG.md is updated
+BEFORE HANDING IN (IN ORDER): I'm counting on you to do all of this, Wafi
+    -Style the code to PEP8 (Should already be done but I made some changes so maybe it unstyled it somewhere)
+    -Do a full game run, constantly checking for bugs and bad input handling, killing all bosses, seeing the end screen (Do it on a new save and save often to make sure everything saves correctly)  
     -Format all save files properly
-    -Style the code to PEP8
-    -Do a full game run, constantly checking for bugs and bad input handling, killing all bosses
-    -Add more music
-    -Sewer mysterious door
-    -Move sound credits to in-game credits
     -Delete this file
     -Delete all unnecessary files
+    -Make sure CHANGELOG.md is updated
+    -Hand in the game (I have already added the link on Google Classroom, but haven't handed it in yet)
