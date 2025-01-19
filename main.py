@@ -516,9 +516,13 @@ def attack_menu():
     ''' Allows the player to pick an attack to use and displays info.'''
     equipment_moves = []
     for equipment in list(player['equipment'].items()):
-        if (equipment[1] != "None" and move is not None):
+        try:
             move = _item.item['equipment'][equipment[1]]['move']
-            equipment_moves.append(move)
+        except KeyError:
+            pass
+        else:
+            if (equipment[1] != "None" and move is not None):
+                equipment_moves.append(move)
     player_moves = player['character'].moves + equipment_moves
     print("Attacks:")
     num = 1
@@ -937,24 +941,21 @@ def equip_item():
               f"MOVE: {_item.item['equipment'][item]['move']})")
         num += 1
     while True:
-        item_to_equip = input("Choose an item to equip: ").lower()
-        try:
-            if 1 <= int(item_to_equip) <= len(equipable_items):
-                item_to_equip = equipable_items[int(item_to_equip) - 1]
-        except ValueError:
-            pass
-        if item_to_equip in list(_item.item['equipment'].keys()):
-            item_slot = (player['equipment'][_item.item['equipment']
-                                             [item_to_equip]['slot']])
-            if item_slot == "None":
+        item_choice = input("Choose an item to equip: ").lower()
+        item_to_equip = convert_num_menu(item_choice, num,
+                                         list_of_options=equipable_items)
+        if item_to_equip in equipable_items:
+            item_slot = _item.item['equipment'][item_to_equip]['slot']
+            item_in_slot = (player['equipment'][item_slot])
+            if item_in_slot == "None":
                 player['inventory'].contents.remove(item_to_equip)
                 player['equipment'][item_slot] = item_to_equip
             else:
                 # Player already has something equipped in this slot
-                confirm = input(f"You already have {item_slot} equipped! "
+                confirm = input(f"You already have {item_in_slot} equipped! "
                                 f"Replace it? (Y/N) ").lower()
                 if "y" in confirm:
-                    player['inventory'].contents.append(item_slot)
+                    player['inventory'].contents.append(item_in_slot)
                     player['inventory'].contents.remove(item_to_equip)
                     player['equipment'][item_slot] = item_to_equip
                 else:
@@ -1028,6 +1029,7 @@ def display_menu(current_menu):
     while True:
         keyboard.block_key('enter')
         if current_menu == 'main_menu':
+            mixer.music.stop()
             _print(_title.game_title, delay=0.08, print_by_line=True)
         elif current_menu == 'game_menu':
             print(f"{math.ceil(hours_remaining)} hours left "
@@ -1085,7 +1087,6 @@ def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
         return choice
     else:
         if 1 <= choice < num:  # Check if the number inputted is an option
-            os.system('cls' if os.name == 'nt' else 'clear')
             choice = (option_list
                       [choice - 1 + (4 if current_menu == 'movement_menu'
                                      else 0)])
