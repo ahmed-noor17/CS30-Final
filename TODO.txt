@@ -1,22 +1,13 @@
--ISSUE: There's an issue where if you try to use an item when you have none, it doesn't print your health.
-        Not gamebreaking but kind of annoying. Also it should print data about all the enemies not just the player.  -Aiden
--ISSUE: There seems to be a rare issue where battles randomly stop and boot you back to the game menu mid fight.
-        I only got this to happen when I left my name blank, so maybe that has something to do with it???  -Aiden
-
 BEFORE HANDING IN:
     -Check to make sure the credits are updated
     -Make sure CHANGELOG.md is updated
     -Format all save files properly
     -Style the code to PEP8
     -Do a full game run
-
-Things to work on:
-    -Time system*
-    -Game balancing
-    -MORE CONTENT!!!!!!!
-        -Music
-        -Items
-        -Ending
+    -Balance the game
+    -Add music
+    -Add the ending
+    -Make it so you can't have a blank name
 
 Things we could implement:
     -File peaking in file select screen
