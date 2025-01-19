@@ -1,4 +1,4 @@
-skip_introduction::True
+skip_introduction::False
 player_name::Hero
 player_level::1
 player_xp::0
@@ -15,5 +15,5 @@ player_head::None
 player_torso::None
 player_weapon::None
 player_accessory::None
-player_inventory::svarium helmet, svarium chestplate, svarium katana, iron buckler, health potion, health potion
+player_inventory::
 defeated_bosses::
