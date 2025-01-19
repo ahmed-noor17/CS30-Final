@@ -150,7 +150,7 @@ game_map = {
                 ['---', 'house', '---', '   ', '---', '---', '   ', 'house', 'house', '   ', '---', '---'],
                 ['---', 'house', 'house', '---', '---', '   ', '   ', 'house', '---', '---', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', 'market', '---'],
-                ['---', 'black market', '---', '---', '---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', 'market', '---', '---', '---', '---', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '   ', '---', '   ', 'tavern', '---', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '   ', '---', '   ', '   ', '   ', '   ', 'market', 'fountain', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
@@ -273,7 +273,16 @@ rooms = {
         "mysterious door": {"description": "This door doesn't seem to belong here...", "enter": [6, 2, "ironwood"]}
     },
     "city of thieves": {
-        "entrance": {"description": "An unmanned gate.", "enter": [1, 5, "world"]}
+        "entrance": {"description": "An unmanned gate.", "enter": [1, 5, "world"]},
+        "house": {"description": "Centuries of break-ins have rendered the doors and windows utterly useless."},
+        "market": {"description": "In any other city, this would be called a black market."},
+        "pile of garbage": {"description": "A reeking pile of filth and trash."},
+        "sheriff office": {"description": "The front door is covered in blood. There's a 'now hiring' sign hanging from it."},
+        "stairs": {"description": "These stairs lead up to the docks."},
+        "dock": {"description": "The dock is lined with pirate ships."},
+        "tavern": {"description": "Drunkards are hanging from the windows, on the tables, and sprawled on the street."},
+        "fountain": {"description": "Unsurprisingly, this fountain doesn't have any coins in it."},
+        "thieves guild": {"description": "The dark underbelly of this already dark city. The king doesn't take kindly to strangers.", "fight": 'king of thieves'},
     },
     "world": {
         "ironwood" : {"description": "The peaceful capital of Sveragard", "enter": [3, 1, 'ironwood']},

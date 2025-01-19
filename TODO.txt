@@ -6,9 +6,6 @@ BEFORE HANDING IN:
     -Do a full game run
     -Add more music
     -Add tutorial
-    -Fix selling
-    -Make healing not be blocked
-    -Add city of thieves
 
 Things we could implement:
     -File peaking in file select screen
