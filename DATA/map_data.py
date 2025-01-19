@@ -314,6 +314,7 @@ rooms = {
     },
 
     "the quarry": {
+        "friendly gnome": {"description": "The gnome seems like he has something to sell you.", "shop": "gnome"},
         "east entrance": {"description": "The light at the end of the tunnel.", "enter": [9, 2, "world"]},
         "west entrance": {"description": "The tunnel is painted with murals depicting some important figure.", "enter": [1, 8, "mount megalos"]},
         "the minotaur": {"description": "The minotaur stands before you.", "fight": "the minotaur"},

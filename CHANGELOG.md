@@ -346,6 +346,9 @@ Character and inventory bug fix, easy moving, and map update
 - Added victory.txt (will display when winning the game)
 - Added user_documentation.txt
 - Updated CHANGELOG.md
+- Fixed a bug relating to standing on tiles without fights
+- Added the Quarry location
+- Adjusted enemies and maps
 
 **Ahmed**
 
