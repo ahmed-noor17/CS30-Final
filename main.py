@@ -111,7 +111,9 @@ def change_map():
 
 def update_position(axis, value):
     ''' Moves the player. Will not allow movement if the desired
-        location is off the map or a negative number.'''
+        location is off the map or a negative number. Axis is a string
+        that refers to movement direction, and value is the amount to move.
+    '''
     if axis == "x":
         try:
             try_position = get_room(x_offset=value)
@@ -155,7 +157,9 @@ def map_encounter():
 
 
 def moving():
-    ''' Displays movement options and lets the player move.
+    ''' Displays movement options and lets the player move or
+        perform other actions related to the current tile such
+        as fight, shop, etc.
     '''
     moving = True
     print("You begin moving.")
@@ -265,7 +269,7 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
 
 def random_encounter():
     ''' Roll for random encounter based on the data of the current map
-        in map_data.
+        in map_data.py.
     '''
     roll = random.randint(1, 100)
     if roll <= (_map.game_map[player['position'][2]]['data']
@@ -280,8 +284,7 @@ def random_encounter():
 
 
 def save_data():
-    ''' Writes data to save file.
-    '''
+    ''' Writes data to save file.'''
     global data_to_save
     global skip_introduction
     data_to_save = {
@@ -428,13 +431,16 @@ def enemy_turn():
 
 
 def combat(encounter_enemies):
-    ''' Handles basically all of the combat.'''
+    ''' Handles basically all of the combat, doing player turn, then enemy
+        turn. ecounter_enemies is a list of all the enemies that are in the
+        encounter. enemy_object is a Character object that is created using
+        the enemies' stats.'''
     calculate_player_defence()
     gold_prize = 0
     xp_prize = 0
     item_prize = []
     keyboard.block_key('enter')
-    for enemy in encounter_enemies:  # Aiden, explain.
+    for enemy in encounter_enemies:
         enemy_object = _character.Character(
             _combat.enemies[enemy][0],
             _combat.enemies[enemy][1],
@@ -641,7 +647,10 @@ def use_item():
 
 
 def use_attack(attack, attacker, target):
-    ''' Damages a target, inflicts debuffs, and checks for kills.'''
+    ''' Damages a target, inflicts debuffs, and checks for kills.
+        attack, attacker, and target refer to the attack being
+        used, the character attacking, and the character
+        being attacked respectively.'''
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
         defence_modifier = 1 - ((target.defence / (target.defence + 50)) 
@@ -699,7 +708,9 @@ def play_music(piece: str, volume=0.5):
 
 
 def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
-    ''' Function prints text with a typing effect.'''
+    ''' Function prints text with a typing effect. newline determines
+        if the next text will be on a new line, and print_by_line
+        determines if it will print by character or print by line.'''
     punctuation = ['.', '!', '?']
     if delay != 0.0:
         if print_by_line:
@@ -720,7 +731,7 @@ def _print(text: str, delay=text_speed, newline=True, print_by_line=False):
 
 
 def story():
-    ''' This is the opening to the game.'''
+    ''' Prints story text, gets player name.'''
     global text_speed
     global skip_introduction
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -1054,7 +1065,8 @@ menu = {
 
 def display_menu(current_menu):
     ''' Displays the menu's options and lets the player pick one. Then,
-        it executes the corresponding function.'''
+        it executes the corresponding function. current_menu is the menu
+        it will open from the menu dictionary.'''
     while True:
         keyboard.block_key('enter')
         if current_menu == 'main_menu':
