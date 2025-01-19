@@ -1003,6 +1003,7 @@ Regress Development Team:
  - Damian Knourek\n""")
     sound_credits = open(sound_credits_file, 'r')
     print("Sound credits:\n" + sound_credits.read(), print_by_line=True)
+    sound_credits.close()
 
 
 def tutorial():
