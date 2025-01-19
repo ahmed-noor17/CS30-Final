@@ -16,7 +16,7 @@ enemies = {
     'manticore': ["manticore", 1, 100, 20, 400, 5, 95, ['headbutt', 'fireball']],
 
     # Bosses
-    'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile'], 'birthday bomb', 100, True],
+    'the dark lord': ["the dark lord", 1, 3000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile'], 'birthday bomb', 100, True],
     'tumor of the forest': ["tumor of the forest", 1, 200, 60, 300, 5, 85, ['bite'], 'ring of poison', 100, True],
     'king megalos': ["king megalos", 1, 400, 80, 450, 5, 65, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100, True],
     'king of thieves': ["king of thieves", 1, 400, 200, 400, 6, 90, ['arrow', 'arrow', 'rain of arrows', 'slash', 'smash'], 'magic bow', 100, True],

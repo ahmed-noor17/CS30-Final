@@ -76,7 +76,7 @@ game_map = {
                 ['---', '   ', '   ', '   ', '   ', '---', '---', '---', '---'],
                 ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', 'big shiny rock', '   ', 'statue of megalos', '   ', '   ', '   ', '   ', '---'],
-                ['---', '---', '---', '   ', '   ', '   ', '   ', 'enormous fossil', '---'],
+                ['---', '---', '---', 'scholar', '   ', '   ', '   ', 'enormous fossil', '---'],
                 ['---', '---', 'enormous fossil', '   ', '   ', '   ', '   ', '   ', '---'],
                 ['---', '---', '   ', '   ', '   ', '   ', '---', '   ', '---'],
                 ['---', 'cave entrance', '   ', '---', 'mountain gate', '   ', '---', '   ', '---'],
@@ -306,6 +306,7 @@ rooms = {
         "enormous fossil": {"description": "You shudder to imagine what kind of creature this once was."},
         "statue of megalos": {"description": "A statue depicting a long lost king."},
         "cave entrance": {"description": "A yawning chasm beckons you to enter.", "enter": [1, 1, "the quarry"]},
+        "scholar" : {"description": 'He is frantically scribbling things down on paper.', "shop": "scholar"},
     },
 
     "mount megalos peak": {

@@ -15,5 +15,5 @@ player_head::None
 player_torso::None
 player_weapon::None
 player_accessory::None
-player_inventory::health potion
+player_inventory::
 defeated_bosses::

@@ -83,5 +83,18 @@ shops = {
              "If only my pops could see me now!",
              "The monsters down here are real dangerous! Good thing I'm real quick on my feet!",
              "Nothing beats a good ol' snooze under a toadstool! Ohoho!"]
+    },
+    "scholar": {
+        "intro": 'The scholar seems occupied with a comically long scroll covered in strange symbols.',
+        "wares":
+            ["svarium helmet",
+            "svarium chestplate",
+            "frost scroll",
+            "freeze orb",
+            "inferno scroll"],
+        "dialogue":
+            ["The ancient civilization of Megalos is truly fascinating, don't you agree?",
+             "The academia will surely accept me once I make my breakthrough, right?",
+             "I've been practicing my Megalonian lately. E̴̤̎f̴̢̈́ ̵͙̓e̴͙̽n̴͙͗d̴̠͊u̸̧̿ ̶̥̆p̷͍͘a̸͕̚ṟ̷̀a̶̟̅ ̸͉̀ḅ̷͝o̸̝͐n̵̡̈́d̸̺̾ï̷̗. Pretty cool, eh?"]
     }
 }
