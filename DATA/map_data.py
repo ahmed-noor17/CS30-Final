@@ -1,21 +1,4 @@
 game_map = {
-    "dungeon": {
-        "map": [['---', '---', '---', '---', '---', '---', '---'],
-                ['---', 'witchery room', 'warden office', 'orb vault', 'meeting room', 'dungeon guard room', '---'],
-                ['---', 'experimentation room', 'equipment room', 'hallway', 'dark room', 'solitary confinement', '---'],
-                ['---', 'library', 'hallway', 'stairwell', 'hallway', 'the gargoyle', '---'],
-                ['---', 'portal room', 'workshop', 'hallway', 'prison cell', 'torture room', '---'],
-                ['---', 'chapel','summoning room', 'entrance', 'prison cell', 'prison cell', '---'],
-                ['---', '---', '---', '---', '---', '---', '---']],
-        "data": {
-            "random_encounter_chance": 50,
-            "encounters": ['dungeon1', 'dungeon2', 'dungeon3', 'dungeon4', 'spider'],
-            "move_time": 0,
-            "visibility": 5,
-            "music": "None"
-        }
-    },
-
     "ironwood": {
         "map": [['---', '---', '---', '---', '---', '---', '---', '---'],
                 ['---', 'black market', '   ', 'north entrance', '   ', '---', '---', '---'],
@@ -188,21 +171,20 @@ game_map = {
     },
 
     "the wastes": {
-        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
-                ['---', '---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '---', '   ', '---', '   ', '   ', '   ', '---', '---', '---'],
-                ['---', '   ', '   ', '   ', '   ', '---', '---', '   ', '---', '---', '---', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '---', '   ', '---', '   ', '   ', '   ', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '---', '---', '---'],
-                ['---', '   ', '   ', '   ', '   ', '   ', '   ', '---', '   ', '---', '   ', '---'],
-                ['---', '   ', '---', '---', '---', '   ', '   ', '   ', '   ', '   ', '---', '---'],
-                ['---', '---', '---', '   ', '---', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
-                ['---', '   ', '---', '---', '   ', '   ', '   ', '   ', '---', '   ', '---', '---'],
-                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
+        "map": [['---', '---', '---', '---', '---', '---', '---', '---', '---', '---'],
+                ['---', 'graveyard', '   ', '---', '   ', '---', '   ', '   ', '---', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---', '---', '   ', '---', '---'],
+                ['---', '   ', 'the bog', '   ', '   ', '   ', '   ', '   ', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', '---', '   ', '---', '   ', '---'],
+                ['---', '   ', '   ', '   ', '   ', 'dilapidated hut', '   ', '   ', '---', '---'],
+                ['---', '   ', 'graveyard', '   ', '   ', '   ', '   ', '---', '---', '---'],
+                ['---', '   ', '---', '---', '---', '   ', '   ', '   ', '---', '---'],
+                ['---', '---', '---', '---', '---', '   ', '   ', '   ', '   ', '---'],
+                ['---', '---', '---', '---', 'entrance', '   ', 'sister of the lost', '   ', '---', '---'],
+                ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
-            "random_encounter_chance": 0,
-            "encounters": [],
+            "random_encounter_chance": 8,
+            "encounters": ['spider', 'dungeon1', 'skeleton' 'skeletons', 'skeletons2', 'skeletons3'],
             "move_time": 0,
             "visibility": 5,
             "music": "world1"
@@ -285,27 +267,6 @@ game_map = {
 }
 
 rooms = {
-    'dungeon': {
-        "hallway": {"description": "A long carpet is rolled out on the floor."},
-        "witchery room": {"description": "There's a cauldron and many odd looking plants."},
-        "warden office": {"description": "There's a singular desk with a light above, and some paperwork in a scripture you don't recognize."},
-        "orb vault": {"description": "You do not what's in the orb vault, but you can sense an orb in there..."},
-        "meeting room": {"description": "There's a singular desk with many chairs around."},
-        "dungeon guard room": {"description": "There's a few bunk beds around and a game of monopoly on a nightstand."},
-        "experimentation room": {"description": "There's a surgical desk with blood all around and some strange tools."},
-        "equipment room": {"description": "It seems this is where the guards keep their equipment..."},
-        "dark room": {"description": "It is pitch black inside this room, your eyes make out some odd shapes in the corners of the room. You feel a presence looming over you..."},
-        "solitary confinement":{"description": "A singular skeleton rests hanged by chains on the wall of this dimly lit room."},
-        "library": {"description": "It seems this is where they kept records of experiments. You cannot make sense of any of it."},
-        "stairwell": {"description": "It leads upwards, into the darkness. Perhaps you shouldn't venture more..."},
-        "the gargoyle": {"description": "A stone statue of a gargoyle pierces your soul with its stare inside this room"},
-        "portal room": {"description": "There's a portal on the wall. You do not know where it leads."},
-        "workshop": {"description": "There are many unfamiliar tools here, it seems to be a workshop."},
-        "prison cell": {"description": "It looks like your average jail cell. "},
-        "entrance": {"description": "This leads to your house.", "enter": [1, 4, "house"]},
-        "chapel": {"description": "This room seems it's where they worshipped someone... or something...?"},
-        "summoning room": {"description": "There's an ominous summoning circle in the middle of the room with candles surrounding it."}
-    },
     'ironwood': {
         "black market": {"description": "All the merchants stay in strategic spots to hide from guards.", "shop": "black market"},
         "north entrance": {"description": "The northern entrance to Ironwood. Can also be an exit.", "enter": [3, 2, "world"]},
@@ -340,7 +301,7 @@ rooms = {
         "the old woods" : {"description": "An ancient curse echoes...", "enter": [2, 25, 'the old woods']},
         "mount megalos" : {"description": "The foot of an impossibly tall mountain.", "enter": [4, 8, 'mount megalos']},
         "city of thieves" : {"description": "A city built on a legacy of cutthroat thievery.", "enter": [3, 14, 'city of thieves']},
-        "the wastes" : {"description": "A desolate, toxic swamp that doesn't take kindly to outsiders.", "enter": [5, 1, 'the wastes']},
+        "the wastes" : {"description": "A desolate, toxic swamp that doesn't take kindly to outsiders.", "enter": [4, 9, 'the wastes']},
         "the quarry" : {"description": "A mineshaft long sealed due to unstable dark energy.", "enter": [3, 9, 'the quarry']},
         "tower of doom" : {"description": "The heart of this world's disasters. Enter if you dare...", "enter": [1, 1, 'tower of doom']},
         "riverfell" : {"description": "The ruins of what was once a beautiful city.", "enter": [0, 0, 'riverfell']}
@@ -361,11 +322,24 @@ rooms = {
     "mount megalos": {
         "mountain gate": {"description": "The entrance to mount megalos.", "enter": [4, 4, "world"]},
         "to the peak": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "enter": [3, 5, "mount megalos peak"]},
+        "big shiny rock": {"description": "A rock. Big and shiny. Big shiny rock."},
+        "hot springs": {"description": "Maybe if the world wasn't ending you'd have time to relax here."},
+        "enormous fossil": {"description": "You shudder to imagine what kind of creature this once was."},
+        "statue of megalos": {"description": "A statue depicting a long lost king."},
+        "cave entrance": {"description": "A yawning chasm beckons you to enter."},
     },
 
     "mount megalos peak": {
         "corpse of king megalos": {"description": "The dead king beckons you to fight.", "fight": "king megalos"},
         "to the foot": {"description": "An unfathomably tall staircase going to the peak of the mountain.", "enter": [1, 1, "mount megalos"]},
+    },
+
+    "the wastes": {
+        "entrance": {"description": "Exits the wastes. Probably the best choice.", "enter": [2, 9, "world"]},
+        "sister of the lost": {"description": "A woman covered head to toe in black leather garments is humming.", "shop": "sister of the lost"},
+        "graveyard": {"description": "Looks incredibly ancient. Somehow feels slightly peaceful."},
+        "dilapidated hut": {"description": "Has been utterly claimed by the wastes. Vine tendrils are pulling it into the ground."},
+        "the bog": {"description": "A gurgling pool of purple liquid. Something is in there...", "fight": 'hideous bogman'}
     },
 
     "tower of doom": {
