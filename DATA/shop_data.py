@@ -27,7 +27,8 @@ shops = {
         "dialogue":
             ["Buy something. Or don't, I guess.",
             "I used to be an adventurer like you, but then I took an arrow to the elbow.",
-            "Feel free to come back and thank me when my stuff ends up saving your skin."]
+            "Feel free to come back and thank me when my stuff ends up saving your skin."
+            "I've never met someone who can best me in smithing, or in the arena, for the matter."]
     },
     "black market": {
         "intro": 'Men hiding behind leaves stare at you.',
@@ -46,6 +47,21 @@ shops = {
             "I'd hide here if you don't want to get caught.",
             "...You don't have any coin, do you?"]
     },
+    "sister of the lost": {
+        "intro": 'She is humming something to herself.',
+        "wares":
+            ["poison bomb",
+            "iron sword",
+            "iron mace",
+            "bottled lightning",
+            "cursed flame orb"],
+        "dialogue":
+            ["Ah, on this desolate boundary between dawn and dusk, we cross paths, champion...",
+            "Until these shackles are broken, and we are reunited once more...",
+            "The wastes will rise from the earth... and they will walk among us once more...",
+            "You've met with a tragic fate, champion... or so it seems...",
+            "What awaits you ahead... I can help, perhaps..."]
+    },
     "tree's shop": {
         "intro": 'You find it a bit odd buying things from a tree.',
         "wares":
@@ -54,6 +70,6 @@ shops = {
             "inferno scroll",
             "poison bomb"],
         "dialogue":
-            ["...", "......", "....(You feel like the tree is judging you)"]
+            ["...", "......", "...."]
     }
 }
