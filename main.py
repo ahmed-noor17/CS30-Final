@@ -102,10 +102,9 @@ def right():
 
 def change_map():
     print("Changing map...")
-    if _map.game_map[player['position'][2]]['data']['music'] != 'None':
-        play_music(_map.game_map[player['position'][2]]['data']['music'], 0.4)
     player['position'] = list(_map.rooms[player['position'][2]][get_room()]
                               ['enter'])
+    music_check()
 
 
 def update_position(axis, value):
@@ -460,6 +459,7 @@ def combat(encounter_enemies):
     time.sleep(0.5)
     global fighting
     fighting = True
+    play_music(["battle1", "battle2"][random.randint(0, 1)])
     while fighting:
         _print(_title.player_turn_text, delay=0.04, print_by_line=True)
         for target_enemy in list(player['enemies'].keys()):
@@ -472,13 +472,16 @@ def combat(encounter_enemies):
             os.system('cls' if os.name == 'nt' else 'clear')
             continue
         if check_for_battle_victory(xp_prize, gold_prize, item_prize):
+            music_check()
             return  # Ends function if battle is over
         time.sleep(1)
         _print(_title.enemy_turn_text, delay=0.04, print_by_line=True)
         enemy_turn()
         if check_for_battle_victory(xp_prize, gold_prize, item_prize):
+            music_check()
             return  # Also checks here if player was killed or all enemies died
         time.sleep(1)
+    music_check()
     player['enemies'].clear()
 
 
@@ -651,6 +654,13 @@ def use_attack(attack, attacker, target):
 
 
 # Base Functions --------------------------------------------------------------
+def music_check():
+    if _map.game_map[player['position'][2]]['data']['music'] != 'None':
+        play_music(_map.game_map[player['position'][2]]['data']['music'])
+    else:
+        mixer.music.stop()
+
+
 def play_sound(sound: str, volume=1.0, fade_out_ms=0):
     sound = (_sound.combat_sfx[sound]
              [random.randint(0, len(_sound.combat_sfx[sound])-1)])
@@ -660,10 +670,13 @@ def play_sound(sound: str, volume=1.0, fade_out_ms=0):
     return
 
 
-def play_music(piece: str, volume=0.1):
+def play_music(piece: str, volume=0.5):
+    if piece in ['world1', 'world2']:
+        mixer.music.set_volume(0.2)
+    else:
+        mixer.music.set_volume(volume)
     piece = _sound.bgm[piece]
     mixer.music.load(piece)
-    mixer.music.set_volume(volume)
     mixer.music.play(2, 0, 0)
     pass
 
@@ -1073,16 +1086,15 @@ def convert_num_menu(choice, num, current_menu='', list_of_options=[]):
     else:
         if 1 <= choice < num:  # Check if the number inputted is an option
             os.system('cls' if os.name == 'nt' else 'clear')
-            choice = (
-                option_list[choice - 1
-                            + 4 if current_menu == 'movement_menu' else 0])
+            choice = (option_list
+                      [choice - 1 + (4 if current_menu == 'movement_menu'
+                                     else 0)])
         elif (choice == num and current_menu != 'movement_menu' and
                 list_of_options == []):
             choice = 'quit'
         elif choice == num and list_of_options != []:
             choice = 'cancel'
         else:
-            os.system('cls' if os.name == 'nt' else 'clear')
             return 'retry'
     return choice
 
