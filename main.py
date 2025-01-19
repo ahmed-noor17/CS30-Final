@@ -227,9 +227,10 @@ def room_attribute_list():
                 menu['movement_menu'].pop(atr)
             except KeyError:
                 pass
-        else:           
+        else:
             if atr == 'fight':
-                fight_room = _map.rooms[player['position'][2]][get_room()]['fight']
+                fight_room = (_map.rooms[player['position'][2]][get_room()]
+                              ['fight'])
                 if fight_room not in player['defeated bosses']:
                     menu['movement_menu']['fight'] = room_attributes['fight']
                     temp_opt_list.append('fight')
@@ -339,6 +340,8 @@ def load_data():
             file_list = f.readlines()
             for line in file_list:
                 data = line.strip().split('::')
+                if line == "player_inventory::\n" or line == "defeated_bosses::\n":
+                    data[1] = 'None'
                 if ", " in data[1]:
                     data[1] = data[1].split(", ")
                 loaded_data[data[0]] = data[1]
@@ -363,12 +366,14 @@ def load_data():
         player['equipment']['accessory'] = loaded_data['player_accessory']
         if isinstance(loaded_data['player_inventory'], str):
             player['inventory'] = _inventory.Inventory([])
-            player['inventory'].contents.append(
-                loaded_data['player_inventory'])
+            if loaded_data['player_inventory'] != 'None':
+                player['inventory'].contents.append(
+                    loaded_data['player_inventory'])
         else:
             player['inventory'] = _inventory.Inventory(
                 loaded_data['player_inventory'])
-        if isinstance(loaded_data['defeated_bosses'], str):
+        if (isinstance(loaded_data['defeated_bosses'], str)
+                and loaded_data != 'None'):
             player['defeated bosses'].append(
                 loaded_data['defeated_bosses'])
         else:
@@ -660,8 +665,8 @@ def use_attack(attack, attacker, target):
         being attacked respectively.'''
     attack_accuracy = attack.acc * attacker.acc/100
     if random.randint(0, 100) <= attack_accuracy:
-        defence_modifier = 1 - ((target.defence / (target.defence + 50)) 
-        * (attack.damage >= 0))
+        defence_modifier = 1 - ((target.defence / (target.defence + 50))
+                                * (attack.damage >= 0))
         attack_damage = int(attack.damage * attacker.atk * defence_modifier)
         target.hp = clamp(target.hp - attack_damage, 0, target.max_hp)
         attack_text = (attack.use_text.replace('{target}', target.name.title())
@@ -748,7 +753,7 @@ def story():
         player['character'].name = input()
         if player['character'].name.strip() != "":
             _print(f"{player['character'].name}... Is this correct? (Y/N) ",
-                newline=False)
+                   newline=False)
             confirm = input().lower()
             if "y" in confirm:
                 break
@@ -1020,19 +1025,19 @@ Regress Development Team:
  - Ahmed Noor
  - Damian Knourek\n""")
     sound_credits = open(sound_credits_file, 'r')
-    print("Sound credits:\n" + sound_credits.read(), print_by_line=True)
+    _print("Sound credits:\n" + sound_credits.read(), print_by_line=True)
     sound_credits.close()
 
 
 def tutorial():
-    _print("HOW TO PLAY:\nNavigate menus by typing the options you want or" +
-           " the corresponding number, then hitting ENTER. Type quit when" +
-           " on the main menu to exit the game.\nIf you begin moving, you" +
-           " may use WASD to move on the map. When you are on a tile that" +
-           " you can interact with, an option will appear.\nYou may" +
-           " encounter powerful enemies on your journey, so make sure to" +
-           " stock up on items, armour, and other equipment to give" +
-           " yourself the edge.")
+    _print("HOW TO PLAY:\nNavigate menus by typing the options you want or "
+           + "the corresponding number, then hitting ENTER.\nType quit when "
+           + "on the main menu to exit the game. If you begin moving, you "
+           + "may use WASD to move on the map.\nWhen you are on a tile that "
+           + "you can interact with, an option will appear. You may "
+           + "encounter powerful enemies\non your journey, so make sure to "
+           + "stock up on items, armour, and other equipment to give "
+           + "yourself the edge.")
 
 
 menu = {
@@ -1092,6 +1097,8 @@ def display_menu(current_menu):
         choice = convert_num_menu(input("\nChoice: ").lower(), num,
                                   current_menu)
         if choice == 'retry':
+            if current_menu == 'game_menu':
+                os.system('cls' if os.name == 'nt' else 'clear')
             continue
         if (choice == "quit" and
                 current_menu not in ['main_menu', 'combat_menu']):

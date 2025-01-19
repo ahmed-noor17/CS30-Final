@@ -366,7 +366,7 @@ Character and inventory bug fix, easy moving, and map update
 - Updated CHANGELOG.md
 
 
-# 18 JANUARY, 2025:
+# 19 JANUARY, 2025:
 
 **Aiden**
 
@@ -385,4 +385,6 @@ Character and inventory bug fix, easy moving, and map update
 
 **Ahmed**
 
--
+- Bug testing
+- Fixed an issue with save files recognizing nothing as a string as ''
+- Fixed an issue with selling items (this is related to the change above)
