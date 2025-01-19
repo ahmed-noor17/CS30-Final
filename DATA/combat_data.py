@@ -1,5 +1,4 @@
 import OBJECTS.attack as _attack
-import os
 
 # name, level, xp, gold, max_hp, atk, acc, moves, item drops, drop % chance, is_boss
 enemies = {
@@ -10,7 +9,6 @@ enemies = {
     'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 6, 80, ['slash'], 'iron sword', 5],
     'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 6, 85, ['slash', 'arrow', 'arrow'], 'bow', 5],
     'skeleton mage': ["skeleton mage", 1, 55, 12, 110, 5, 90, ['fireball', 'lightning bolt', 'magic missile']],
-    'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 50],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'goatman': ["goatman", 1, 50, 7, 150, 3, 80, ['headbutt', 'bash']],
     'zombie': ["zombie", 1, 70, 10, 200, 5, 95, ['headbutt', 'bite']],
