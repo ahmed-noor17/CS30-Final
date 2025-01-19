@@ -378,7 +378,7 @@ def load_data():
         else:
             player['defeated bosses'] = loaded_data['defeated_bosses']
         skip_introduction = loaded_data['skip_introduction']
-        hours_remaining = loaded_data['hours_remaining']
+        hours_remaining = int(loaded_data['hours_remaining'])
     except FileNotFoundError:
         print("File does not exist.")
 

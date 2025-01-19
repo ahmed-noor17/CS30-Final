@@ -15,6 +15,6 @@ player_head::None
 player_torso::None
 player_weapon::None
 player_accessory::None
+hours_remaining::168
 player_inventory::
 defeated_bosses::
-hours_remaining::
