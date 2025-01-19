@@ -328,7 +328,7 @@ rooms = {
     },
 
     "tower of doom": {
-        "entrance": {"description": "A massive ornate door.", "fight": "king megalos"},
+        "entrance": {"description": "A massive ornate door.", "enter": [7, 12, "world"]},
         "magic elevator": {"description": "A small circular platform that can carry you to the upper level.", "enter": [1, 5, "dark lord chamber"]},
     },
 

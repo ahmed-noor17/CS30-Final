@@ -477,8 +477,7 @@ def combat(encounter_enemies):
             else:
                 enemy_object.name = f"{enemy_object.name} {str(enemy_count)}"
         player['enemies'][enemy_object.name] = enemy_object
-        n = 'n' if enemy[0] in ['a', 'e', 'i', 'o', 'u'] else ''
-        _print(f"You've encountered a{n} {enemy.title()}!")
+        _print(f"You've encountered {enemy.title()}!")
     time.sleep(0.5)
     global fighting
     fighting = True
