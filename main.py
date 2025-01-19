@@ -30,6 +30,7 @@ skip_introduction = "False"
 
 story_intro_file = os.getcwd() + '/TEXT/STORY/opening.txt'
 death_file = os.getcwd() + '/TEXT/STORY/death.txt'
+victory_file = os.getcwd() + '/TEXT/STORY/victory.txt'
 
 player = {
     'character': _character.Character(
@@ -491,6 +492,8 @@ def combat(encounter_enemies):
         time.sleep(1)
     music_check()
     player['enemies'].clear()
+    if 'the dark lord' in player['defeated bosses']:
+        show_story_text(victory_file)
 
 
 def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
@@ -723,11 +726,12 @@ def story():
     while True:
         _print("Enter player name: ", newline=False)
         player['character'].name = input()
-        _print(f"{player['character'].name}... Is this correct? (Y/N) ",
-               newline=False)
-        confirm = input().lower()
-        if "y" in confirm:
-            break
+        if player['character'].name.strip() != "":
+            _print(f"{player['character'].name}... Is this correct? (Y/N) ",
+                newline=False)
+            confirm = input().lower()
+            if "y" in confirm:
+                break
     skip_introduction = "True"
 
 

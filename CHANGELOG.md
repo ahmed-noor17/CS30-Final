@@ -349,6 +349,9 @@ Character and inventory bug fix, easy moving, and map update
 - Fixed a bug relating to standing on tiles without fights
 - Added the Quarry location
 - Adjusted enemies and maps
+- Did combat balancing for mid-game enemies and abilities
+- Added new shop to Mount Megalos
+- Removed ability to have a blank name
 
 **Ahmed**
 
