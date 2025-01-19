@@ -232,6 +232,7 @@ def expend_time(time_cost):
     global hours_remaining
     hours_remaining -= time_cost
     if hours_remaining <= 0:
+        _print("Time has run out... The hour of darkness is upon us...")
         game_over()
 
 
