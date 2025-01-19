@@ -124,13 +124,13 @@ item = {
         "mithril helmet": {
             "description": "A blue helmet",
             "slot": "head",
-            "defence": 5,
+            "defence": 57,
             "move": None,
             "value": 65},
         "mithril chestplate": {
             "description": "A blue chestplate",
             "slot": "torso",
-            "defence": 7,
+            "defence": 9,
             "move": None,
             "value": 80},
         "mithril longsword": {
@@ -142,19 +142,19 @@ item = {
         "svarium helmet": {
             "description": "A red helmet",
             "slot": "head",
-            "defence": 9,
+            "defence": 14,
             "move": None,
             "value": 120},
         "svarium chestplate": {
             "description": "A red chestplate",
             "slot": "torso",
-            "defence": 13,
+            "defence": 17,
             "move": None,
             "value": 160},
         "svarium katana": {
             "description": "A red sword",
             "slot": "weapon",
-            "defence": 9,
+            "defence": 3,
             "move": "bladestorm",
             "value": 215},
     },
