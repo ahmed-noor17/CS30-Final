@@ -7,9 +7,9 @@ enemies = {
     'punching bag': ["punching bag", 1, 0, 0, 10000, 0, 0, ['slash']],
 	'orc': ["orc", 1, 35, 8, 140, 3, 80, ['slash', 'bash']],
     'bandit': ["bandit", 1, 30, 16, 100, 4, 85, ['slash']],
-    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 160, 6, 80, ['slash']],
-    'skeleton archer': ["skeleton archer", 1, 50, 10, 120, 6, 85, ['slash', 'arrow', 'arrow']],
-    'skeleton mage': ["skeleton mage", 1, 55, 12, 100, 5, 90, ['fireball', 'lightning bolt', 'magic missile']],
+    'skeleton warrior': ["skeleton warrior", 1, 45, 10, 180, 6, 80, ['slash']],
+    'skeleton archer': ["skeleton archer", 1, 50, 10, 130, 6, 85, ['slash', 'arrow', 'arrow']],
+    'skeleton mage': ["skeleton mage", 1, 55, 12, 120, 5, 90, ['fireball', 'lightning bolt', 'magic missile']],
     'imp': ["imp", 1, 50, 10, 90, 3, 90, ['slash', 'fireball', 'magic missile'], 'inferno scroll', 100],
     'spider': ["spider", 1, 30, 7, 90, 3, 85, ['bite']],
     'goatman': ["goatman", 1, 50, 10, 200, 5, 80, ['headbutt', 'bash']],
@@ -18,7 +18,7 @@ enemies = {
     # Bosses
     'the dark lord': ["the dark lord", 1, 1000, 1000, 700, 12, 90, ['cursed flame', 'unholy diver', 'incinerate', 'lightning bolt', 'magic missile'], 'birthday bomb', 100, True],
     'tumor of the forest': ["tumor of the forest", 1, 200, 60, 300, 5, 85, ['bite'], 'ring of poison', 100, True],
-    'king megalos': ["king megalos", 1, 400, 80, 500, 5, 65, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100, True],
+    'king megalos': ["king megalos", 1, 400, 80, 450, 5, 65, ['lightning bolt', 'bash', 'smash'], 'helm of megalos', 100, True],
     'king of thieves': ["king of thieves", 1, 400, 200, 400, 6, 90, ['arrow', 'arrow', 'rain of arrows', 'slash', 'smash'], 'magic bow', 100, True],
     'the minotaur': ["the minotaur", 1, 600, 250, 600, 6, 70, ['headbutt', 'smash'], 'mighty battleaxe', 100, True],
     'hideous bogman': ["hideous bogman", 1, 700, 300, 650, 7, 80, ['headbutt', 'smash'], 'pendant of the wastes', 100, True],
@@ -74,11 +74,11 @@ attacks = {
     'magic missile': _attack.Attack(5, 95, '{attacker} launched a magic missile at {target}!', 'single enemy', sound='magic'),
     'poison cloud': _attack.Attack(2, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 2, sound='gas'),
     'venom haze': _attack.Attack(5, 100, '{attacker} poisoned {target}!', 'all enemies', 'poison', 3, sound='gas'),
-    'bladestorm': _attack.Attack(10, 100, '{target} was caught in a storm of blades by {attacker}!', 'all enemies', 'bleed', 3, sound='sword_hit'),
+    'bladestorm': _attack.Attack(9, 95, '{target} was caught in a storm of blades by {attacker}!', 'all enemies', 'bleed', 1, sound='sword_hit'),
     # Damage over time status effects
     # The player is currently unaffected by debuffs but maybe it's for the best because is it really fun
     # to get stunlocked by an enemy freeze blasting you over and over?
-    'bleed': _attack.Attack(15, 99999, '{target} bled!', 'single enemy', sound='blood'),
+    'bleed': _attack.Attack(20, 99999, '{target} bled!', 'single enemy', sound='blood'),
     'poison': _attack.Attack(40, 99999, "Poison courses through {target}'s veins!", 'single enemy', sound='blood'),
     'freeze': _attack.Attack(5, 99999, "{target} is completely frozen!", 'single enemy', sound='ice')
 }
