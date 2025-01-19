@@ -385,6 +385,8 @@ Character and inventory bug fix, easy moving, and map update
 
 **Ahmed**
 
-- Bug testing
-- Fixed an issue with save files recognizing nothing as a string as ''
+- Play testing
+- Fixed an issue with save files recognizing *nothing* as a string as ''
 - Fixed an issue with selling items (this is related to the change above)
+- Fixed a bug where the player could name themselves the same as an enemy and break the combat victory
+- Final PEP8 styling for the above changes

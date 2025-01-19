@@ -344,7 +344,8 @@ def load_data():
             file_list = f.readlines()
             for line in file_list:
                 data = line.strip().split('::')
-                if line == "player_inventory::\n" or line == "defeated_bosses::\n":
+                if (line == "player_inventory::\n"
+                        or line == "defeated_bosses::\n"):
                     data[1] = 'None'
                 if ", " in data[1]:
                     data[1] = data[1].split(", ")
@@ -394,7 +395,7 @@ def load_data():
 def game_over():
     ''' Does some story text then resets the player to the beginning.'''
     global fighting
-    global max_hours 
+    global max_hours
     time.sleep(2)
     os.system('cls' if os.name == 'nt' else 'clear')
     _print(_title.game_over_text, delay=0.1, print_by_line=True)
@@ -544,8 +545,6 @@ def check_for_battle_victory(xp_prize=0, gold_prize=0, item_prize=[]):
         input("Press any key to continue: ")
         os.system('cls' if os.name == 'nt' else 'clear')
         fighting = False
-        if 'the dark lord' in player['defeated bosses']:
-            show_story_text(victory_file)
         return True
     else:
         return False
@@ -651,6 +650,7 @@ def use_item():
         num += 1
     print(f" {num}. Cancel")
     if len(usable_items) <= 0:
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("You do not have any usable items!")
         return display_menu('combat_menu')
     while True:
@@ -691,6 +691,8 @@ def use_attack(attack, attacker, target):
                    f"{attack.debuff}!")
         if target.hp <= 0:
             print(f"Defeated {target.name.title()}!")
+            if target.name == 'the dark lord':
+                print(show_story_text(victory_file))
             if target.name != player['character'].name:
                 player['enemies'].pop(target.name)
                 if target.boss:  # If we killed a boss, remember this.
@@ -759,8 +761,8 @@ def story():
     show_story_text(story_intro_file)
     while True:
         _print("Enter player name: ", newline=False)
-        player['character'].name = input()
-        if player['character'].name.strip() != "":
+        player['character'].name = input().title()
+        if player['character'].name.strip() not in ['', 'the dark lord']:
             _print(f"{player['character'].name}... Is this correct? (Y/N) ",
                    newline=False)
             confirm = input().lower()
