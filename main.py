@@ -223,7 +223,11 @@ def room_attribute_list():
                 pass
         else:
             fight_room = _map.rooms[player['position'][2]][get_room()]['fight']
-            if atr == 'fight' and fight_room not in player['defeated bosses']:
+            if atr == 'fight':
+                if fight_room not in player['defeated bosses']:
+                    menu['movement_menu']['fight'] = room_attributes['fight']
+                    temp_opt_list.append('fight')
+            else:
                 menu['movement_menu'][atr] = room_attributes[atr]
                 temp_opt_list.append(atr)
     return temp_opt_list
