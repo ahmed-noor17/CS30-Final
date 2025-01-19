@@ -313,7 +313,7 @@ def save_data():
         'player_head': player['equipment']['head'],
         'player_torso': player['equipment']['torso'],
         'player_weapon': player['equipment']['weapon'],
-        'player_accessory': player['equipment']['accessory']
+        'player_accessory': player['equipment']['accessory'],
         'hours_remaining': hours_remaining
     }
     if player['inventory'].contents is not None:
