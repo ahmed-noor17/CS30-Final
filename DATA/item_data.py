@@ -156,7 +156,7 @@ item = {
             "slot": "weapon",
             "defence": 3,
             "move": "bladestorm",
-            "value": 215},
+            "value": 250},
     },
     "miscellaneous": {
         "silver ring": {
