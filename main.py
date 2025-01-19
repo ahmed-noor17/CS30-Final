@@ -357,10 +357,10 @@ def load_data():
             player['inventory'] = _inventory.Inventory(
                 loaded_data['player_inventory'])
         if isinstance(loaded_data['defeated_bosses'], str):
-            player['defeated_bosses'].append(
+            player['defeated bosses'].append(
                 loaded_data['defeated_bosses'])
         else:
-            player['defeated_bosses'] = loaded_data['defeated_bosses']
+            player['defeated bosses'] = loaded_data['defeated_bosses']
         skip_introduction = loaded_data['skip_introduction']
     except FileNotFoundError:
         print("File does not exist.")
