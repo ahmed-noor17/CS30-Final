@@ -15,10 +15,7 @@ Things to work on:
     -Game balancing
     -MORE CONTENT!!!!!!!
         -Music
-        -Towns
         -Items
-        -Dungeons
-        -Dialogue
         -Ending
 
 Things we could implement:
