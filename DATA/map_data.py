@@ -184,7 +184,7 @@ game_map = {
                 ['---', '---', '---', '---', '---', '---', '---', '---', '---', '---']],
         "data": {
             "random_encounter_chance": 8,
-            "encounters": ['spider', 'dungeon1', 'skeleton' 'skeletons', 'skeletons2', 'skeletons3'],
+            "encounters": ['spider', 'dungeon1', 'skeleton', 'skeletons', 'skeletons2', 'skeletons3'],
             "move_time": 0,
             "visibility": 5,
             "music": "world1"
