@@ -3,8 +3,8 @@
 # Name: Ahmed Noor, Damian Knourek, Aiden Dielschneider
 # Class: CS30
 # Assignment: Final Project
-# Version: Pre-Alpha v1.0
-# Date: December 9th, 2024
+# Version: 1.0
+# Date: December 11th, 2024
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
 import os
