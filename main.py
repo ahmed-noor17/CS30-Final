@@ -12,7 +12,7 @@ import time
 import random
 import math
 import keyboard
-from tabulate import tabulate
+import tabulate
 from pygame import mixer
 import DATA.map_data as _map
 import DATA.item_data as _item
@@ -22,6 +22,7 @@ import DATA.sound_data as _sound
 import OBJECTS.inventory as _inventory
 import OBJECTS.character as _character
 import TEXT.title_text as _title
+
 mixer.init()
 
 playing_game = True
@@ -65,10 +66,12 @@ loaded_data = {}
 current_save_file = None
 
 debuff_char = _character.Character("debuff man", 1, 0, 0, 0, 1, 100, [])
-text_speed = 0.01
-map_cell_character_len = 25
 max_hours = 168
 hours_remaining = 168.0
+
+text_speed = 0.01
+map_cell_character_len = 25
+tabulate.PRESERVE_WHITESPACE = True
 
 move_options = {"w": "up",
                 "a": "left",
@@ -145,7 +148,7 @@ def update_map_display(width: int, height: int):
         for w in range(width):
             map_display[h].append(get_room(h-(height//2), w-(width//2), True))
     map_display[height//2][width//2] = f"{get_room()}\n(You)"
-    return tabulate(map_display,
+    return tabulate.tabulate(map_display,
                     tablefmt="rounded_grid",
                     stralign='center',
                     rowalign='center').title()
@@ -266,12 +269,12 @@ def get_room(y_offset=0, x_offset=0, for_display=False):
                      [int(player['position'][0]) + x_offset])
     except IndexError:
         return "////////////////\n" * 3
-    padding = '­' * (int(max(map_cell_character_len - len(room_name), 0)/4))
+    padding = ' ' * (int(max(map_cell_character_len - len(room_name), 0)/4))
     if for_display:
         if room_name == "---":
             room_name = "////////////////\n"*3
         else:
-            room_name = "­\n" + padding + room_name + padding + "\n­"
+            room_name = " \n" + padding + room_name + padding + "\n "
     return room_name
 
 
